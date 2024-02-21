@@ -1,13 +1,11 @@
-# dx-plugin
+# DX Backstage Frontend Plugin
 
-Welcome to the dx-plugin plugin!
+⚠️ BETA - This plugin is in a closed beta right now. Functionality and API of this plugin is certain to change. Please reach out to DX if you are interested! developers@getdx.com
 
-_This plugin was created through the Backstage CLI_
+DX Backstage frontend plugin to display DX data in your Backstage app.
 
-## Getting started
+Requires [@get-dx/backstage-backend-plugin](https://github.com/get-dx/backstage-backend-plugin).
 
-Your plugin has been added to the example app in this repository, meaning you'll be able to access it by running `yarn start` in the root directory, and then navigating to [/dx-plugin](http://localhost:3000/dx-plugin).
+## Setup
 
-You can also serve the plugin in isolation by running `yarn start` in the plugin directory.
-This method of serving the plugin provides quicker iteration speed and a faster startup and hot reloads.
-It is only meant for local development, and the setup for it can be found inside the [/dev](./dev) directory.
+TODO
