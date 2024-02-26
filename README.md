@@ -9,3 +9,9 @@ Requires [@get-dx/backstage-backend-plugin](https://github.com/get-dx/backstage-
 ## Setup
 
 TODO
+
+## Development
+
+`yarn install` and `yarn start` will start a local dev server showing the UI of this component. See `dev/index.tsx` for setup.
+
+To see real data, link to a local backstage instance and use [`yalc`](https://github.com/wclr/yalc).

@@ -1,19 +1,71 @@
-import { createPlugin, createRoutableExtension } from '@backstage/core-plugin-api';
+import {
+  createApiFactory,
+  createComponentExtension,
+  createPlugin,
+  createRoutableExtension,
+  discoveryApiRef,
+} from "@backstage/core-plugin-api";
 
-import { rootRouteRef } from './routes';
+import { rootRouteRef } from "./routes";
+import { DXApiClient, dxApiRef } from "./api";
 
-export const dxPluginPlugin = createPlugin({
-  id: 'dx-plugin',
+export const dxPlugin = createPlugin({
+  id: "dx",
   routes: {
     root: rootRouteRef,
   },
+  apis: [
+    createApiFactory({
+      api: dxApiRef,
+      deps: { discoveryApi: discoveryApiRef },
+      factory: ({ discoveryApi }) => new DXApiClient({ discoveryApi }),
+    }),
+  ],
 });
 
-export const DxPluginPage = dxPluginPlugin.provide(
+export const EntityDORAMetricsContent = dxPlugin.provide(
   createRoutableExtension({
-    name: 'DxPluginPage',
+    name: "EntityDORAMetricsContent",
     component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
+      import("./components/EntityDORAMetricsContent").then(
+        (m) => m.EntityDORAMetricsContent,
+      ),
     mountPoint: rootRouteRef,
+  }),
+);
+
+export const EntityChangeFailureRateCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityChangeFailureRateCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityChangeFailureRateCard").then(
+          (m) => m.EntityChangeFailureRateCard,
+        ),
+    },
+  }),
+);
+
+export const EntityDeploymentFrequencyCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityDeploymentFrequencyCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityDeploymentFrequencyCard").then(
+          (m) => m.EntityDeploymentFrequencyCard,
+        ),
+    },
+  }),
+);
+
+export const EntityLeadTimeCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityLeadTimeCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityLeadTimeCard").then(
+          (m) => m.EntityLeadTimeCard,
+        ),
+    },
   }),
 );

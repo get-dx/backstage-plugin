@@ -1,0 +1,27 @@
+name: Publish Package
+on:
+  push:
+    branches:
+      - main
+jobs:
+  npm-publish:
+    name: publish-npm
+    runs-on: ubuntu-latest
+    environment: Publish
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Node
+        uses: actions/setup-node@main
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - run: yarn --frozen-lockfile
+      - run: yarn tsc
+      - run: yarn build
+
+      - run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

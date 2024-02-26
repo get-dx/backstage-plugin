@@ -1,1 +1,7 @@
-export { dxPluginPlugin, DxPluginPage } from './plugin';
+export {
+  dxPlugin,
+  EntityDORAMetricsContent,
+  EntityChangeFailureRateCard,
+  EntityDeploymentFrequencyCard,
+  EntityLeadTimeCard,
+} from "./plugin";

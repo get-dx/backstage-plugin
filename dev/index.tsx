@@ -1,12 +1,155 @@
-import React from 'react';
-import { createDevApp } from '@backstage/dev-utils';
-import { dxPluginPlugin, DxPluginPage } from '../src/plugin';
+import React from "react";
+import { createDevApp, EntityGridItem } from "@backstage/dev-utils";
+import { dxPlugin, EntityDORAMetricsContent } from "../src/plugin";
+import { Entity } from "@backstage/catalog-model";
+import { http, HttpResponse } from "msw";
+import { setupWorker } from "msw/browser";
+import Grid from "@material-ui/core/Grid";
+
+import { Content, Header, Page } from "@backstage/core-components";
+
+const mockEntity: Entity = {
+  apiVersion: "backstage.io/v1alpha1",
+  kind: "Component",
+  metadata: {
+    name: "DX App Component",
+    description: "DX Application",
+    annotations: {
+      "github.com/project-slug": "get-dx/app",
+    },
+  },
+  spec: {
+    lifecycle: "production",
+    type: "service",
+    owner: "group:default/developers",
+  },
+};
 
 createDevApp()
-  .registerPlugin(dxPluginPlugin)
+  .registerPlugin(dxPlugin)
   .addPage({
-    element: <DxPluginPage />,
-    title: 'Root Page',
-    path: '/dx-plugin'
+    element: (
+      <Page themeId="home">
+        <Header title="DX Backstage Plugin" />
+        <Content>
+          <Grid container>
+            <EntityGridItem entity={mockEntity}>
+              <EntityDORAMetricsContent />
+            </EntityGridItem>
+          </Grid>
+        </Content>
+      </Page>
+    ),
+    title: "Root Page",
+    path: "/dx",
   })
   .render();
+
+const host = "http://localhost:7007";
+
+const worker = setupWorker(
+  http.get(`${host}/api/proxy/dx/api/backstage.deploymentFrequency`, () =>
+    HttpResponse.json({
+      data: [
+        {
+          date: "2024-01-22T00:00:00.000+00:00",
+          value: 0.4,
+          label: "Jan 22 - Jan 28",
+        },
+        {
+          date: "2024-01-29T00:00:00.000+00:00",
+          value: 0.3,
+          label: "Jan 29 - Feb 04",
+        },
+        {
+          date: "2024-02-05T00:00:00.000+00:00",
+          value: 0.7,
+          label: "Feb 05 - Feb 11",
+        },
+        {
+          date: "2024-02-12T00:00:00.000+00:00",
+          value: 0.6,
+          label: "Feb 12 - Feb 18",
+        },
+        {
+          date: "2024-02-19T00:00:00.000+00:00",
+          value: 0.3,
+          label: "Feb 19 - Feb 25",
+        },
+      ],
+      total: 0.5,
+      unit: " per day",
+    }),
+  ),
+
+  http.get(`${host}/api/proxy/dx/api/backstage.changeFailureRate`, () =>
+    HttpResponse.json({
+      data: [
+        {
+          date: "2024-01-22T00:00:00.000+00:00",
+          value: 12.3,
+          label: "Jan 22 - Jan 28",
+        },
+        {
+          date: "2024-01-29T00:00:00.000+00:00",
+          value: 9.7,
+          label: "Jan 29 - Feb 04",
+        },
+        {
+          date: "2024-02-05T00:00:00.000+00:00",
+          value: 24.4,
+          label: "Feb 05 - Feb 11",
+        },
+        {
+          date: "2024-02-12T00:00:00.000+00:00",
+          value: 66.7,
+          label: "Feb 12 - Feb 18",
+        },
+        {
+          date: "2024-02-19T00:00:00.000+00:00",
+          value: 12.1,
+          label: "Feb 19 - Feb 25",
+        },
+      ],
+      total: 25.04,
+      unit: "%",
+    }),
+  ),
+
+  http.get(`${host}/api/proxy/dx/api/backstage.leadTime`, () =>
+    HttpResponse.json({
+      data: [
+        {
+          date: "2024-01-22T00:00:00.000+00:00",
+          value: 122.5,
+          label: "Jan 22 - Jan 28",
+        },
+        {
+          date: "2024-01-29T00:00:00.000+00:00",
+          value: 156.2,
+          label: "Jan 29 - Feb 04",
+        },
+        {
+          date: "2024-02-05T00:00:00.000+00:00",
+          value: 88.4,
+          label: "Feb 05 - Feb 11",
+        },
+        {
+          date: "2024-02-12T00:00:00.000+00:00",
+          value: 225.5,
+          label: "Feb 12 - Feb 18",
+        },
+        {
+          date: "2024-02-19T00:00:00.000+00:00",
+          value: 132.3,
+          label: "Feb 19 - Feb 25",
+        },
+      ],
+      total: 144.98,
+      unit: " mins",
+    }),
+  ),
+);
+
+// Start the Mock Service Worker
+worker.start();

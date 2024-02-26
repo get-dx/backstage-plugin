@@ -1,0 +1,7 @@
+---
+# Mock config for dev server.
+app:
+  baseUrl: http://localhost:4321
+
+backend:
+  baseUrl: http://localhost:7007
