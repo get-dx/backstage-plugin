@@ -1,6 +1,6 @@
 import React from "react";
 import { createDevApp, EntityGridItem } from "@backstage/dev-utils";
-import { dxPlugin, EntityDORAMetricsContent } from "../src/plugin";
+import { dxPlugin, EntityDXDashboardContent } from "../src/plugin";
 import { Entity } from "@backstage/catalog-model";
 import { http, HttpResponse } from "msw";
 import { setupWorker } from "msw/browser";
@@ -34,7 +34,7 @@ createDevApp()
         <Content>
           <Grid container>
             <EntityGridItem entity={mockEntity}>
-              <EntityDORAMetricsContent />
+              <EntityDXDashboardContent />
             </EntityGridItem>
           </Grid>
         </Content>
@@ -147,6 +147,48 @@ const worker = setupWorker(
       ],
       total: 144.98,
       unit: " mins",
+    }),
+  ),
+
+  http.get(`${host}/api/proxy/dx/api/backstage.topContributors`, () =>
+    HttpResponse.json({
+      data: [
+        {
+          label: "inoda",
+          value: 270,
+          date: "2024-02-27T20:55:12.000Z",
+        },
+        {
+          label: "ryanbjones",
+          value: 160,
+          date: "2024-02-26T18:53:38.000Z",
+        },
+        {
+          label: "ElizaHales",
+          value: 97,
+          date: "2024-02-27T13:03:17.000Z",
+        },
+        {
+          label: "radixhound",
+          value: 84,
+          date: "2024-02-27T20:19:50.000Z",
+        },
+        {
+          label: "tylerwray",
+          value: 74,
+          date: "2024-02-26T17:48:44.000Z",
+        },
+        {
+          label: "abinoda",
+          value: 34,
+          date: "2024-02-26T20:32:20.000Z",
+        },
+        {
+          label: "jakehasler",
+          value: 11,
+          date: "2024-02-16T17:46:05.000Z",
+        },
+      ],
     }),
   ),
 );

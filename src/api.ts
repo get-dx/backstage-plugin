@@ -1,22 +1,21 @@
 import { DiscoveryApi, createApiRef } from "@backstage/core-plugin-api";
 import { ResponseError } from "@backstage/errors";
 
-export interface ChartDatum {
-  date: string;
-  value: number;
-  label: string;
-}
-
 export interface ChartResponse {
-  data: ChartDatum[];
+  data: { label: string; value: number; date: string }[];
   unit: string;
   total: number;
+}
+
+export interface TopContributorsResponse {
+  data: { label: string; value: number; date: string }[];
 }
 
 export interface DXApi {
   changeFailureRate(entityRef: string): Promise<ChartResponse>;
   deploymentFrequency(entityRef: string): Promise<ChartResponse>;
   leadTime(entityRef: string): Promise<ChartResponse>;
+  topContributors(entityRef: string): Promise<TopContributorsResponse>;
 }
 
 export const dxApiRef = createApiRef<DXApi>({
@@ -30,21 +29,27 @@ export class DXApiClient implements DXApi {
     this.discoveryApi = discoveryApi;
   }
 
-  async changeFailureRate(entityRef: string): Promise<ChartResponse> {
+  async changeFailureRate(entityRef: string) {
     return await this.fetch<ChartResponse>(
       `/api/backstage.changeFailureRate?entityRef=${entityRef}`,
     );
   }
 
-  async deploymentFrequency(entityRef: string): Promise<ChartResponse> {
+  async deploymentFrequency(entityRef: string) {
     return await this.fetch<ChartResponse>(
       `/api/backstage.deploymentFrequency?entityRef=${entityRef}`,
     );
   }
 
-  async leadTime(entityRef: string): Promise<ChartResponse> {
+  async leadTime(entityRef: string) {
     return await this.fetch<ChartResponse>(
       `/api/backstage.leadTime?entityRef=${entityRef}`,
+    );
+  }
+
+  async topContributors(entityRef: string) {
+    return await this.fetch<TopContributorsResponse>(
+      `/api/backstage.topContributors?entityRef=${entityRef}`,
     );
   }
 

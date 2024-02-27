@@ -23,6 +23,17 @@ export const dxPlugin = createPlugin({
   ],
 });
 
+export const EntityDXDashboardContent = dxPlugin.provide(
+  createRoutableExtension({
+    name: "EntityDXDashboardContent",
+    component: () =>
+      import("./components/EntityDXDashboardContent").then(
+        (m) => m.EntityDXDashboardContent,
+      ),
+    mountPoint: rootRouteRef,
+  }),
+);
+
 export const EntityDORAMetricsContent = dxPlugin.provide(
   createRoutableExtension({
     name: "EntityDORAMetricsContent",
@@ -65,6 +76,18 @@ export const EntityLeadTimeCard = dxPlugin.provide(
       lazy: () =>
         import("./components/EntityLeadTimeCard").then(
           (m) => m.EntityLeadTimeCard,
+        ),
+    },
+  }),
+);
+
+export const EntityTopContributorsTable = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityTopContributorsTable",
+    component: {
+      lazy: () =>
+        import("./components/EntityTopContributorsTable").then(
+          (m) => m.EntityTopContributorsTable,
         ),
     },
   }),

@@ -1,7 +1,9 @@
 export {
-  dxPlugin,
-  EntityDORAMetricsContent,
   EntityChangeFailureRateCard,
+  EntityDORAMetricsContent,
+  EntityDXDashboardContent,
   EntityDeploymentFrequencyCard,
   EntityLeadTimeCard,
+  EntityTopContributorsTable,
+  dxPlugin,
 } from "./plugin";
