@@ -31,59 +31,45 @@ export function LineChart({ data, unit, total }: ChartResponse) {
         {unit}
       </Box>
       <Box width="full" height="200px">
-        {total === 0 ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-            height="100%"
+        <ResponsiveContainer>
+          <RechartsLineChart
+            width={300}
+            height={100}
+            data={chartData}
+            syncId="dx-dora"
           >
-            No data
-          </Box>
-        ) : (
-          <ResponsiveContainer>
-            <RechartsLineChart
-              width={300}
-              height={100}
-              data={chartData}
-              syncId="dx-dora"
-            >
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (!active) return null;
-                  const date = payload?.[0].payload.name;
-                  return (
-                    <Card elevation={5}>
-                      <CardContent>
-                        <Typography>{date}</Typography>
-                        <Typography>
-                          {payload?.[0].value}
-                          {unit}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  );
-                }}
-              />
-              <Line
-                dot
-                type="monotone"
-                dataKey="value"
-                stroke="#6366f1"
-                strokeWidth={2}
-              />
-            </RechartsLineChart>
-          </ResponsiveContainer>
-        )}
+            <Tooltip
+              content={({ active, payload }) => {
+                if (!active) return null;
+                const date = payload?.[0].payload.name;
+                return (
+                  <Card elevation={5}>
+                    <CardContent>
+                      <Typography>{date}</Typography>
+                      <Typography>
+                        {payload?.[0].value}
+                        {unit}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                );
+              }}
+            />
+            <Line
+              dot
+              type="monotone"
+              dataKey="value"
+              stroke="#6366f1"
+              strokeWidth={2}
+            />
+          </RechartsLineChart>
+        </ResponsiveContainer>
       </Box>
 
-      {total === 0 ? null : (
-        <Box display="flex" justifyContent="space-between">
-          <Typography variant="subtitle2">{firstDate}</Typography>
-          <Typography variant="subtitle2">{lastDate}</Typography>
-        </Box>
-      )}
+      <Box display="flex" justifyContent="space-between">
+        <Typography variant="subtitle2">{firstDate}</Typography>
+        <Typography variant="subtitle2">{lastDate}</Typography>
+      </Box>
     </>
   );
 }
