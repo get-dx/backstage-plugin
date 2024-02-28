@@ -40,16 +40,18 @@ export function EntityTopContributorsTable() {
     value: response,
     loading,
     error,
-  } = useAsync(async () => {
+  } = useAsync(() => {
     const entityRef = stringifyEntityRef(entity);
-    return await dxApi.topContributors(entityRef);
+    return dxApi.topContributors(entityRef);
   }, [dxApi, entity]);
 
-  if (error || !response?.data) {
-    return <ResponseErrorPanel error={error || new Error("Unknown Error")} />;
+  if (error) {
+    return <ResponseErrorPanel error={error} />;
   }
 
-  const tableData = response.data.map((x) => ({
+  const data = response?.data ?? [];
+
+  const tableData = data.map((x) => ({
     ...x,
     date: DateTime.fromISO(x.date).toJSDate(),
   }));

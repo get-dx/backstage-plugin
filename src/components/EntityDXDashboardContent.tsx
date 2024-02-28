@@ -7,27 +7,29 @@ import { EntityChangeFailureRateCard } from "../components/EntityChangeFailureRa
 import { EntityLeadTimeCard } from "../components/EntityLeadTimeCard";
 import { EntityTopContributorsTable } from "../components/EntityTopContributorsTable";
 
-export const EntityDXDashboardContent = () => (
-  <>
-    <Box paddingBottom="48px">
-      <ContentHeader
-        title="DORA"
-        description="Consolidated view of lead time, deployment frequency, and change failure rate."
-      >
-        <SupportButton>Dashboard for DX Dora Metrics</SupportButton>
-      </ContentHeader>
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6} xs={12}>
-          <EntityDeploymentFrequencyCard />
+export function EntityDXDashboardContent() {
+  return (
+    <>
+      <Box paddingBottom="48px">
+        <ContentHeader
+          title="DORA"
+          description="Consolidated view of lead time, deployment frequency, and change failure rate."
+        >
+          <SupportButton>Dashboard for DX Dora Metrics</SupportButton>
+        </ContentHeader>
+        <Grid container spacing={3} alignItems="stretch">
+          <Grid item md={6} xs={12}>
+            <EntityDeploymentFrequencyCard />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <EntityChangeFailureRateCard />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <EntityLeadTimeCard />
+          </Grid>
         </Grid>
-        <Grid item md={6} xs={12}>
-          <EntityChangeFailureRateCard />
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <EntityLeadTimeCard />
-        </Grid>
-      </Grid>
-    </Box>
-    <EntityTopContributorsTable />
-  </>
-);
+      </Box>
+      <EntityTopContributorsTable />
+    </>
+  );
+}

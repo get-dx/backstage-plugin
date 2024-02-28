@@ -29,26 +29,26 @@ export class DXApiClient implements DXApi {
     this.discoveryApi = discoveryApi;
   }
 
-  async changeFailureRate(entityRef: string) {
-    return await this.fetch<ChartResponse>(
+  changeFailureRate(entityRef: string) {
+    return this.fetch<ChartResponse>(
       `/api/backstage.changeFailureRate?entityRef=${entityRef}`,
     );
   }
 
-  async deploymentFrequency(entityRef: string) {
-    return await this.fetch<ChartResponse>(
+  deploymentFrequency(entityRef: string) {
+    return this.fetch<ChartResponse>(
       `/api/backstage.deploymentFrequency?entityRef=${entityRef}`,
     );
   }
 
-  async leadTime(entityRef: string) {
-    return await this.fetch<ChartResponse>(
+  leadTime(entityRef: string) {
+    return this.fetch<ChartResponse>(
       `/api/backstage.leadTime?entityRef=${entityRef}`,
     );
   }
 
-  async topContributors(entityRef: string) {
-    return await this.fetch<TopContributorsResponse>(
+  topContributors(entityRef: string) {
+    return this.fetch<TopContributorsResponse>(
       `/api/backstage.topContributors?entityRef=${entityRef}`,
     );
   }
