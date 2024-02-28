@@ -12,7 +12,7 @@ import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { dxApiRef } from "../api";
 import { LineChart } from "./LineChart";
 
-export const EntityChangeFailureRateCard = () => {
+export function EntityChangeFailureRateCard() {
   const dxApi = useApi(dxApiRef);
 
   const { entity } = useEntity();
@@ -21,15 +21,17 @@ export const EntityChangeFailureRateCard = () => {
     value: response,
     loading,
     error,
-  } = useAsync(async () => {
+  } = useAsync(() => {
     const entityRef = stringifyEntityRef(entity);
-    return await dxApi.changeFailureRate(entityRef);
+    return dxApi.changeFailureRate(entityRef);
   }, [dxApi, entity]);
 
   if (loading) {
     return <Progress />;
-  } else if (error || !response?.data) {
-    return <ResponseErrorPanel error={error || new Error("Unknown Error")} />;
+  }
+
+  if (error) {
+    return <ResponseErrorPanel error={error} />;
   }
 
   return (
@@ -56,11 +58,13 @@ export const EntityChangeFailureRateCard = () => {
         title: "View in DX",
       }}
     >
-      <LineChart
-        data={response.data}
-        unit={response.unit}
-        total={response.total}
-      />
+      {response?.data ? (
+        <LineChart
+          data={response.data}
+          unit={response.unit}
+          total={response.total}
+        />
+      ) : null}
     </InfoCard>
   );
-};
+}

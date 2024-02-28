@@ -12,7 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { dxApiRef } from "../api";
 import { LineChart } from "./LineChart";
 
-export const EntityLeadTimeCard = () => {
+export function EntityLeadTimeCard() {
   const dxApi = useApi(dxApiRef);
 
   const { entity } = useEntity();
@@ -21,15 +21,17 @@ export const EntityLeadTimeCard = () => {
     value: response,
     loading,
     error,
-  } = useAsync(async () => {
+  } = useAsync(() => {
     const entityRef = stringifyEntityRef(entity);
-    return await dxApi.leadTime(entityRef);
+    return dxApi.leadTime(entityRef);
   }, [dxApi, entity]);
 
   if (loading) {
     return <Progress />;
-  } else if (error || !response?.data) {
-    return <ResponseErrorPanel error={error || new Error("Unknown Error")} />;
+  }
+
+  if (error) {
+    return <ResponseErrorPanel error={error} />;
   }
 
   return (
@@ -55,11 +57,13 @@ export const EntityLeadTimeCard = () => {
         title: "View in DX",
       }}
     >
-      <LineChart
-        data={response.data}
-        unit={response.unit}
-        total={response.total}
-      />
+      {response?.data ? (
+        <LineChart
+          data={response.data}
+          unit={response.unit}
+          total={response.total}
+        />
+      ) : null}
     </InfoCard>
   );
-};
+}
