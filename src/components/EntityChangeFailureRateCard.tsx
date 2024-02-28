@@ -21,9 +21,9 @@ export function EntityChangeFailureRateCard() {
     value: response,
     loading,
     error,
-  } = useAsync(async () => {
+  } = useAsync(() => {
     const entityRef = stringifyEntityRef(entity);
-    return await dxApi.changeFailureRate(entityRef);
+    return dxApi.changeFailureRate(entityRef);
   }, [dxApi, entity]);
 
   if (loading) {

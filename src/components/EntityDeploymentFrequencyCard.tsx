@@ -21,9 +21,9 @@ export function EntityDeploymentFrequencyCard() {
     value: response,
     loading,
     error,
-  } = useAsync(async () => {
+  } = useAsync(() => {
     const entityRef = stringifyEntityRef(entity);
-    return await dxApi.deploymentFrequency(entityRef);
+    return dxApi.deploymentFrequency(entityRef);
   }, [dxApi, entity]);
 
   if (loading) {

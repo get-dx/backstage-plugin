@@ -21,9 +21,9 @@ export function EntityLeadTimeCard() {
     value: response,
     loading,
     error,
-  } = useAsync(async () => {
+  } = useAsync(() => {
     const entityRef = stringifyEntityRef(entity);
-    return await dxApi.leadTime(entityRef);
+    return dxApi.leadTime(entityRef);
   }, [dxApi, entity]);
 
   if (loading) {
