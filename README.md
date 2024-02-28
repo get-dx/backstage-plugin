@@ -8,7 +8,7 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
 
 1. Ensure DX backend plugin is installed and working [@get-dx/backstage-backend-plugin](https://github.com/get-dx/backstage-backend-plugin).
 
-2. Install this plugin in your backstage backend —
+2. Install this plugin in your backstage frontend —
 
 ```bash
 yarn --cwd packages/app add @get-dx/backstage-plugin
@@ -22,9 +22,11 @@ yarn --cwd packages/app add @get-dx/backstage-plugin
 import { EntityDXDashboardContent } from '@get-dx/backstage-plugin';
 
 const serviceEntityPage = (
+  <EntityLayout>
     <EntityLayout.Route path="/dx" title="DX">
       <EntityDXDashboardContent />
     </EntityLayout.Route>
+  </EntityLayout>
 )
 ```
 
