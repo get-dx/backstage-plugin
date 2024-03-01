@@ -41,34 +41,49 @@ export class DXApiClient implements DXApi {
     this.configApi = configApi;
   }
 
-  async changeFailureRate(entityRef: string) {
-    return this.fetch<ChartResponse>(
-      `/api/backstage.changeFailureRate?entityRef=${entityRef}&appId=${this.appId()}`,
-    );
+  changeFailureRate(entityRef: string) {
+    return this.get<ChartResponse>("/api/backstage.changeFailureRate", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
-  async deploymentFrequency(entityRef: string) {
-    return this.fetch<ChartResponse>(
-      `/api/backstage.deploymentFrequency?entityRef=${entityRef}&appId=${this.appId()}`,
-    );
+  deploymentFrequency(entityRef: string) {
+    return this.get<ChartResponse>("/api/backstage.deploymentFrequency", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
-  async leadTime(entityRef: string) {
-    return this.fetch<ChartResponse>(
-      `/api/backstage.leadTime?entityRef=${entityRef}&appId=${this.appId()}`,
-    );
+  leadTime(entityRef: string) {
+    return this.get<ChartResponse>("/api/backstage.leadTime", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
   topContributors(entityRef: string) {
-    return this.fetch<TopContributorsResponse>(
-      `/api/backstage.topContributors?entityRef=${entityRef}&appId=${this.appId()}`,
-    );
+    return this.get<TopContributorsResponse>("/api/backstage.topContributors", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
-  private async fetch<T = any>(path: string, init?: RequestInit): Promise<T> {
-    const proxyUri = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
+  private async get<T = any>(
+    path: string,
+    params: Record<string, string | null | undefined>,
+  ): Promise<T> {
+    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
 
-    const resp = await fetch(`${proxyUri}${path}`, init);
+    const url = new URL(`${proxyHost}${path}`);
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, value);
+      }
+    }
+
+    const resp = await fetch(url, { method: "GET" });
 
     if (!resp.ok) throw await ResponseError.fromResponse(resp);
 
