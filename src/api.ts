@@ -1,4 +1,8 @@
-import { DiscoveryApi, createApiRef } from "@backstage/core-plugin-api";
+import {
+  ConfigApi,
+  DiscoveryApi,
+  createApiRef,
+} from "@backstage/core-plugin-api";
 import { ResponseError } from "@backstage/errors";
 
 export interface ChartResponse {
@@ -24,32 +28,40 @@ export const dxApiRef = createApiRef<DXApi>({
 
 export class DXApiClient implements DXApi {
   discoveryApi: DiscoveryApi;
+  configApi: ConfigApi;
 
-  constructor({ discoveryApi }: { discoveryApi: DiscoveryApi }) {
+  constructor({
+    discoveryApi,
+    configApi,
+  }: {
+    discoveryApi: DiscoveryApi;
+    configApi: ConfigApi;
+  }) {
     this.discoveryApi = discoveryApi;
+    this.configApi = configApi;
   }
 
-  changeFailureRate(entityRef: string) {
+  async changeFailureRate(entityRef: string) {
     return this.fetch<ChartResponse>(
-      `/api/backstage.changeFailureRate?entityRef=${entityRef}`,
+      `/api/backstage.changeFailureRate?entityRef=${entityRef}&appId=${this.appId()}`,
     );
   }
 
-  deploymentFrequency(entityRef: string) {
+  async deploymentFrequency(entityRef: string) {
     return this.fetch<ChartResponse>(
-      `/api/backstage.deploymentFrequency?entityRef=${entityRef}`,
+      `/api/backstage.deploymentFrequency?entityRef=${entityRef}&appId=${this.appId()}`,
     );
   }
 
-  leadTime(entityRef: string) {
+  async leadTime(entityRef: string) {
     return this.fetch<ChartResponse>(
-      `/api/backstage.leadTime?entityRef=${entityRef}`,
+      `/api/backstage.leadTime?entityRef=${entityRef}&appId=${this.appId()}`,
     );
   }
 
   topContributors(entityRef: string) {
     return this.fetch<TopContributorsResponse>(
-      `/api/backstage.topContributors?entityRef=${entityRef}`,
+      `/api/backstage.topContributors?entityRef=${entityRef}&appId=${this.appId()}`,
     );
   }
 
@@ -61,5 +73,9 @@ export class DXApiClient implements DXApi {
     if (!resp.ok) throw await ResponseError.fromResponse(resp);
 
     return await resp.json();
+  }
+
+  private appId() {
+    return this.configApi.getOptionalString("dx.appId");
   }
 }

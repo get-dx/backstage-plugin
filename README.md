@@ -46,6 +46,19 @@ the dashboards so you can place those wherever you'd like.
 | `<EntityLeadTimeCard />`            | Line chart showing Lead Time for the service.                         |
 | `<EntityTopContributorsTable />`    | Table showing top contributors by pull request count for the service. |
 
+## Configuration
+
+### Application Id
+
+This plugin respects the same `appId` configuration as the backend plugin to distinguish multiple instances of backstage within DX.
+Can be any string as long as it's unique within your DX account.
+
+```yaml
+# app-config.yaml
+dx:
+  appId: staging
+```
+
 ## Development
 
 `yarn install` and `yarn start` will start a local dev server showing the UI of this component. See `dev/index.tsx` for setup.
