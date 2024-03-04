@@ -1,4 +1,5 @@
 import {
+  configApiRef,
   createApiFactory,
   createComponentExtension,
   createPlugin,
@@ -17,8 +18,9 @@ export const dxPlugin = createPlugin({
   apis: [
     createApiFactory({
       api: dxApiRef,
-      deps: { discoveryApi: discoveryApiRef },
-      factory: ({ discoveryApi }) => new DXApiClient({ discoveryApi }),
+      deps: { discoveryApi: discoveryApiRef, configApi: configApiRef },
+      factory: ({ discoveryApi, configApi }) =>
+        new DXApiClient({ discoveryApi, configApi }),
     }),
   ],
 });

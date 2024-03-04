@@ -1,4 +1,8 @@
-import { DiscoveryApi, createApiRef } from "@backstage/core-plugin-api";
+import {
+  ConfigApi,
+  DiscoveryApi,
+  createApiRef,
+} from "@backstage/core-plugin-api";
 import { ResponseError } from "@backstage/errors";
 
 export interface ChartResponse {
@@ -24,42 +28,69 @@ export const dxApiRef = createApiRef<DXApi>({
 
 export class DXApiClient implements DXApi {
   discoveryApi: DiscoveryApi;
+  configApi: ConfigApi;
 
-  constructor({ discoveryApi }: { discoveryApi: DiscoveryApi }) {
+  constructor({
+    discoveryApi,
+    configApi,
+  }: {
+    discoveryApi: DiscoveryApi;
+    configApi: ConfigApi;
+  }) {
     this.discoveryApi = discoveryApi;
+    this.configApi = configApi;
   }
 
   changeFailureRate(entityRef: string) {
-    return this.fetch<ChartResponse>(
-      `/api/backstage.changeFailureRate?entityRef=${entityRef}`,
-    );
+    return this.get<ChartResponse>("/api/backstage.changeFailureRate", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
   deploymentFrequency(entityRef: string) {
-    return this.fetch<ChartResponse>(
-      `/api/backstage.deploymentFrequency?entityRef=${entityRef}`,
-    );
+    return this.get<ChartResponse>("/api/backstage.deploymentFrequency", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
   leadTime(entityRef: string) {
-    return this.fetch<ChartResponse>(
-      `/api/backstage.leadTime?entityRef=${entityRef}`,
-    );
+    return this.get<ChartResponse>("/api/backstage.leadTime", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
   topContributors(entityRef: string) {
-    return this.fetch<TopContributorsResponse>(
-      `/api/backstage.topContributors?entityRef=${entityRef}`,
-    );
+    return this.get<TopContributorsResponse>("/api/backstage.topContributors", {
+      entityRef,
+      appId: this.appId(),
+    });
   }
 
-  private async fetch<T = any>(path: string, init?: RequestInit): Promise<T> {
-    const proxyUri = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
+  private async get<T = any>(
+    path: string,
+    params: Record<string, string | null | undefined>,
+  ): Promise<T> {
+    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
 
-    const resp = await fetch(`${proxyUri}${path}`, init);
+    const url = new URL(`${proxyHost}${path}`);
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, value);
+      }
+    }
+
+    const resp = await fetch(url, { method: "GET" });
 
     if (!resp.ok) throw await ResponseError.fromResponse(resp);
 
     return await resp.json();
+  }
+
+  private appId() {
+    return this.configApi.getOptionalString("dx.appId");
   }
 }
