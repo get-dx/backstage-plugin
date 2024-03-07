@@ -2,6 +2,7 @@ import {
   ConfigApi,
   DiscoveryApi,
   createApiRef,
+  FetchApi,
 } from "@backstage/core-plugin-api";
 import { ResponseError } from "@backstage/errors";
 
@@ -29,16 +30,20 @@ export const dxApiRef = createApiRef<DXApi>({
 export class DXApiClient implements DXApi {
   discoveryApi: DiscoveryApi;
   configApi: ConfigApi;
+  fetchApi: FetchApi;
 
   constructor({
     discoveryApi,
     configApi,
+    fetchApi,
   }: {
     discoveryApi: DiscoveryApi;
     configApi: ConfigApi;
+    fetchApi: FetchApi;
   }) {
     this.discoveryApi = discoveryApi;
     this.configApi = configApi;
+    this.fetchApi = fetchApi;
   }
 
   changeFailureRate(entityRef: string) {
@@ -82,6 +87,8 @@ export class DXApiClient implements DXApi {
         url.searchParams.append(key, value);
       }
     }
+
+    const { fetch } = this.fetchApi;
 
     const resp = await fetch(url, { method: "GET" });
 
