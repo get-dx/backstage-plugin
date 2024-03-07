@@ -5,6 +5,7 @@ import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
+  fetchApiRef,
 } from "@backstage/core-plugin-api";
 
 import { rootRouteRef } from "./routes";
@@ -18,9 +19,13 @@ export const dxPlugin = createPlugin({
   apis: [
     createApiFactory({
       api: dxApiRef,
-      deps: { discoveryApi: discoveryApiRef, configApi: configApiRef },
-      factory: ({ discoveryApi, configApi }) =>
-        new DXApiClient({ discoveryApi, configApi }),
+      deps: {
+        discoveryApi: discoveryApiRef,
+        configApi: configApiRef,
+        fetchApi: fetchApiRef,
+      },
+      factory: ({ discoveryApi, configApi, fetchApi }) =>
+        new DXApiClient({ discoveryApi, configApi, fetchApi }),
     }),
   ],
 });
