@@ -4,7 +4,7 @@
 
 DX Backstage frontend plugin to display DX data in your Backstage app.
 
-<img width="1565" alt="Screenshot 2024-03-05 at 10 11 13 AM" src="https://github.com/get-dx/backstage-plugin/assets/15827892/22a5e743-4602-4af5-8750-b69bf34cb7ad">
+<img width="1885" alt="backstage-demo" src="https://github.com/get-dx/backstage-plugin/assets/15827892/0115de07-70c5-4d4a-8ae5-0fdd1928e4b3">
 
 ## Setup
 
