@@ -4,6 +4,7 @@ export {
   EntityDXDashboardContent,
   EntityDeploymentFrequencyCard,
   EntityLeadTimeCard,
+  EntityTimeToRecoveryCard,
   EntityTopContributorsTable,
   dxPlugin,
 } from "./plugin";
