@@ -88,6 +88,18 @@ export const EntityLeadTimeCard = dxPlugin.provide(
   }),
 );
 
+export const EntityTimeToRecoveryCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityTimeToRecoveryCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityTimeToRecoveryCard").then(
+          (m) => m.EntityTimeToRecoveryCard,
+        ),
+    },
+  }),
+);
+
 export const EntityTopContributorsTable = dxPlugin.provide(
   createComponentExtension({
     name: "EntityTopContributorsTable",

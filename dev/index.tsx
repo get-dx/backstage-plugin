@@ -116,6 +116,40 @@ const worker = setupWorker(
     }),
   ),
 
+  http.get(`${host}/api/proxy/dx/api/backstage.timeToRecovery`, () =>
+    HttpResponse.json({
+      data: [
+        {
+          date: "2024-01-22T00:00:00.000+00:00",
+          value: 12.5,
+          label: "Jan 22 - Jan 28",
+        },
+        {
+          date: "2024-01-29T00:00:00.000+00:00",
+          value: 56.2,
+          label: "Jan 29 - Feb 04",
+        },
+        {
+          date: "2024-02-05T00:00:00.000+00:00",
+          value: 8.4,
+          label: "Feb 05 - Feb 11",
+        },
+        {
+          date: "2024-02-12T00:00:00.000+00:00",
+          value: 25.5,
+          label: "Feb 12 - Feb 18",
+        },
+        {
+          date: "2024-02-19T00:00:00.000+00:00",
+          value: 32.3,
+          label: "Feb 19 - Feb 25",
+        },
+      ],
+      total: 26.98,
+      unit: " mins",
+    }),
+  ),
+
   http.get(`${host}/api/proxy/dx/api/backstage.leadTime`, () =>
     HttpResponse.json({
       data: [

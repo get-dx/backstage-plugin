@@ -20,6 +20,7 @@ export interface DXApi {
   changeFailureRate(entityRef: string): Promise<ChartResponse>;
   deploymentFrequency(entityRef: string): Promise<ChartResponse>;
   leadTime(entityRef: string): Promise<ChartResponse>;
+  timeToRecovery(entityRef: string): Promise<ChartResponse>;
   topContributors(entityRef: string): Promise<TopContributorsResponse>;
 }
 
@@ -62,6 +63,13 @@ export class DXApiClient implements DXApi {
 
   leadTime(entityRef: string) {
     return this.get<ChartResponse>("/api/backstage.leadTime", {
+      entityRef,
+      appId: this.appId(),
+    });
+  }
+
+  timeToRecovery(entityRef: string) {
+    return this.get<ChartResponse>("/api/backstage.timeToRecovery", {
       entityRef,
       appId: this.appId(),
     });

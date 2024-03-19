@@ -4,6 +4,7 @@ import { ContentHeader, SupportButton } from "@backstage/core-components";
 import { EntityDeploymentFrequencyCard } from "../components/EntityDeploymentFrequencyCard";
 import { EntityChangeFailureRateCard } from "../components/EntityChangeFailureRateCard";
 import { EntityLeadTimeCard } from "../components/EntityLeadTimeCard";
+import { EntityTimeToRecoveryCard } from "../components/EntityTimeToRecoveryCard";
 
 export function EntityDORAMetricsContent() {
   return (
@@ -20,6 +21,9 @@ export function EntityDORAMetricsContent() {
         </Grid>
         <Grid item md={6} xs={12}>
           <EntityChangeFailureRateCard />
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <EntityTimeToRecoveryCard />
         </Grid>
         <Grid item md={6} xs={12}>
           <EntityLeadTimeCard />
