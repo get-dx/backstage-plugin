@@ -1,7 +1,5 @@
 # DX Backstage Frontend Plugin
 
-⚠️ BETA - This plugin is in a closed beta right now. Functionality and API of this plugin is certain to change. Please reach out to DX if you are interested! developers@getdx.com
-
 DX Backstage frontend plugin to display DX data in your Backstage app.
 
 <img width="1885" alt="backstage-demo" src="https://github.com/get-dx/backstage-plugin/assets/15827892/0115de07-70c5-4d4a-8ae5-0fdd1928e4b3">
