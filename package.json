@@ -1,6 +1,6 @@
 {
   "name": "@get-dx/backstage-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Backstage plugin for DX! https://getdx.com",
   "main": "dist/index.esm.js",
   "types": "dist/index.d.ts",

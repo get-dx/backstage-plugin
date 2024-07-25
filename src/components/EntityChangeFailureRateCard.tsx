@@ -16,15 +16,15 @@ export function EntityChangeFailureRateCard() {
   const dxApi = useApi(dxApiRef);
 
   const { entity } = useEntity();
+  const entityRef = stringifyEntityRef(entity);
 
   const {
     value: response,
     loading,
     error,
   } = useAsync(() => {
-    const entityRef = stringifyEntityRef(entity);
     return dxApi.changeFailureRate(entityRef);
-  }, [dxApi, entity]);
+  }, [dxApi, entityRef]);
 
   if (loading) {
     return <Progress />;
@@ -54,7 +54,7 @@ export function EntityChangeFailureRateCard() {
         </Box>
       }
       deepLink={{
-        link: "https://app.getdx.com/datacloud/reports/dora",
+        link: `https://app.getdx.com/datacloud/teams/backstage_dora_deep_link?entityRef=${entityRef}`,
         title: "View in DX",
       }}
     >
