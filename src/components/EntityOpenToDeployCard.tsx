@@ -12,7 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { dxApiRef } from "../api";
 import { LineChart } from "./LineChart";
 
-export function EntityLeadTimeCard() {
+export function EntityOpenToDeployCard() {
   const dxApi = useApi(dxApiRef);
 
   const { entity } = useEntity();
@@ -23,7 +23,7 @@ export function EntityLeadTimeCard() {
     loading,
     error,
   } = useAsync(() => {
-    return dxApi.leadTime(entityRef);
+    return dxApi.openToDeploy(entityRef);
   }, [dxApi, entityRef]);
 
   if (loading) {
@@ -38,12 +38,12 @@ export function EntityLeadTimeCard() {
     <InfoCard
       title={
         <Box display="flex" alignItems="center" gridGap="8px">
-          Lead time
+          Open to Deploy
           <Tooltip
             title={
               <Typography variant="body2">
                 This is the time between a pull request being opened and it
-                being deployed. The overall value shown is the mean.
+                being deployed. The overall value shown is the median.
               </Typography>
             }
             placement="top"

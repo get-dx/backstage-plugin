@@ -150,7 +150,7 @@ const worker = setupWorker(
     }),
   ),
 
-  http.get(`${host}/api/proxy/dx/api/backstage.leadTime`, () =>
+  http.get(`${host}/api/proxy/dx/api/backstage.openToDeploy`, () =>
     HttpResponse.json({
       data: [
         {

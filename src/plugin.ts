@@ -76,13 +76,25 @@ export const EntityDeploymentFrequencyCard = dxPlugin.provide(
   }),
 );
 
+export const EntityOpenToDeployCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityOpenToDeployCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityOpenToDeployCard").then(
+          (m) => m.EntityOpenToDeployCard,
+        ),
+    },
+  }),
+);
+
 export const EntityLeadTimeCard = dxPlugin.provide(
   createComponentExtension({
     name: "EntityLeadTimeCard",
     component: {
       lazy: () =>
-        import("./components/EntityLeadTimeCard").then(
-          (m) => m.EntityLeadTimeCard,
+        import("./components/EntityOpenToDeployCard").then(
+          (m) => m.EntityOpenToDeployCard,
         ),
     },
   }),

@@ -45,7 +45,7 @@ the dashboards so you can place those wherever you'd like.
 | `<EntityDORAMetricsConent />`       | Dashboard with all the DORA metric charts.                            |
 | `<EntityChangeFailureRateCard />`   | Line chart showing Change Failure Rate for the service.               |
 | `<EntityDeploymentFrequencyCard />` | Line chart showing Deployment Frequency for the service.              |
-| `<EntityLeadTimeCard />`            | Line chart showing Lead Time for the service.                         |
+| `<EntityOpenToDeployCard />`        | Line chart showing Open to Deploy time for the service.               |
 | `<EntityTimeToRecoveryCard />`      | Line chart showing Time to Recovery for the service.                  |
 | `<EntityTopContributorsTable />`    | Table showing top contributors by pull request count for the service. |
 
