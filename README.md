@@ -41,8 +41,8 @@ the dashboards so you can place those wherever you'd like.
 
 | Component                           | Description                                                           |
 | ----------------------------------- | --------------------------------------------------------------------- |
-| `<EntityDXDashboardConent />`       | Dashboard with all available DX Charts.                               |
-| `<EntityDORAMetricsConent />`       | Dashboard with all the DORA metric charts.                            |
+| `<EntityDXDashboardContent />`      | Dashboard with all available DX Charts.                               |
+| `<EntityDORAMetricsContent />`      | Dashboard with all the DORA metric charts.                            |
 | `<EntityChangeFailureRateCard />`   | Line chart showing Change Failure Rate for the service.               |
 | `<EntityDeploymentFrequencyCard />` | Line chart showing Deployment Frequency for the service.              |
 | `<EntityOpenToDeployCard />`        | Line chart showing Open to Deploy time for the service.               |
