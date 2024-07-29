@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import { ContentHeader, SupportButton } from "@backstage/core-components";
 import { EntityChangeFailureRateCard } from "../components/EntityChangeFailureRateCard";
 import { EntityDeploymentFrequencyCard } from "../components/EntityDeploymentFrequencyCard";
-import { EntityLeadTimeCard } from "../components/EntityLeadTimeCard";
+import { EntityOpenToDeployCard } from "../components/EntityOpenToDeployCard";
 import { EntityTimeToRecoveryCard } from "./EntityTimeToRecoveryCard";
 import { EntityTopContributorsTable } from "../components/EntityTopContributorsTable";
 
@@ -14,7 +14,7 @@ export function EntityDXDashboardContent() {
       <Box paddingBottom="48px">
         <ContentHeader
           title="DORA"
-          description="Consolidated view of lead time, deployment frequency, and change failure rate."
+          description="Consolidated view of open to deploy, deployment frequency, and change failure rate."
         >
           <SupportButton
             items={[
@@ -42,7 +42,7 @@ export function EntityDXDashboardContent() {
             <EntityTimeToRecoveryCard />
           </Grid>
           <Grid item md={6} xs={12}>
-            <EntityLeadTimeCard />
+            <EntityOpenToDeployCard />
           </Grid>
         </Grid>
       </Box>

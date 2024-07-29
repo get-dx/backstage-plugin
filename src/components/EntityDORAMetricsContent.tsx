@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import { ContentHeader, SupportButton } from "@backstage/core-components";
 import { EntityDeploymentFrequencyCard } from "../components/EntityDeploymentFrequencyCard";
 import { EntityChangeFailureRateCard } from "../components/EntityChangeFailureRateCard";
-import { EntityLeadTimeCard } from "../components/EntityLeadTimeCard";
+import { EntityOpenToDeployCard } from "../components/EntityOpenToDeployCard";
 import { EntityTimeToRecoveryCard } from "../components/EntityTimeToRecoveryCard";
 
 export function EntityDORAMetricsContent() {
@@ -11,7 +11,7 @@ export function EntityDORAMetricsContent() {
     <>
       <ContentHeader
         title="DORA"
-        description="Consolidated view of lead time, deployment frequency, and change failure rate."
+        description="Consolidated view of open to deploy, deployment frequency, and change failure rate."
       >
         <SupportButton>Dashboard for DX Dora Metrics</SupportButton>
       </ContentHeader>
@@ -26,7 +26,7 @@ export function EntityDORAMetricsContent() {
           <EntityTimeToRecoveryCard />
         </Grid>
         <Grid item md={6} xs={12}>
-          <EntityLeadTimeCard />
+          <EntityOpenToDeployCard />
         </Grid>
       </Grid>
     </>

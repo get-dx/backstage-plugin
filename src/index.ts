@@ -3,6 +3,7 @@ export {
   EntityDORAMetricsContent,
   EntityDXDashboardContent,
   EntityDeploymentFrequencyCard,
+  EntityOpenToDeployCard,
   EntityLeadTimeCard,
   EntityTimeToRecoveryCard,
   EntityTopContributorsTable,
