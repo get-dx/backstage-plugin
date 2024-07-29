@@ -43,7 +43,8 @@ export function EntityOpenToDeployCard() {
             title={
               <Typography variant="body2">
                 This is the time between a pull request being opened and it
-                being deployed. The overall value shown is the median.
+                being deployed. The overall value shown is the median across the
+                selected time period.
               </Typography>
             }
             placement="top"

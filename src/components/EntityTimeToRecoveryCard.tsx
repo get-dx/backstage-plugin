@@ -43,8 +43,8 @@ export function EntityTimeToRecoveryCard() {
             title={
               <Typography variant="body2">
                 This is the time between an incident being started and it being
-                resolved. The overall value shown is the average of the data
-                points.
+                resolved. The overall value shown is the median across the
+                selected time period.
               </Typography>
             }
             placement="top"

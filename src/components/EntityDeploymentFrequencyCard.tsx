@@ -43,7 +43,8 @@ export function EntityDeploymentFrequencyCard() {
             title={
               <Typography variant="body2">
                 This is the average number of deployments per day. The overall
-                value shown is the average of the data points.
+                value shown is the average daily deployments across the selected
+                time period.
               </Typography>
             }
             placement="top"

@@ -42,9 +42,9 @@ export function EntityChangeFailureRateCard() {
           <Tooltip
             title={
               <Typography variant="body2">
-                This is the number of failed deployments divided by number of
-                total deployments. The overall value shown is the average of the
-                data points.
+                This is the number of incidents divided by total number of
+                deployments. The overall value shown is the average across the
+                selected time period.
               </Typography>
             }
             placement="top"
