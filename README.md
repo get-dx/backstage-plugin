@@ -37,7 +37,9 @@ const serviceEntityPage = (
 ## Components
 
 We export a few Dashboard pages, as well as the individual components that make up
-the dashboards so you can place those wherever you'd like.
+the dashboards so you can render them wherever you like.
+
+They can be rendered on both `Component` and `Group` entity pages.
 
 | Component                           | Description                                                           |
 | ----------------------------------- | --------------------------------------------------------------------- |
