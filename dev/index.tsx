@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 
 import { Content, Header, Page } from "@backstage/core-components";
 
-const mockEntity: Entity = {
+const mockComponentEntity: Entity = {
   apiVersion: "backstage.io/v1alpha1",
   kind: "Component",
   metadata: {
@@ -25,6 +25,44 @@ const mockEntity: Entity = {
   },
 };
 
+const mockGroupEntity: Entity = {
+  metadata: {
+    namespace: "default",
+    name: "developers",
+    description: "The DX developers",
+    links: [
+      {
+        url: "https://github.com/get-dx",
+        title: "DX Organization",
+        icon: "github",
+      },
+    ],
+    uid: "f885e5b2-6035-4559-a19e-92948354a8fc",
+    etag: "c0cc274fb413c55ffe20fbed18d11cfab4e6cdbf",
+  },
+  apiVersion: "backstage.io/v1alpha1",
+  kind: "Group",
+  spec: {
+    type: "team",
+    profile: {
+      displayName: "Developers",
+      email: "developers@getdx.com",
+      picture:
+        "https://avatars.slack-edge.com/2023-05-11/5237245309767_9d5341b5ce4f04f60afc_230.png",
+    },
+    children: [],
+    members: [
+      "abi-noda",
+      "chris-dwan",
+      "eliza-hales",
+      "isaac-noda",
+      "jake-hasler",
+      "ryan-jones",
+      "tyler-wray",
+    ],
+  },
+};
+
 createDevApp()
   .registerPlugin(dxPlugin)
   .addPage({
@@ -33,15 +71,31 @@ createDevApp()
         <Header title="DX Backstage Plugin" />
         <Content>
           <Grid container>
-            <EntityGridItem entity={mockEntity}>
+            <EntityGridItem entity={mockComponentEntity}>
               <EntityDXDashboardContent />
             </EntityGridItem>
           </Grid>
         </Content>
       </Page>
     ),
-    title: "Root Page",
-    path: "/dx",
+    title: "Component Page",
+    path: "/dx-component",
+  })
+  .addPage({
+    element: (
+      <Page themeId="home">
+        <Header title="DX Backstage Plugin" />
+        <Content>
+          <Grid container>
+            <EntityGridItem entity={mockGroupEntity}>
+              <EntityDXDashboardContent />
+            </EntityGridItem>
+          </Grid>
+        </Content>
+      </Page>
+    ),
+    title: "Group Page",
+    path: "/dx-group",
   })
   .render();
 
