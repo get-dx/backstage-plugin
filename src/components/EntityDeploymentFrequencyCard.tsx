@@ -3,7 +3,7 @@ import { InfoCard } from "@backstage/core-components";
 import { stringifyEntityRef } from "@backstage/catalog-model";
 import { useEntity } from "@backstage/plugin-catalog-react";
 import { Progress, ResponseErrorPanel } from "@backstage/core-components";
-import { useApi } from "@backstage/core-plugin-api";
+import { useApi, configApiRef } from "@backstage/core-plugin-api";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -17,6 +17,14 @@ export function EntityDeploymentFrequencyCard() {
 
   const { entity } = useEntity();
   const entityRef = stringifyEntityRef(entity);
+
+  const config = useApi(configApiRef);
+  const appId = config.getOptionalString("dx.appId");
+  const deepLinkParams = new URLSearchParams({ entityRef });
+
+  if (appId) {
+    deepLinkParams.set("appId", appId);
+  }
 
   const {
     value: response,
@@ -54,7 +62,7 @@ export function EntityDeploymentFrequencyCard() {
         </Box>
       }
       deepLink={{
-        link: `https://app.getdx.com/datacloud/teams/backstage_dora_deep_link?entityRef=${entityRef}`,
+        link: `https://app.getdx.com/datacloud/teams/backstage_dora_deep_link?${deepLinkParams}`,
         title: "View in DX",
       }}
     >

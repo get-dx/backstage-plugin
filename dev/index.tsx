@@ -12,7 +12,7 @@ const mockComponentEntity: Entity = {
   apiVersion: "backstage.io/v1alpha1",
   kind: "Component",
   metadata: {
-    name: "DX App Component",
+    name: "app",
     description: "DX Application",
     annotations: {
       "github.com/project-slug": "get-dx/app",
