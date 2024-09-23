@@ -1,6 +1,7 @@
 import {
   ConfigApi,
   DiscoveryApi,
+  IdentityApi,
   createApiRef,
   FetchApi,
 } from "@backstage/core-plugin-api";
@@ -32,19 +33,23 @@ export class DXApiClient implements DXApi {
   discoveryApi: DiscoveryApi;
   configApi: ConfigApi;
   fetchApi: FetchApi;
+  identityApi: IdentityApi;
 
   constructor({
     discoveryApi,
     configApi,
     fetchApi,
+    identityApi,
   }: {
     discoveryApi: DiscoveryApi;
     configApi: ConfigApi;
     fetchApi: FetchApi;
+    identityApi: IdentityApi;
   }) {
     this.discoveryApi = discoveryApi;
     this.configApi = configApi;
     this.fetchApi = fetchApi;
+    this.identityApi = identityApi;
   }
 
   changeFailureRate(entityRef: string) {
@@ -84,7 +89,7 @@ export class DXApiClient implements DXApi {
 
   private async get<T = any>(
     path: string,
-    params: Record<string, string | null | undefined>,
+    params: Record<string, string | null | undefined>
   ): Promise<T> {
     const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
 
@@ -97,8 +102,16 @@ export class DXApiClient implements DXApi {
     }
 
     const { fetch } = this.fetchApi;
+    const { token } = await this.identityApi.getCredentials();
 
-    const resp = await fetch(url, { method: "GET" });
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined,
+    });
 
     if (!resp.ok) throw await ResponseError.fromResponse(resp);
 
