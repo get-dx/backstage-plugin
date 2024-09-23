@@ -4,7 +4,10 @@
   "description": "Backstage plugin for DX! https://getdx.com",
   "main": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/get-dx/backstage-plugin",
+  "repository": {
+    "type": "git",
+    "directory": "."
+  },
   "author": "DX <developers@getdx.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -14,7 +17,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "dx",
+    "pluginPackages": [
+      "@get-dx/backstage-plugin"
+    ]
   },
   "sideEffects": false,
   "scripts": {
