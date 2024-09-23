@@ -6,6 +6,7 @@ import {
   createRoutableExtension,
   discoveryApiRef,
   fetchApiRef,
+  identityApiRef,
 } from "@backstage/core-plugin-api";
 
 import { rootRouteRef } from "./routes";
@@ -23,9 +24,10 @@ export const dxPlugin = createPlugin({
         discoveryApi: discoveryApiRef,
         configApi: configApiRef,
         fetchApi: fetchApiRef,
+        identityApi: identityApiRef,
       },
-      factory: ({ discoveryApi, configApi, fetchApi }) =>
-        new DXApiClient({ discoveryApi, configApi, fetchApi }),
+      factory: ({ discoveryApi, configApi, fetchApi, identityApi }) =>
+        new DXApiClient({ discoveryApi, configApi, fetchApi, identityApi }),
     }),
   ],
 });
@@ -35,10 +37,10 @@ export const EntityDXDashboardContent = dxPlugin.provide(
     name: "EntityDXDashboardContent",
     component: () =>
       import("./components/EntityDXDashboardContent").then(
-        (m) => m.EntityDXDashboardContent,
+        (m) => m.EntityDXDashboardContent
       ),
     mountPoint: rootRouteRef,
-  }),
+  })
 );
 
 export const EntityDORAMetricsContent = dxPlugin.provide(
@@ -46,10 +48,10 @@ export const EntityDORAMetricsContent = dxPlugin.provide(
     name: "EntityDORAMetricsContent",
     component: () =>
       import("./components/EntityDORAMetricsContent").then(
-        (m) => m.EntityDORAMetricsContent,
+        (m) => m.EntityDORAMetricsContent
       ),
     mountPoint: rootRouteRef,
-  }),
+  })
 );
 
 export const EntityChangeFailureRateCard = dxPlugin.provide(
@@ -58,10 +60,10 @@ export const EntityChangeFailureRateCard = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityChangeFailureRateCard").then(
-          (m) => m.EntityChangeFailureRateCard,
+          (m) => m.EntityChangeFailureRateCard
         ),
     },
-  }),
+  })
 );
 
 export const EntityDeploymentFrequencyCard = dxPlugin.provide(
@@ -70,10 +72,10 @@ export const EntityDeploymentFrequencyCard = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityDeploymentFrequencyCard").then(
-          (m) => m.EntityDeploymentFrequencyCard,
+          (m) => m.EntityDeploymentFrequencyCard
         ),
     },
-  }),
+  })
 );
 
 export const EntityOpenToDeployCard = dxPlugin.provide(
@@ -82,10 +84,10 @@ export const EntityOpenToDeployCard = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityOpenToDeployCard").then(
-          (m) => m.EntityOpenToDeployCard,
+          (m) => m.EntityOpenToDeployCard
         ),
     },
-  }),
+  })
 );
 
 export const EntityLeadTimeCard = dxPlugin.provide(
@@ -94,10 +96,10 @@ export const EntityLeadTimeCard = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityOpenToDeployCard").then(
-          (m) => m.EntityOpenToDeployCard,
+          (m) => m.EntityOpenToDeployCard
         ),
     },
-  }),
+  })
 );
 
 export const EntityTimeToRecoveryCard = dxPlugin.provide(
@@ -106,10 +108,10 @@ export const EntityTimeToRecoveryCard = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityTimeToRecoveryCard").then(
-          (m) => m.EntityTimeToRecoveryCard,
+          (m) => m.EntityTimeToRecoveryCard
         ),
     },
-  }),
+  })
 );
 
 export const EntityTopContributorsTable = dxPlugin.provide(
@@ -118,8 +120,8 @@ export const EntityTopContributorsTable = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityTopContributorsTable").then(
-          (m) => m.EntityTopContributorsTable,
+          (m) => m.EntityTopContributorsTable
         ),
     },
-  }),
+  })
 );
