@@ -8,7 +8,8 @@ import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-import { dxApiRef, Scorecard } from "../api";
+import { dxApiRef, Scorecard, ScorecardCheck } from "../api";
+import { BrandedCardTitle } from "./BrandedCardTitle";
 
 export function EntityScorecardsCard() {
   const dxApi = useApi(dxApiRef);
@@ -41,30 +42,43 @@ export function EntityScorecardsCard() {
 
   const scorecards = response.scorecards;
 
+  const flattenedChecks = scorecards.flatMap((scorecard) => scorecard.checks);
+
   return (
     <InfoCard
-      title={`Scorecards for ${entityIdentifier}`}
+      title={
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gridGap: 16,
+            marginBottom: -20,
+          }}
+        >
+          <BrandedCardTitle title="Scorecards" />
+          <Tabs
+            value={tab}
+            onChange={(_, value) => setTab(value)}
+            indicatorColor="primary"
+          >
+            <Tab value="levels" label="Levels" />
+            <Tab value="checks" label="Checks" />
+          </Tabs>
+        </Box>
+      }
       deepLink={{
         link: `https://app.getdx.com/catalog/${entityIdentifier}/scorecards`,
         title: "View scorecards",
       }}
     >
-      <Tabs
-        value={tab}
-        onChange={(_, value) => setTab(value)}
-        indicatorColor="primary"
-      >
-        <Tab value="levels" label="Levels" />
-        <Tab value="checks" label="Checks" />
-      </Tabs>
-      {tab === "levels" && <ScorecardLevels scorecards={scorecards} />}
+      {tab === "levels" && <LevelsTab scorecards={scorecards} />}
 
-      {tab === "checks" && <ScorecardChecks scorecards={scorecards} />}
+      {tab === "checks" && <ChecksTab checks={flattenedChecks} />}
     </InfoCard>
   );
 }
 
-function ScorecardLevels({ scorecards }: { scorecards: Scorecard[] }) {
+function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "minmax(0, 3fr) 1fr" }}>
       {scorecards.map((scorecard) => (
@@ -86,6 +100,15 @@ function ScorecardLevels({ scorecards }: { scorecards: Scorecard[] }) {
   );
 }
 
-function ScorecardChecks({ scorecards }: { scorecards: Scorecard[] }) {
-  return <div>Checks</div>;
+function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
+  return (
+    <Box sx={{ display: "grid", gridTemplateColumns: "minmax(0, 3fr) 1fr" }}>
+      {checks.map((check) => (
+        <React.Fragment key={check.id}>
+          <Box>{check.name}</Box>
+          <Box>{check.status}</Box>
+        </React.Fragment>
+      ))}
+    </Box>
+  );
 }
