@@ -10,6 +10,7 @@ import Tab from "@material-ui/core/Tab";
 
 import { dxApiRef, Scorecard, ScorecardCheck } from "../api";
 import { BrandedCardTitle } from "./BrandedCardTitle";
+import { CheckResultBadge } from "./CheckResultBadge";
 
 export function EntityScorecardsCard() {
   const dxApi = useApi(dxApiRef);
@@ -138,10 +139,41 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
 function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "minmax(0, 3fr) 1fr" }}>
-      {checks.map((check) => (
+      {checks.map((check, idx) => (
         <React.Fragment key={check.id}>
-          <Box>{check.name}</Box>
-          <Box>{check.status}</Box>
+          <Box
+            sx={{
+              lineHeight: "40px",
+              fontWeight: 500,
+              fontSize: 13,
+              borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
+              paddingRight: 8,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {check.name}
+          </Box>
+          <Box
+            sx={{
+              height: "40px",
+              fontSize: 13,
+              borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <CheckResultBadge
+              status={check.status}
+              isPublished
+              // outputEnabled={check.output_enabled}
+              // outputValue={check.output_value}
+              // outputType={check.output_type}
+              outputEnabled={false}
+              outputValue={null}
+              outputType={null}
+            />
+          </Box>
         </React.Fragment>
       ))}
     </Box>
