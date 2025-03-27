@@ -158,6 +158,8 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
           <Box
             sx={{
               height: "40px",
+              display: "flex",
+              alignItems: "center",
               fontSize: 13,
               borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
               whiteSpace: "nowrap",
