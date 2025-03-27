@@ -11,6 +11,7 @@ import Tab from "@material-ui/core/Tab";
 import { dxApiRef, Scorecard, ScorecardCheck } from "../api";
 import { BrandedCardTitle } from "./BrandedCardTitle";
 import { CheckResultBadge } from "./CheckResultBadge";
+import { COLORS } from "../styles";
 
 export function EntityScorecardsCard() {
   const dxApi = useApi(dxApiRef);
@@ -94,7 +95,7 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
               lineHeight: "40px",
               fontWeight: 500,
               fontSize: 13,
-              borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
               paddingRight: 8,
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -108,7 +109,7 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
               display: "flex",
               alignItems: "center",
               fontSize: 13,
-              borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
               whiteSpace: "nowrap",
               color: "#616161",
               minWidth: 0,
@@ -146,7 +147,7 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
               lineHeight: "40px",
               fontWeight: 500,
               fontSize: 13,
-              borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
               paddingRight: 8,
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -161,7 +162,7 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
               display: "flex",
               alignItems: "center",
               fontSize: 13,
-              borderTop: idx === 0 ? "none" : "1px solid #F3F4F6",
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
               whiteSpace: "nowrap",
             }}
           >
