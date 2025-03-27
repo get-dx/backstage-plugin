@@ -13,7 +13,13 @@ import { BrandedCardTitle } from "./BrandedCardTitle";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { COLORS } from "../styles";
 
-export function EntityScorecardsCard() {
+type EntityScorecardsCardProps = {
+  contentMaxHeight?: string | number;
+};
+
+export function EntityScorecardsCard({
+  contentMaxHeight = "20rem",
+}: EntityScorecardsCardProps) {
   const dxApi = useApi(dxApiRef);
 
   const { entity } = useEntity();
@@ -74,9 +80,11 @@ export function EntityScorecardsCard() {
       }}
       variant="gridItem"
     >
-      {tab === "levels" && <LevelsTab scorecards={scorecards} />}
+      <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto" }}>
+        {tab === "levels" && <LevelsTab scorecards={scorecards} />}
 
-      {tab === "checks" && <ChecksTab checks={flattenedChecks} />}
+        {tab === "checks" && <ChecksTab checks={flattenedChecks} />}
+      </Box>
     </InfoCard>
   );
 }
