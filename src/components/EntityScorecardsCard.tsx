@@ -72,6 +72,7 @@ export function EntityScorecardsCard() {
         link: `https://app.getdx.com/catalog/${entityIdentifier}/scorecards`,
         title: "View scorecards",
       }}
+      variant="gridItem"
     >
       {tab === "levels" && <LevelsTab scorecards={scorecards} />}
 
