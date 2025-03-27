@@ -170,6 +170,7 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
               height: "40px",
               display: "flex",
               alignItems: "center",
+              paddingRight: 8,
               fontSize: 13,
               borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
               whiteSpace: "nowrap",
