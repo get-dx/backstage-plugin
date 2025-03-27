@@ -168,12 +168,9 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
             <CheckResultBadge
               status={check.status}
               isPublished
-              // outputEnabled={check.output_enabled}
-              // outputValue={check.output_value}
-              // outputType={check.output_type}
-              outputEnabled={false}
-              outputValue={null}
-              outputType={null}
+              outputEnabled={check.output !== null}
+              outputValue={check.output?.value ?? null}
+              outputType={check.output?.type ?? null}
             />
           </Box>
         </React.Fragment>

@@ -34,7 +34,7 @@ export type Scorecard = {
   } | null;
   id: string;
   name: string;
-}
+};
 
 export type ScorecardCheck = {
   id: string;
@@ -43,10 +43,23 @@ export type ScorecardCheck = {
     name: string;
   };
   name: string;
-  output: unknown;
+  output: {
+    type: OutputType;
+    value: string | number | null;
+  } | null;
   passed: boolean;
-  status: 'PASS' | 'FAIL' | 'WARN';
-}
+  status: "PASS" | "FAIL" | "WARN";
+};
+
+export type OutputType =
+  | "string"
+  | "number"
+  | "percent"
+  | "currency_usd"
+  | "duration_seconds"
+  | "duration_minutes"
+  | "duration_hours"
+  | "duration_days";
 
 export interface DXApi {
   changeFailureRate(entityRef: string): Promise<ChartResponse>;

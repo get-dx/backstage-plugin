@@ -1,5 +1,6 @@
 import React from "react";
 import { COLORS } from "../styles";
+import { OutputType } from "../api";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -23,24 +24,10 @@ export type CheckResultBadgeProps = {
   outputType: OutputType | null;
 };
 
-type OutputType =
-  | "string"
-  | "number"
-  | "percent"
-  | "currency_usd"
-  | "duration_seconds"
-  | "duration_minutes"
-  | "duration_hours"
-  | "duration_days";
-
 export function CheckResultBadge(props: CheckResultBadgeProps) {
   const { status, isPublished, outputEnabled, outputValue, outputType } = props;
 
   const outputValueFormatted = formatSqlOutputValue(outputValue, outputType);
-
-  const buttonPaddingStyles = outputEnabled
-    ? { paddingLeft: 8, paddingRight: 8 }
-    : { paddingLeft: 4, paddingRight: 8 };
 
   let badgeText = "";
   let buttonStatusStyles = {};
@@ -104,8 +91,9 @@ export function CheckResultBadge(props: CheckResultBadgeProps) {
         borderWidth: 1,
         borderRadius: 3,
         fontSize: 13,
+        paddingLeft: 4,
+        paddingRight: 8,
         ...buttonStatusStyles,
-        ...buttonPaddingStyles,
       }}
     >
       <IconComponent />
