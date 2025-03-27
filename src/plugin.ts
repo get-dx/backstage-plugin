@@ -123,3 +123,15 @@ export const EntityTopContributorsTable = dxPlugin.provide(
     },
   }),
 );
+
+export const EntityScorecardsCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityScorecardsCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityScorecardsCard").then(
+          (m) => m.EntityScorecardsCard,
+        ),
+    },
+  }),
+);

@@ -16,12 +16,45 @@ export interface TopContributorsResponse {
   data: { label: string; value: number; date: string }[];
 }
 
+export interface ScorecardsResponse {
+  ok: true;
+  scorecards: Scorecard[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+}
+
+export type Scorecard = {
+  checks: ScorecardCheck[];
+  current_level: {
+    id: string;
+    name: string;
+  } | null;
+  id: string;
+  name: string;
+}
+
+export type ScorecardCheck = {
+  id: string;
+  level: {
+    id: string;
+    name: string;
+  };
+  name: string;
+  output: unknown;
+  passed: boolean;
+  status: 'PASS' | 'FAIL' | 'WARN';
+}
+
 export interface DXApi {
   changeFailureRate(entityRef: string): Promise<ChartResponse>;
   deploymentFrequency(entityRef: string): Promise<ChartResponse>;
   openToDeploy(entityRef: string): Promise<ChartResponse>;
   timeToRecovery(entityRef: string): Promise<ChartResponse>;
   topContributors(entityRef: string): Promise<TopContributorsResponse>;
+  scorecards(entityIdentifier: string): Promise<ScorecardsResponse>;
 }
 
 export const dxApiRef = createApiRef<DXApi>({
@@ -82,11 +115,43 @@ export class DXApiClient implements DXApi {
     });
   }
 
+  scorecards(entityIdentifier: string) {
+    return this.getFromApp<ScorecardsResponse>("/entities.scorecardsReport", {
+      identifier: entityIdentifier,
+      page: "1",
+      limit: "10",
+      // appId: this.appId(),
+    });
+  }
+
   private async get<T = any>(
     path: string,
     params: Record<string, string | null | undefined>,
   ): Promise<T> {
     const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
+
+    const url = new URL(`${proxyHost}${path}`);
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, value);
+      }
+    }
+
+    const { fetch } = this.fetchApi;
+
+    const resp = await fetch(url, { method: "GET" });
+
+    if (!resp.ok) throw await ResponseError.fromResponse(resp);
+
+    return await resp.json();
+  }
+
+  private async getFromApp<T = any>(
+    path: string,
+    params: Record<string, string | null | undefined>,
+  ): Promise<T> {
+    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-app`;
 
     const url = new URL(`${proxyHost}${path}`);
 
