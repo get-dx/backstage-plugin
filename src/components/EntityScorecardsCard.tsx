@@ -13,6 +13,8 @@ import { BrandedCardTitle } from "./BrandedCardTitle";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { COLORS } from "../styles";
 
+const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
+
 type EntityScorecardsCardProps = {
   contentMaxHeight?: string | number;
 };
@@ -97,55 +99,57 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
         gridTemplateColumns: "minmax(25%, 3fr) minmax(25%, 2fr)",
       }}
     >
-      {scorecards.map((scorecard, idx) => {
-        const currentLevelDefinition = scorecard.levels.find(
-          (level) => level.id === scorecard.current_level?.id
-        );
-
-        return (
-          <React.Fragment key={scorecard.id}>
+      {scorecards.map((scorecard, idx) => (
+        <React.Fragment key={scorecard.id}>
+          <Box
+            sx={{
+              lineHeight: "40px",
+              fontWeight: 500,
+              fontSize: 13,
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
+              paddingRight: 8,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {scorecard.name}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: 13,
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
+              whiteSpace: "nowrap",
+              color: "#616161",
+              minWidth: 0,
+            }}
+          >
+            <Box sx={{ mr: 1 }}>
+              <LevelIcon
+                color={
+                  scorecard.current_level?.color ??
+                  scorecard.empty_level.color ??
+                  DEFAULT_NO_LEVEL_COLOR
+                }
+              />
+            </Box>
             <Box
               sx={{
-                lineHeight: "40px",
-                fontWeight: 500,
-                fontSize: 13,
-                borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
-                paddingRight: 8,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {scorecard.name}
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                fontSize: 13,
-                borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
-                whiteSpace: "nowrap",
-                color: "#616161",
                 minWidth: 0,
+                whiteSpace: "nowrap",
               }}
             >
-              <Box sx={{ mr: 1 }}>
-                <LevelIcon color={currentLevelDefinition?.color ?? "#ff0000"} />
-              </Box>
-              <Box
-                sx={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  minWidth: 0,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {currentLevelDefinition?.name ?? "TODO: handle no level"}
-              </Box>
+              {scorecard.current_level?.name ??
+                scorecard.empty_level.label ??
+                "No level"}
             </Box>
-          </React.Fragment>
-        );
-      })}
+          </Box>
+        </React.Fragment>
+      ))}
     </Box>
   );
 }

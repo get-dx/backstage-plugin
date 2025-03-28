@@ -29,16 +29,15 @@ export interface ScorecardsResponse {
 export type Scorecard = {
   id: string;
   name: string;
-  levels: {
-    id: string;
-    name: string;
-    color: string;
-    rank: number;
-  }[];
+  empty_level: {
+    label: string | null;
+    color: string | null;
+  };
   checks: ScorecardCheck[];
   current_level: {
     id: string;
     name: string;
+    color: string;
   } | null;
 };
 
