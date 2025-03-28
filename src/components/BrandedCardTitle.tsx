@@ -1,11 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 
-export function BrandedCardTitle({
-  title,
-}: {
-  title: string | React.ReactNode;
-}) {
+export function BrandedCardTitle({ title }: { title: string }) {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
       <Box>{title}</Box>
