@@ -81,8 +81,9 @@ export function EntityScorecardsCard({
         title: "View scorecards",
       }}
       variant="gridItem"
+      noPadding
     >
-      <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto" }}>
+      <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto", padding: 16 }}>
         {tab === "levels" && <LevelsTab scorecards={scorecards} />}
 
         {tab === "checks" && <ChecksTab checks={flattenedChecks} />}
