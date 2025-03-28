@@ -130,7 +130,7 @@ export class DXApiClient implements DXApi {
   }
 
   scorecards(entityIdentifier: string) {
-    return this.getFromApp<ScorecardsResponse>("/entities.scorecardsReport", {
+    return this.getFromApp<ScorecardsResponse>("/entities.scorecards", {
       identifier: entityIdentifier,
       page: "1",
       limit: "10",
