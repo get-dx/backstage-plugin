@@ -112,7 +112,10 @@ function TaskSummary({ task }: { task: Task }) {
         }}
       >
         <Box>Requested by {task.owner.name}</Box>
-        <Box>Due {formattedDueDate}</Box>
+        <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
+          <TimeIcon />
+          <span>Due {formattedDueDate}</span>
+        </Box>
       </Box>
     </Box>
   );
@@ -173,6 +176,27 @@ function PriorityBadge({ priority }: { priority: number }) {
       />
       <span style={{ fontSize: 11 }}>P{priority}</span>
     </div>
+  );
+}
+
+function TimeIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+    >
+      <path
+        d="M6 1C3.243 1 1 3.243 1 6C1 8.757 3.243 11 6 11C8.757 11 11 8.757 11 6C11 3.243 8.757 1 6 1ZM6 10C3.7945 10 2 8.2055 2 6C2 3.7945 3.7945 2 6 2C8.2055 2 10 3.7945 10 6C10 8.2055 8.2055 10 6 10Z"
+        fill="#030712"
+      />
+      <path
+        d="M6.5 3.5H5.5V6.207L7.1465 7.8535L7.8535 7.1465L6.5 5.793V3.5Z"
+        fill="#030712"
+      />
+    </svg>
   );
 }
 
