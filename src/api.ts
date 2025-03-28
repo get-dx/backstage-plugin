@@ -167,7 +167,6 @@ export class DXApiClient implements DXApi {
       identifier: entityIdentifier,
       page: "1",
       limit: "10",
-      // appId: this.appId(),
     });
   }
 
