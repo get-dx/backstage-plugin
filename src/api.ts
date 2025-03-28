@@ -67,6 +67,33 @@ export type OutputType =
   | "duration_hours"
   | "duration_days";
 
+export type TasksResponse = {
+  ok: true;
+  tasks: Task[];
+};
+
+export type Task = {
+  check_description: string;
+  check_external_url: string | null;
+  check_id: string;
+  check_name: string;
+  check_public_id: string;
+  entity_check_issue_public_id: string | null;
+  entity_check_issue_url: string | null;
+  initiative_complete_by: string;
+  initiative_description: string;
+  initiative_name: string;
+  initiative_priority: number;
+  initiative_public_id: string;
+  owner: {
+    avatar: string;
+    email: string;
+    id: number;
+    name: string;
+    slack_ext_id?: string;
+  };
+};
+
 export interface DXApi {
   changeFailureRate(entityRef: string): Promise<ChartResponse>;
   deploymentFrequency(entityRef: string): Promise<ChartResponse>;
@@ -74,6 +101,7 @@ export interface DXApi {
   timeToRecovery(entityRef: string): Promise<ChartResponse>;
   topContributors(entityRef: string): Promise<TopContributorsResponse>;
   scorecards(entityIdentifier: string): Promise<ScorecardsResponse>;
+  tasks(entityIdentifier: string): Promise<TasksResponse>;
 }
 
 export const dxApiRef = createApiRef<DXApi>({
@@ -140,6 +168,12 @@ export class DXApiClient implements DXApi {
       page: "1",
       limit: "10",
       // appId: this.appId(),
+    });
+  }
+
+  tasks(entityIdentifier: string) {
+    return this.getFromApp<ScorecardsResponse>("/entities.tasks", {
+      identifier: entityIdentifier,
     });
   }
 
