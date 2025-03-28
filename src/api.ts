@@ -27,13 +27,19 @@ export interface ScorecardsResponse {
 }
 
 export type Scorecard = {
+  id: string;
+  name: string;
+  levels: {
+    id: string;
+    name: string;
+    color: string;
+    rank: number;
+  }[];
   checks: ScorecardCheck[];
   current_level: {
     id: string;
     name: string;
   } | null;
-  id: string;
-  name: string;
 };
 
 export type ScorecardCheck = {

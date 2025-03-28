@@ -97,51 +97,55 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
         gridTemplateColumns: "minmax(25%, 3fr) minmax(25%, 2fr)",
       }}
     >
-      {scorecards.map((scorecard, idx) => (
-        <React.Fragment key={scorecard.id}>
-          <Box
-            sx={{
-              lineHeight: "40px",
-              fontWeight: 500,
-              fontSize: 13,
-              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
-              paddingRight: 8,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {scorecard.name}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              fontSize: 13,
-              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
-              whiteSpace: "nowrap",
-              color: "#616161",
-              minWidth: 0,
-            }}
-          >
-            <Box sx={{ mr: 1 }}>
-              <LevelIcon color="#FBBF24" />
-            </Box>
+      {scorecards.map((scorecard, idx) => {
+        const currentLevelDefinition = scorecard.levels.find(
+          (level) => level.id === scorecard.current_level?.id
+        );
+
+        return (
+          <React.Fragment key={scorecard.id}>
             <Box
               sx={{
+                lineHeight: "40px",
+                fontWeight: 500,
+                fontSize: 13,
+                borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
+                paddingRight: 8,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                minWidth: 0,
                 whiteSpace: "nowrap",
               }}
             >
-              {scorecard.current_level
-                ? scorecard.current_level.name
-                : "TODO: handle no level"}
+              {scorecard.name}
             </Box>
-          </Box>
-        </React.Fragment>
-      ))}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: 13,
+                borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_100}`,
+                whiteSpace: "nowrap",
+                color: "#616161",
+                minWidth: 0,
+              }}
+            >
+              <Box sx={{ mr: 1 }}>
+                <LevelIcon color={currentLevelDefinition?.color ?? "#ff0000"} />
+              </Box>
+              <Box
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  minWidth: 0,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {currentLevelDefinition?.name ?? "TODO: handle no level"}
+              </Box>
+            </Box>
+          </React.Fragment>
+        );
+      })}
     </Box>
   );
 }
