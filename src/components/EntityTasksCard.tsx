@@ -105,7 +105,7 @@ function TaskSummary({ task }: { task: Task }) {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "start",
           gridGap: 16,
           fontSize: 13,
           color: COLORS.UI_GRAY_40,
@@ -114,7 +114,7 @@ function TaskSummary({ task }: { task: Task }) {
         <Box>Requested by {task.owner.name}</Box>
         <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
           <TimeIcon />
-          <span>Due {formattedDueDate}</span>
+          <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
         </Box>
       </Box>
     </Box>
@@ -180,23 +180,15 @@ function PriorityBadge({ priority }: { priority: number }) {
 }
 
 function TimeIcon() {
+  // The SVG for this icon was having major aliasing problems, so we're inlining it as a PNG instead
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      fill="none"
-    >
-      <path
-        d="M6 1C3.243 1 1 3.243 1 6C1 8.757 3.243 11 6 11C8.757 11 11 8.757 11 6C11 3.243 8.757 1 6 1ZM6 10C3.7945 10 2 8.2055 2 6C2 3.7945 3.7945 2 6 2C8.2055 2 10 3.7945 10 6C10 8.2055 8.2055 10 6 10Z"
-        fill="#030712"
-      />
-      <path
-        d="M6.5 3.5H5.5V6.207L7.1465 7.8535L7.8535 7.1465L6.5 5.793V3.5Z"
-        fill="#030712"
-      />
-    </svg>
+    <img
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADiSURBVHgBlZDLDsFAFIbHJWGNhC0SK8FeQkLY8U5io4+hTViIpG3UQiJpqb3iPeoNhv+0004jFv2Sycyc+38y/AtLQVb+OBeXjadzVqk1WL5YpreqbZMZPGSxXPFmq8dtx+W+/yabblhkg09ACWt1Qw4RiCQcAJsoFCWMJjOumxaXu8lVEYwYkA9mv7HzyfwrtNtpM+/xijWUq/VoHHD3njQGbkGuUKI7+1Mh/O93GnUGhnlkw0E/7oAZZdEyQjQWE4kOhCrk0I1DFGg713CtSnKtAlTBNjAvdOEt1inIUFYKPkrvLf/n5L74AAAAAElFTkSuQmCC"
+      alt="Time icon"
+      style={{
+        marginBottom: 2,
+      }}
+    />
   );
 }
 
