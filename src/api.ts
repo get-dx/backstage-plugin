@@ -5,6 +5,7 @@ import {
   FetchApi,
 } from "@backstage/core-plugin-api";
 import { ResponseError } from "@backstage/errors";
+import packageJson from "../package.json";
 
 export interface ChartResponse {
   data: { label: string; value: number; date: string }[];
@@ -181,7 +182,20 @@ export class DXApiClient implements DXApi {
 
     const { fetch } = this.fetchApi;
 
-    const resp = await fetch(url, { method: "GET" });
+    const headers: Record<string, string> = {
+      "X-Client-Type": "backstage-plugin",
+      "X-Client-Version": packageJson.version,
+    };
+
+    const appId = this.appId();
+    if (appId) {
+      headers["X-DX-App-Id"] = appId;
+    }
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers,
+    });
 
     if (!resp.ok) throw await ResponseError.fromResponse(resp);
 
