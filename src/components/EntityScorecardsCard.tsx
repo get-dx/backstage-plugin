@@ -178,7 +178,7 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
           >
             <CheckResultBadge
               status={check.status}
-              isPublished
+              isPublished={check.published}
               outputEnabled={check.output !== null}
               outputValue={check.output?.value ?? null}
               outputType={check.output?.type ?? null}

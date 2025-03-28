@@ -43,6 +43,7 @@ export type ScorecardCheck = {
     name: string;
   };
   name: string;
+  published: boolean;
   output: {
     type: OutputType;
     value: string | number | null;
