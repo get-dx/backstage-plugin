@@ -93,6 +93,18 @@ export function EntityScorecardsCard({
 }
 
 function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
+  if (scorecards.length === 0) {
+    return (
+      <Box
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        <Box>No scorecards apply to this entity.</Box>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -156,6 +168,18 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
 }
 
 function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
+  if (checks.length === 0) {
+    return (
+      <Box
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        <Box>No checks apply to this entity.</Box>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "minmax(0, 3fr) 1fr" }}>
       {checks.map((check, idx) => (
