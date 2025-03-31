@@ -5,6 +5,7 @@ import {
   FetchApi,
 } from "@backstage/core-plugin-api";
 import { ResponseError } from "@backstage/errors";
+import packageJson from "../package.json";
 
 export interface ChartResponse {
   data: { label: string; value: number; date: string }[];
@@ -16,12 +17,64 @@ export interface TopContributorsResponse {
   data: { label: string; value: number; date: string }[];
 }
 
+export interface ScorecardsResponse {
+  ok: true;
+  scorecards: Scorecard[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+}
+
+export type Scorecard = {
+  id: string;
+  name: string;
+  empty_level: {
+    label: string | null;
+    color: string | null;
+  };
+  checks: ScorecardCheck[];
+  current_level: {
+    id: string;
+    name: string;
+    color: string;
+  } | null;
+};
+
+export type ScorecardCheck = {
+  id: string;
+  level: {
+    id: string;
+    name: string;
+  };
+  name: string;
+  published: boolean;
+  output: {
+    type: OutputType;
+    value: string | number | null;
+  } | null;
+  passed: boolean;
+  status: "PASS" | "FAIL" | "WARN";
+};
+
+export type OutputType =
+  | "string"
+  | "number"
+  | "percent"
+  | "currency_usd"
+  | "duration_seconds"
+  | "duration_minutes"
+  | "duration_hours"
+  | "duration_days";
+
 export interface DXApi {
   changeFailureRate(entityRef: string): Promise<ChartResponse>;
   deploymentFrequency(entityRef: string): Promise<ChartResponse>;
   openToDeploy(entityRef: string): Promise<ChartResponse>;
   timeToRecovery(entityRef: string): Promise<ChartResponse>;
   topContributors(entityRef: string): Promise<TopContributorsResponse>;
+  scorecards(entityIdentifier: string): Promise<ScorecardsResponse>;
 }
 
 export const dxApiRef = createApiRef<DXApi>({
@@ -82,6 +135,14 @@ export class DXApiClient implements DXApi {
     });
   }
 
+  scorecards(entityIdentifier: string) {
+    return this.getFromApp<ScorecardsResponse>("/entities.scorecards", {
+      identifier: entityIdentifier,
+      page: "1",
+      limit: "10",
+    });
+  }
+
   private async get<T = any>(
     path: string,
     params: Record<string, string | null | undefined>,
@@ -99,6 +160,42 @@ export class DXApiClient implements DXApi {
     const { fetch } = this.fetchApi;
 
     const resp = await fetch(url, { method: "GET" });
+
+    if (!resp.ok) throw await ResponseError.fromResponse(resp);
+
+    return await resp.json();
+  }
+
+  private async getFromApp<T = any>(
+    path: string,
+    params: Record<string, string | null | undefined>,
+  ): Promise<T> {
+    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-app`;
+
+    const url = new URL(`${proxyHost}${path}`);
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, value);
+      }
+    }
+
+    const { fetch } = this.fetchApi;
+
+    const headers: Record<string, string> = {
+      "X-Client-Type": "backstage-plugin",
+      "X-Client-Version": packageJson.version,
+    };
+
+    const appId = this.appId();
+    if (appId) {
+      headers["X-DX-App-Id"] = appId;
+    }
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers,
+    });
 
     if (!resp.ok) throw await ResponseError.fromResponse(resp);
 
