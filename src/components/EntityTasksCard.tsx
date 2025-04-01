@@ -135,22 +135,21 @@ function PriorityBadge({ priority }: { priority: number }) {
     };
   } else if (priority === 1) {
     badgeStyles = {
+      backgroundColor: COLORS.ORANGE_50,
+      color: COLORS.ORANGE_600,
+    };
+    indicatorStyles = {
+      backgroundColor: COLORS.ORANGE_600,
+    };
+  } else if (priority === 2) {
+    badgeStyles = {
       backgroundColor: COLORS.AMBER_50,
       color: COLORS.AMBER_600,
     };
     indicatorStyles = {
       backgroundColor: COLORS.AMBER_600,
     };
-  } else if (priority === 2) {
-    badgeStyles = {
-      backgroundColor: COLORS.GREEN_50,
-      color: COLORS.GREEN_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.GREEN_600,
-    };
   }
-  // TODO: change color styles for priorities
 
   return (
     <div

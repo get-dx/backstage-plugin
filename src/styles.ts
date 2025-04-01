@@ -7,6 +7,9 @@ export const COLORS = {
   RED_400: "#F87171",
   RED_500: "#EF4444",
   RED_600: "#DC2626",
+  // Orange
+  ORANGE_50: "#fff7ed",
+  ORANGE_600: "#ea580c",
   // Amber
   AMBER_50: "#fffbeb",
   AMBER_400: "#fbbf24",
