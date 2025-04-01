@@ -43,6 +43,10 @@ export function EntityScorecardsCard({
   }
 
   if (error) {
+    if (error.message.includes("404")) {
+      error.message = `Failed to fetch Scorecards: entity \`${entityIdentifier}\` not found in DX Catalog`;
+    }
+
     return <ResponseErrorPanel error={error} />;
   }
 
@@ -93,6 +97,18 @@ export function EntityScorecardsCard({
 }
 
 function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
+  if (scorecards.length === 0) {
+    return (
+      <Box
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        <Box>No scorecards apply to this entity.</Box>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -156,6 +172,18 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
 }
 
 function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
+  if (checks.length === 0) {
+    return (
+      <Box
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        <Box>No checks apply to this entity.</Box>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "minmax(0, 3fr) 1fr" }}>
       {checks.map((check, idx) => (
