@@ -56,7 +56,7 @@ export function EntityTasksCard({
       <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto", padding: 16 }}>
         {response.tasks.map((task, idx) => (
           <Box
-            key={`${task.check_public_id}-${task.initiative_public_id}`}
+            key={`${task.check_id}-${task.initiative_id}`}
             sx={{
               paddingTop: idx === 0 ? 0 : 12,
               paddingBottom: idx === response.tasks.length - 1 ? 0 : 16,

@@ -74,18 +74,20 @@ export type TasksResponse = {
 };
 
 export type Task = {
+  check_id: string;
   check_description: string;
   check_external_url: string | null;
-  check_id: string;
   check_name: string;
-  check_public_id: string;
-  entity_check_issue_public_id: string | null;
+
+  entity_check_issue_id: string | null;
   entity_check_issue_url: string | null;
+
+  initiative_id: string;
   initiative_complete_by: string;
   initiative_description: string;
   initiative_name: string;
   initiative_priority: number;
-  initiative_public_id: string;
+
   owner: {
     avatar: string;
     email: string;
