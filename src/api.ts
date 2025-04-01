@@ -172,7 +172,7 @@ export class DXApiClient implements DXApi {
   }
 
   tasks(entityIdentifier: string) {
-    return this.getFromApp<ScorecardsResponse>("/entities.tasks", {
+    return this.getFromApp<TasksResponse>("/entities.tasks", {
       identifier: entityIdentifier,
     });
   }
