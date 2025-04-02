@@ -16,7 +16,7 @@ import utc from "dayjs/plugin/utc";
 import useAsync from "react-use/lib/useAsync";
 
 import { dxApiRef, Scorecard } from "../api";
-import { LevelIcon } from "./EntityScorecardsCard";
+import { LevelIcon } from "./LevelIcon";
 import { COLORS } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
