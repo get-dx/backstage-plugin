@@ -10,10 +10,8 @@ import { useEntity } from "@backstage/plugin-catalog-react";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
 import useAsync from "react-use/lib/useAsync";
+import { DateTime } from "luxon";
 
 import { dxApiRef, Scorecard } from "../api";
 import { LevelIcon } from "./LevelIcon";
@@ -21,9 +19,6 @@ import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 import { PoweredByDX } from "./Branding";
-
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
 
 export function EntityScorecardsPage() {
   const dxApi = useApi(dxApiRef);
@@ -287,7 +282,9 @@ function ScorecardSummary({
                           >
                             <TimeIcon />
                             <span>
-                              {dayjs.utc(check.executed_at).fromNow()}
+                              {DateTime.fromISO(check.executed_at, {
+                                zone: "utc",
+                              }).toRelative()}
                             </span>
                           </Box>
                         )}

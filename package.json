@@ -46,7 +46,6 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.61",
     "@types/luxon": "^3.4.2",
-    "dayjs": "^1.11.13",
     "luxon": "^3.4.4",
     "react-use": "^17.2.4",
     "recharts": "^2.12.1"
