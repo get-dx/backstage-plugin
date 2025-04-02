@@ -175,7 +175,7 @@ function ScorecardSummary({
             passedChecks={passedChecks}
             totalChecks={totalChecks}
           />
-          <Box sx={{ fontSize: 13, color: COLORS.GRAY_500 }}>
+          <Box sx={{ fontSize: 13, color: COLORS.GRAY_500, marginRight: 8 }}>
             {passedChecks} / {totalChecks} checks passing
           </Box>
           <Box
@@ -187,7 +187,7 @@ function ScorecardSummary({
               minWidth: 0,
             }}
           >
-            <Box sx={{ mr: 1 }}>
+            <Box sx={{ marginRight: 4 }}>
               <LevelIcon
                 color={
                   scorecard.current_level?.color ??
@@ -219,9 +219,9 @@ function ScorecardSummary({
                     height: 48,
                     display: "flex",
                     alignItems: "center",
-                    gridGap: 2,
-                    paddingLeft: 3,
-                    paddingRight: 3,
+                    gridGap: 8,
+                    paddingLeft: 12,
+                    paddingRight: 12,
                   }}
                 >
                   <Box

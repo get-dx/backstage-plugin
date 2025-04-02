@@ -143,7 +143,7 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
               minWidth: 0,
             }}
           >
-            <Box sx={{ mr: 1 }}>
+            <Box sx={{ marginRight: 8 }}>
               <LevelIcon
                 color={
                   scorecard.current_level?.color ??
