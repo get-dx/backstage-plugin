@@ -35,6 +35,12 @@ export type Scorecard = {
     color: string | null;
   };
   checks: ScorecardCheck[];
+  levels: {
+    id: string;
+    name: string;
+    color: string;
+    rank: number;
+  }[];
   current_level: {
     id: string;
     name: string;
@@ -49,6 +55,7 @@ export type ScorecardCheck = {
     name: string;
   };
   name: string;
+  description: string;
   published: boolean;
   output: {
     type: OutputType;

@@ -145,3 +145,14 @@ export const EntityTasksCard = dxPlugin.provide(
     },
   }),
 );
+
+export const EntityScorecardsPage = dxPlugin.provide(
+  createRoutableExtension({
+    name: "EntityScorecardsPage",
+    component: () =>
+      import("./components/EntityScorecardsPage").then(
+        (m) => m.EntityScorecardsPage,
+      ),
+    mountPoint: rootRouteRef,
+  }),
+);

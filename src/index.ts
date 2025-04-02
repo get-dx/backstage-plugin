@@ -9,5 +9,6 @@ export {
   EntityTopContributorsTable,
   EntityScorecardsCard,
   EntityTasksCard,
+  EntityScorecardsPage,
   dxPlugin,
 } from "./plugin";
