@@ -156,3 +156,12 @@ export const EntityScorecardsPage = dxPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const EntityTasksPage = dxPlugin.provide(
+  createRoutableExtension({
+    name: "EntityTasksPage",
+    component: () =>
+      import("./components/EntityTasksPage").then((m) => m.EntityTasksPage),
+    mountPoint: rootRouteRef,
+  }),
+);

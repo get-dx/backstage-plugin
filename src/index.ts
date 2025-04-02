@@ -10,5 +10,6 @@ export {
   EntityScorecardsCard,
   EntityTasksCard,
   EntityScorecardsPage,
+  EntityTasksPage,
   dxPlugin,
 } from "./plugin";
