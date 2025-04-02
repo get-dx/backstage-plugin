@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ContentHeader,
   Progress,
@@ -41,9 +41,9 @@ export function EntityScorecardsPage() {
     return dxApi.scorecards(entityIdentifier);
   }, [dxApi, entityIdentifier]);
 
-  // const [expandedScorecardId, setExpandedScorecardId] = useState<string | null>(
-  //   null
-  // );
+  const [expandedScorecardId, setExpandedScorecardId] = useState<string | null>(
+    null
+  );
 
   if (loading) {
     return <Progress />;
@@ -87,19 +87,14 @@ export function EntityScorecardsPage() {
         </ContentHeader>
       </Box>
       <Grid container spacing={3} alignItems="stretch">
-        {scorecards.map((scorecard, idx) => (
+        {scorecards.map((scorecard) => (
           <Grid item xs={12} key={scorecard.id}>
             <ScorecardSummary
               scorecard={scorecard}
-              isOpen={idx === 0}
+              isOpen={expandedScorecardId === scorecard.id}
               onOpenChange={(isOpen) => {
-                console.log("TODO: onOpenChange", scorecard.id, isOpen);
+                setExpandedScorecardId(isOpen ? scorecard.id : null);
               }}
-              // isOpen={expandedScorecardId === scorecard.id}
-              // onOpenChange={(isOpen) => {
-              //   console.log("onOpenChange", scorecard.id, isOpen);
-              //   setExpandedScorecardId(isOpen ? scorecard.id : null);
-              // }}
             />
           </Grid>
         ))}
@@ -122,9 +117,9 @@ function ScorecardSummary({
     (check) => check.passed === true
   ).length;
   return (
-    <Card key={scorecard.id} onClick={() => onOpenChange(!isOpen)}>
-      <Box
-        sx={{
+    <Card key={scorecard.id}>
+      <div
+        style={{
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
@@ -132,6 +127,15 @@ function ScorecardSummary({
           paddingLeft: 16,
           paddingRight: 24,
           height: 60,
+          cursor: "pointer",
+        }}
+        role="button"
+        tabIndex={0}
+        onClick={() => onOpenChange(!isOpen)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            onOpenChange(!isOpen);
+          }
         }}
       >
         <Box
@@ -191,7 +195,7 @@ function ScorecardSummary({
             </Box>
           </Box>
         </Box>
-      </Box>
+      </div>
 
       {isOpen && (
         <Box sx={{ borderTop: `1px solid ${COLORS.GRAY_200}` }}>
