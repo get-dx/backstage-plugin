@@ -20,6 +20,7 @@ import { LevelIcon } from "./EntityScorecardsCard";
 import { COLORS } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
+import { PoweredByDX } from "./Branding";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -71,6 +72,7 @@ export function EntityScorecardsPage() {
           title="Scorecards"
           description="Evaluate the overall health and production readiness of this service."
         >
+          <PoweredByDX />
           <SupportButton
             items={[
               {

@@ -9,7 +9,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
 import { dxApiRef, Scorecard, ScorecardCheck } from "../api";
-import { BrandedCardTitle } from "./BrandedCardTitle";
+import { BrandedCardTitle } from "./Branding";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { COLORS } from "../styles";
 
