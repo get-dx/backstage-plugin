@@ -19,6 +19,7 @@ import { dxApiRef, Scorecard } from "../api";
 import { LevelIcon } from "./EntityScorecardsCard";
 import { COLORS } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
+import { RadialProgressIndicator } from "./RadialProgressIndicator";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -166,7 +167,10 @@ function ScorecardSummary({
             gridGap: 8,
           }}
         >
-          <Box>(Radial progress indicator)</Box>
+          <RadialProgressIndicator
+            passedChecks={passedChecks}
+            totalChecks={totalChecks}
+          />
           <Box sx={{ fontSize: 13, color: COLORS.GRAY_500 }}>
             {passedChecks} / {totalChecks} checks passing
           </Box>
