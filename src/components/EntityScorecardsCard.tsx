@@ -11,10 +11,8 @@ import Tab from "@material-ui/core/Tab";
 import { dxApiRef, Scorecard, ScorecardCheck } from "../api";
 import { BrandedCardTitle } from "./Branding";
 import { CheckResultBadge } from "./CheckResultBadge";
-import { COLORS } from "../styles";
+import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { LevelIcon } from "./LevelIcon";
-
-const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
 
 type EntityScorecardsCardProps = {
   contentMaxHeight?: string | number;

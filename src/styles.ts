@@ -25,3 +25,5 @@ export const COLORS = {
   // Material UI gray
   UI_GRAY_40: "#616161",
 };
+
+export const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";

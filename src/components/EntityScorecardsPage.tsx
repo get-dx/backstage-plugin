@@ -17,16 +17,13 @@ import useAsync from "react-use/lib/useAsync";
 
 import { dxApiRef, Scorecard } from "../api";
 import { LevelIcon } from "./LevelIcon";
-import { COLORS } from "../styles";
+import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 import { PoweredByDX } from "./Branding";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
-
-// TODO: Move to styles.ts
-const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
 
 export function EntityScorecardsPage() {
   const dxApi = useApi(dxApiRef);
