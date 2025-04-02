@@ -135,3 +135,13 @@ export const EntityScorecardsCard = dxPlugin.provide(
     },
   }),
 );
+
+export const EntityTasksCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityTasksCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityTasksCard").then((m) => m.EntityTasksCard),
+    },
+  }),
+);

@@ -8,5 +8,6 @@ export {
   EntityTimeToRecoveryCard,
   EntityTopContributorsTable,
   EntityScorecardsCard,
+  EntityTasksCard,
   dxPlugin,
 } from "./plugin";
