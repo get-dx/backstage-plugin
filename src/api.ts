@@ -63,7 +63,7 @@ export type ScorecardCheck = {
   } | null;
   passed: boolean;
   status: "PASS" | "FAIL" | "WARN";
-  updated_at: string | null;
+  executed_at: string | null;
 };
 
 export type OutputType =

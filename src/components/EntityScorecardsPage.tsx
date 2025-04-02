@@ -275,7 +275,7 @@ function ScorecardSummary({
                         </Box>
                       </Box>
                       <Box>
-                        {check.updated_at && (
+                        {check.executed_at && (
                           <Box
                             sx={{
                               fontSize: 13,
@@ -286,7 +286,9 @@ function ScorecardSummary({
                             }}
                           >
                             <TimeIcon />
-                            <span>{dayjs.utc(check.updated_at).fromNow()}</span>
+                            <span>
+                              {dayjs.utc(check.executed_at).fromNow()}
+                            </span>
                           </Box>
                         )}
                       </Box>
