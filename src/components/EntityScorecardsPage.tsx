@@ -12,6 +12,11 @@ import { dxApiRef, Scorecard } from "../api";
 import { useApi } from "@backstage/core-plugin-api";
 import { useEntity } from "@backstage/plugin-catalog-react";
 import useAsync from "react-use/lib/useAsync";
+import { LevelIcon } from "./EntityScorecardsCard";
+import { COLORS } from "../styles";
+
+// TODO: Move to styles.ts
+const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
 
 export function EntityScorecardsPage() {
   const dxApi = useApi(dxApiRef);
@@ -105,6 +110,10 @@ function ScorecardSummary({
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 }) {
+  const totalChecks = scorecard.checks.length;
+  const passedChecks = scorecard.checks.filter(
+    (check) => check.passed === true
+  ).length;
   return (
     <Card key={scorecard.id} onClick={() => onOpenChange(!isOpen)}>
       <Box
@@ -127,7 +136,16 @@ function ScorecardSummary({
           }}
         >
           <Box>(icon)</Box>
-          <Box>{scorecard.name}</Box>
+          <Box
+            sx={{
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.25px",
+              lineHeight: "normal",
+            }}
+          >
+            {scorecard.name}
+          </Box>
         </Box>
         <Box
           sx={{
@@ -138,37 +156,114 @@ function ScorecardSummary({
           }}
         >
           <Box>(Radial progress indicator)</Box>
-          <Box>X / Y checks passing</Box>
-          <Box>Level icon and name</Box>
+          <Box sx={{ fontSize: 13, color: COLORS.GRAY_500 }}>
+            {passedChecks} / {totalChecks} checks passing
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: 13,
+              whiteSpace: "nowrap",
+              minWidth: 0,
+            }}
+          >
+            <Box sx={{ mr: 1 }}>
+              <LevelIcon
+                color={
+                  scorecard.current_level?.color ??
+                  scorecard.empty_level.color ??
+                  DEFAULT_NO_LEVEL_COLOR
+                }
+              />
+            </Box>
+            <Box sx={{ fontSize: 13 }}>
+              {scorecard.current_level?.name ??
+                scorecard.empty_level.label ??
+                "No level"}
+            </Box>
+          </Box>
         </Box>
       </Box>
 
       {isOpen && (
-        <Box sx={{ borderTop: "1px solid black" }}>
-          {scorecard.levels.map((level) => (
-            <Box key={level.id}>
-              <div className="h-12 flex items-center gap-2 px-3">
-                <div className="w-6 flex items-center justify-center">
-                  {/* <LevelIcon color={level.color} /> */}
-                  Level icon
-                </div>
-                <div className="font-header text-sm">{level.name}</div>
-              </div>
-              <div className="pl-9 pr-3 pb-2 divide-y divide-gray-200">
-                {scorecard.checks
-                  .filter((check) => check.level.id === level.id)
-                  .map((check) => (
-                    <Box key={check.id}>
-                      <Box>{check.name}</Box>
-                      <Box>
-                        {check.description ??
-                          "TODO: get descriptions from endpoint"}
+        <Box sx={{ borderTop: `1px solid ${COLORS.GRAY_200}` }}>
+          {scorecard.levels.map((level, levelIdx) => {
+            const levelChecks = scorecard.checks.filter(
+              (check) => check.level.id === level.id
+            );
+
+            return (
+              <Box key={level.id}>
+                <Box
+                  sx={{
+                    height: 48,
+                    display: "flex",
+                    alignItems: "center",
+                    gridGap: 2,
+                    paddingLeft: 3,
+                    paddingRight: 3,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <LevelIcon color={level.color} />
+                  </Box>
+                  <Box sx={{ fontSize: 14, fontWeight: 700 }}>{level.name}</Box>
+                </Box>
+                <Box
+                  sx={{
+                    paddingLeft: 36,
+                    paddingRight: 12,
+                    paddingBottom: 8,
+                    borderBottom:
+                      levelIdx < scorecard.levels.length - 1
+                        ? `1px solid ${COLORS.GRAY_200}`
+                        : "none",
+                  }}
+                >
+                  {levelChecks.map((check, checkIdx) => (
+                    <Box
+                      key={check.id}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gridGap: 8,
+                        padding: 8,
+                        borderBottom:
+                          checkIdx < levelChecks.length - 1
+                            ? `1px solid ${COLORS.GRAY_200}`
+                            : "none",
+                      }}
+                    >
+                      <Box sx={{ flex: 1 }}>
+                        <Box sx={{ fontSize: 13, fontWeight: 500 }}>
+                          {check.name}
+                        </Box>
+                        <Box
+                          sx={{
+                            fontSize: 13,
+                            fontWeight: 400,
+                            color: "#7f7f7f",
+                          }}
+                        >
+                          {check.description}
+                        </Box>
                       </Box>
+                      <Box>X hours ago</Box>
+                      <Box>Status badge</Box>
                     </Box>
                   ))}
-              </div>
-            </Box>
-          ))}
+                </Box>
+              </Box>
+            );
+          })}
         </Box>
       )}
     </Card>

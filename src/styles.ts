@@ -2,6 +2,7 @@ export const COLORS = {
   // Gray
   GRAY_100: "#F3F4F6",
   GRAY_200: "#E5E7EB",
+  GRAY_500: "#6B7280",
   // Red
   RED_50: "#FEF2F2",
   RED_400: "#F87171",
