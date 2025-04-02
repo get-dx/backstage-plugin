@@ -71,6 +71,11 @@ export type OutputType =
 export type TasksResponse = {
   ok: true;
   tasks: Task[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
 };
 
 export type Task = {
@@ -176,6 +181,8 @@ export class DXApiClient implements DXApi {
   tasks(entityIdentifier: string) {
     return this.getFromApp<TasksResponse>("/entities.tasks", {
       identifier: entityIdentifier,
+      page: "1",
+      limit: "50",
     });
   }
 
