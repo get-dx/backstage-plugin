@@ -1,23 +1,32 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 
+import { COLORS } from "../styles";
+
 export function BrandedCardTitle({ title }: { title: string }) {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
       <Box>{title}</Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gridGap: 4,
-          fontSize: 12,
-          fontWeight: 400,
-          color: "#9CA3AF",
-        }}
-      >
-        <span>Powered by</span>
-        <DXLogo />
-      </Box>
+      <PoweredByDX />
+    </Box>
+  );
+}
+
+export function PoweredByDX() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gridGap: 4,
+        fontSize: 12,
+        fontWeight: 400,
+        color: COLORS.GRAY_400,
+        lineHeight: "normal",
+      }}
+    >
+      <span>Powered by</span>
+      <DXLogo />
     </Box>
   );
 }

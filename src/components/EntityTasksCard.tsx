@@ -6,7 +6,7 @@ import { useApi } from "@backstage/core-plugin-api";
 import { Progress, ResponseErrorPanel } from "@backstage/core-components";
 import Box from "@material-ui/core/Box";
 
-import { BrandedCardTitle } from "./BrandedCardTitle";
+import { BrandedCardTitle } from "./Branding";
 import { dxApiRef, Task } from "../api";
 import { COLORS } from "../styles";
 

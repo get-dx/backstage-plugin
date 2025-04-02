@@ -2,6 +2,8 @@ export const COLORS = {
   // Gray
   GRAY_100: "#F3F4F6",
   GRAY_200: "#E5E7EB",
+  GRAY_400: "#9CA3AF",
+  GRAY_500: "#6B7280",
   // Red
   RED_50: "#FEF2F2",
   RED_400: "#F87171",
@@ -23,3 +25,5 @@ export const COLORS = {
   // Material UI gray
   UI_GRAY_40: "#616161",
 };
+
+export const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
