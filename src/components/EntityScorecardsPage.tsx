@@ -1,19 +1,27 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
 import {
   ContentHeader,
   Progress,
   ResponseErrorPanel,
   SupportButton,
 } from "@backstage/core-components";
-import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
-import { dxApiRef, Scorecard } from "../api";
 import { useApi } from "@backstage/core-plugin-api";
 import { useEntity } from "@backstage/plugin-catalog-react";
+import Box from "@material-ui/core/Box";
+import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
 import useAsync from "react-use/lib/useAsync";
+
+import { dxApiRef, Scorecard } from "../api";
 import { LevelIcon } from "./EntityScorecardsCard";
 import { COLORS } from "../styles";
+import { CheckResultBadge } from "./CheckResultBadge";
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 // TODO: Move to styles.ts
 const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
@@ -80,9 +88,8 @@ export function EntityScorecardsPage() {
       </Box>
       <Grid container spacing={3} alignItems="stretch">
         {scorecards.map((scorecard, idx) => (
-          <Grid item xs={12}>
+          <Grid item xs={12} key={scorecard.id}>
             <ScorecardSummary
-              key={scorecard.id}
               scorecard={scorecard}
               isOpen={idx === 0}
               onOpenChange={(isOpen) => {
@@ -256,8 +263,22 @@ function ScorecardSummary({
                           {check.description}
                         </Box>
                       </Box>
-                      <Box>X hours ago</Box>
-                      <Box>Status badge</Box>
+                      <Box>
+                        {check.updated_at && (
+                          <Box sx={{ fontSize: 13, color: COLORS.GRAY_400 }}>
+                            {dayjs.utc(check.updated_at).fromNow()}
+                          </Box>
+                        )}
+                      </Box>
+                      <Box>
+                        <CheckResultBadge
+                          status={check.status}
+                          isPublished={check.published}
+                          outputEnabled={!!check.output}
+                          outputValue={check.output?.value ?? null}
+                          outputType={check.output?.type ?? null}
+                        />
+                      </Box>
                     </Box>
                   ))}
                 </Box>
