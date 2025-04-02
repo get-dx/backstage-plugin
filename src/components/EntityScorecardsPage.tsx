@@ -147,7 +147,11 @@ function ScorecardSummary({
             gridGap: 8,
           }}
         >
-          <Box>(icon)</Box>
+          <Box>
+            <ChevronIcon
+              style={{ transform: isOpen ? "rotate(180deg)" : "none" }}
+            />
+          </Box>
           <Box
             sx={{
               fontSize: 18,
@@ -296,5 +300,23 @@ function ScorecardSummary({
         </Box>
       )}
     </Card>
+  );
+}
+
+function ChevronIcon({ style }: { style?: React.CSSProperties }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      style={style}
+    >
+      <path
+        d="M12.2197 6.96973L8.99998 10.1895L5.78023 6.96973L4.71973 8.03023L8.99998 12.3105L13.2802 8.03023L12.2197 6.96973Z"
+        fill="#9CA3AF"
+      />
+    </svg>
   );
 }
