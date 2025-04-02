@@ -12,7 +12,7 @@ import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import useAsync from "react-use/lib/useAsync";
 
-import { dxApiRef, Task } from "../api";
+import { dxApiRef, Task, User } from "../api";
 import { COLORS } from "../styles";
 import { PoweredByDX } from "./Branding";
 
@@ -210,7 +210,7 @@ function TaskSummary({ task }: { task: Task }) {
               color: "#7f7f7f",
               lineHeight: "normal",
               display: "-webkit-box",
-              WebkitLineClamp: 2,
+              WebkitLineClamp: 1,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -224,19 +224,49 @@ function TaskSummary({ task }: { task: Task }) {
       <Box
         sx={{
           display: "flex",
-          alignItems: "start",
+          alignItems: "center",
           gridGap: 16,
           fontSize: 13,
           color: COLORS.UI_GRAY_40,
           whiteSpace: "nowrap",
         }}
       >
-        <Box>Requested by {task.owner.name}</Box>
+        <Box sx={{ display: "flex", alignItems: "center", gridGap: 8 }}>
+          Requested by
+          <UserChip user={task.owner} />
+        </Box>
         <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
           <TimeIcon />
           <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
         </Box>
       </Box>
+    </Box>
+  );
+}
+
+function UserChip({ user }: { user: User }) {
+  return (
+    <Box
+      sx={{
+        height: 24,
+        paddingLeft: 4,
+        paddingRight: 8,
+        display: "flex",
+        alignItems: "center",
+        gridGap: 8,
+        border: `1px solid ${COLORS.GRAY_200}`,
+        borderRadius: 24,
+        fontSize: 12,
+        fontWeight: 500,
+        color: COLORS.GRAY_700,
+      }}
+    >
+      <img
+        src={user.avatar}
+        alt={`${user.name}`}
+        style={{ display: "block", height: 16, width: 16, borderRadius: 32 }}
+      />
+      <Box>{user.name}</Box>
     </Box>
   );
 }
