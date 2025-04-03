@@ -14,7 +14,9 @@ import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 import useAsync from "react-use/lib/useAsync";
+import { DateTime } from "luxon";
 
 import { dxApiRef, Task, User } from "../api";
 import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
@@ -170,10 +172,11 @@ function TaskSummary({ task }: { task: Task }) {
   const entityIdentifier = entity.metadata.name;
   const entityTasksUrl = `https://app.getdx.com/catalog/${entityIdentifier}/tasks`;
 
-  const formattedDueDate = formatDueDate(task.initiative_complete_by);
-
   const [checkDescriptionExpanded, setCheckDescriptionExpanded] =
     useState(false);
+
+  const formattedDueDate = formatDueDate(task.initiative_complete_by);
+  const dueDateStatusColor = getDueDateStatusColor(task.initiative_complete_by);
 
   return (
     <Link
@@ -278,8 +281,15 @@ function TaskSummary({ task }: { task: Task }) {
             Requested by
             <UserChip user={task.owner} />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
-            <TimeIcon />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gridGap: 5,
+              color: dueDateStatusColor,
+            }}
+          >
+            <ScheduleIcon style={{ fontSize: 12, marginBottom: 2 }} />
             <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
           </Box>
           <Box>
@@ -320,20 +330,6 @@ function UserChip({ user }: { user: User }) {
   );
 }
 
-// TODO: Extract and reuse
-function TimeIcon() {
-  // The SVG for this icon was having major aliasing problems, so we're inlining it as a PNG instead
-  return (
-    <img
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADiSURBVHgBlZDLDsFAFIbHJWGNhC0SK8FeQkLY8U5io4+hTViIpG3UQiJpqb3iPeoNhv+0004jFv2Sycyc+38y/AtLQVb+OBeXjadzVqk1WL5YpreqbZMZPGSxXPFmq8dtx+W+/yabblhkg09ACWt1Qw4RiCQcAJsoFCWMJjOumxaXu8lVEYwYkA9mv7HzyfwrtNtpM+/xijWUq/VoHHD3njQGbkGuUKI7+1Mh/O93GnUGhnlkw0E/7oAZZdEyQjQWE4kOhCrk0I1DFGg713CtSnKtAlTBNjAvdOEt1inIUFYKPkrvLf/n5L74AAAAAElFTkSuQmCC"
-      alt="Time icon"
-      style={{
-        marginBottom: 2,
-      }}
-    />
-  );
-}
-
 function formatDueDate(date: string): string {
   return new Date(date).toLocaleDateString(undefined, {
     month: "short",
@@ -341,4 +337,18 @@ function formatDueDate(date: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+function getDueDateStatusColor(dueDate: string): string {
+  const dueDateDate = DateTime.fromISO(dueDate, { zone: "utc" });
+  const today = DateTime.now();
+  const diff = dueDateDate.diff(today, ["days"]).days;
+
+  if (diff < 0) {
+    return COLORS.RED_500;
+  } else if (diff < 14) {
+    return COLORS.AMBER_500;
+  }
+
+  return COLORS.GRAY_500;
 }
