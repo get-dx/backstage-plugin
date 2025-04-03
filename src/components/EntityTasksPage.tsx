@@ -8,9 +8,10 @@ import {
 import { useApi } from "@backstage/core-plugin-api";
 import { useEntity } from "@backstage/plugin-catalog-react";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import useAsync from "react-use/lib/useAsync";
 
 import { dxApiRef, Task, User } from "../api";
@@ -212,14 +213,22 @@ function TaskSummary({ task }: { task: Task }) {
           }}
         >
           <Box>{task.check_name}</Box>
-          <Button
+          <IconButton
             onClick={() =>
               setCheckDescriptionExpanded(!checkDescriptionExpanded)
             }
             size="small"
           >
-            Expand
-          </Button>
+            <ChevronRightIcon
+              style={{
+                opacity: 0.6,
+                fontSize: 18,
+                transform: checkDescriptionExpanded
+                  ? "rotate(-90deg)"
+                  : "rotate(90deg)",
+              }}
+            />
+          </IconButton>
         </Box>
         {checkDescriptionExpanded && (
           <Box
