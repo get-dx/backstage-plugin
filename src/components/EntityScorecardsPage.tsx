@@ -4,6 +4,7 @@ import {
   Progress,
   ResponseErrorPanel,
   SupportButton,
+  BottomLink,
 } from "@backstage/core-components";
 import { useApi } from "@backstage/core-plugin-api";
 import { useEntity } from "@backstage/plugin-catalog-react";
@@ -107,6 +108,10 @@ function ScorecardSummary({
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 }) {
+  const { entity } = useEntity();
+  const entityIdentifier = entity.metadata.name;
+  const entityScorecardUrl = `https://app.getdx.com/catalog/${entityIdentifier}/scorecards?expanded=${scorecard.id}`;
+
   const totalChecks = scorecard.checks.length;
   const passedChecks = scorecard.checks.filter(
     (check) => check.passed === true
@@ -200,111 +205,116 @@ function ScorecardSummary({
       </div>
 
       {isOpen && (
-        <Box sx={{ borderTop: `1px solid ${COLORS.GRAY_200}` }}>
-          {scorecard.levels.map((level, levelIdx) => {
-            const levelChecks = scorecard.checks.filter(
-              (check) => check.level.id === level.id
-            );
+        <>
+          <Box sx={{ borderTop: `1px solid ${COLORS.GRAY_200}` }}>
+            {scorecard.levels.map((level, levelIdx) => {
+              const levelChecks = scorecard.checks.filter(
+                (check) => check.level.id === level.id
+              );
 
-            return (
-              <Box key={level.id}>
-                <Box
-                  sx={{
-                    height: 48,
-                    display: "flex",
-                    alignItems: "center",
-                    gridGap: 8,
-                    paddingLeft: 12,
-                    paddingRight: 12,
-                  }}
-                >
+              return (
+                <Box key={level.id}>
                   <Box
                     sx={{
+                      height: 48,
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
+                      gridGap: 8,
+                      paddingLeft: 12,
+                      paddingRight: 12,
                     }}
                   >
-                    <LevelIcon color={level.color} />
-                  </Box>
-                  <Box sx={{ fontSize: 14, fontWeight: 700 }}>{level.name}</Box>
-                </Box>
-                <Box
-                  sx={{
-                    paddingLeft: 36,
-                    paddingRight: 12,
-                    paddingBottom: 8,
-                    borderBottom:
-                      levelIdx < scorecard.levels.length - 1
-                        ? `1px solid ${COLORS.GRAY_200}`
-                        : "none",
-                  }}
-                >
-                  {levelChecks.map((check, checkIdx) => (
                     <Box
-                      key={check.id}
                       sx={{
                         display: "flex",
-                        flexDirection: "row",
                         alignItems: "center",
-                        gridGap: 8,
-                        padding: 8,
-                        borderBottom:
-                          checkIdx < levelChecks.length - 1
-                            ? `1px solid ${COLORS.GRAY_200}`
-                            : "none",
+                        justifyContent: "center",
                       }}
                     >
-                      <Box sx={{ flex: 1 }}>
-                        <Box sx={{ fontSize: 13, fontWeight: 500 }}>
-                          {check.name}
-                        </Box>
-                        <Box
-                          sx={{
-                            fontSize: 13,
-                            fontWeight: 400,
-                            color: "#7f7f7f",
-                          }}
-                        >
-                          {check.description}
-                        </Box>
-                      </Box>
-                      <Box>
-                        {check.executed_at && (
+                      <LevelIcon color={level.color} />
+                    </Box>
+                    <Box sx={{ fontSize: 14, fontWeight: 700 }}>
+                      {level.name}
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      paddingLeft: 36,
+                      paddingRight: 12,
+                      paddingBottom: 8,
+                      borderBottom:
+                        levelIdx < scorecard.levels.length - 1
+                          ? `1px solid ${COLORS.GRAY_200}`
+                          : "none",
+                    }}
+                  >
+                    {levelChecks.map((check, checkIdx) => (
+                      <Box
+                        key={check.id}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gridGap: 8,
+                          padding: 8,
+                          borderBottom:
+                            checkIdx < levelChecks.length - 1
+                              ? `1px solid ${COLORS.GRAY_200}`
+                              : "none",
+                        }}
+                      >
+                        <Box sx={{ flex: 1 }}>
+                          <Box sx={{ fontSize: 13, fontWeight: 500 }}>
+                            {check.name}
+                          </Box>
                           <Box
                             sx={{
                               fontSize: 13,
-                              color: COLORS.GRAY_400,
-                              display: "flex",
-                              alignItems: "center",
-                              gridGap: 4,
+                              fontWeight: 400,
+                              color: "#7f7f7f",
                             }}
                           >
-                            <TimeIcon />
-                            <span>
-                              {DateTime.fromISO(check.executed_at, {
-                                zone: "utc",
-                              }).toRelative()}
-                            </span>
+                            {check.description}
                           </Box>
-                        )}
+                        </Box>
+                        <Box>
+                          {check.executed_at && (
+                            <Box
+                              sx={{
+                                fontSize: 13,
+                                color: COLORS.GRAY_400,
+                                display: "flex",
+                                alignItems: "center",
+                                gridGap: 4,
+                              }}
+                            >
+                              <TimeIcon />
+                              <span>
+                                {DateTime.fromISO(check.executed_at, {
+                                  zone: "utc",
+                                }).toRelative()}
+                              </span>
+                            </Box>
+                          )}
+                        </Box>
+                        <Box>
+                          <CheckResultBadge
+                            status={check.status}
+                            isPublished={check.published}
+                            outputEnabled={!!check.output}
+                            outputValue={check.output?.value ?? null}
+                            outputType={check.output?.type ?? null}
+                          />
+                        </Box>
                       </Box>
-                      <Box>
-                        <CheckResultBadge
-                          status={check.status}
-                          isPublished={check.published}
-                          outputEnabled={!!check.output}
-                          outputValue={check.output?.value ?? null}
-                          outputType={check.output?.type ?? null}
-                        />
-                      </Box>
-                    </Box>
-                  ))}
+                    ))}
+                  </Box>
                 </Box>
-              </Box>
-            );
-          })}
-        </Box>
+              );
+            })}
+          </Box>
+          <BottomLink link={entityScorecardUrl} title="View scorecard in DX" />
+        </>
       )}
     </Card>
   );
