@@ -5,10 +5,12 @@ import useAsync from "react-use/lib/useAsync";
 import { useApi } from "@backstage/core-plugin-api";
 import { Progress, ResponseErrorPanel } from "@backstage/core-components";
 import Box from "@material-ui/core/Box";
+import ScheduleIcon from "@material-ui/icons/Schedule";
+import { DateTime } from "luxon";
 
 import { BrandedCardTitle } from "./Branding";
 import { dxApiRef, Task } from "../api";
-import { COLORS } from "../styles";
+import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
 
 type EntityTasksCardProps = {
   contentMaxHeight?: string | number;
@@ -73,6 +75,7 @@ export function EntityTasksCard({
 
 function TaskSummary({ task }: { task: Task }) {
   const formattedDueDate = formatDueDate(task.initiative_complete_by);
+  const dueDateStatusColor = getDueDateStatusColor(task.initiative_complete_by);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gridGap: 12 }}>
@@ -112,8 +115,15 @@ function TaskSummary({ task }: { task: Task }) {
         }}
       >
         <Box>Requested by {task.owner.name}</Box>
-        <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
-          <TimeIcon />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gridGap: 5,
+            color: dueDateStatusColor,
+          }}
+        >
+          <ScheduleIcon style={{ fontSize: 12, marginBottom: 2 }} />
           <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
         </Box>
       </Box>
@@ -122,34 +132,14 @@ function TaskSummary({ task }: { task: Task }) {
 }
 
 function PriorityBadge({ priority }: { priority: number }) {
-  let badgeStyles = {};
-  let indicatorStyles = {};
-
-  if (priority === 0) {
-    badgeStyles = {
-      backgroundColor: COLORS.RED_50,
-      color: COLORS.RED_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.RED_600,
-    };
-  } else if (priority === 1) {
-    badgeStyles = {
-      backgroundColor: COLORS.ORANGE_50,
-      color: COLORS.ORANGE_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.ORANGE_600,
-    };
-  } else if (priority === 2) {
-    badgeStyles = {
-      backgroundColor: COLORS.AMBER_50,
-      color: COLORS.AMBER_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.AMBER_600,
-    };
-  }
+  const { bg, fg } = TASK_PRIORITY_COLORS[priority];
+  const badgeStyles = {
+    backgroundColor: bg,
+    color: fg,
+  };
+  const indicatorStyles = {
+    backgroundColor: fg,
+  };
 
   return (
     <div
@@ -178,19 +168,6 @@ function PriorityBadge({ priority }: { priority: number }) {
   );
 }
 
-function TimeIcon() {
-  // The SVG for this icon was having major aliasing problems, so we're inlining it as a PNG instead
-  return (
-    <img
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADiSURBVHgBlZDLDsFAFIbHJWGNhC0SK8FeQkLY8U5io4+hTViIpG3UQiJpqb3iPeoNhv+0004jFv2Sycyc+38y/AtLQVb+OBeXjadzVqk1WL5YpreqbZMZPGSxXPFmq8dtx+W+/yabblhkg09ACWt1Qw4RiCQcAJsoFCWMJjOumxaXu8lVEYwYkA9mv7HzyfwrtNtpM+/xijWUq/VoHHD3njQGbkGuUKI7+1Mh/O93GnUGhnlkw0E/7oAZZdEyQjQWE4kOhCrk0I1DFGg713CtSnKtAlTBNjAvdOEt1inIUFYKPkrvLf/n5L74AAAAAElFTkSuQmCC"
-      alt="Time icon"
-      style={{
-        marginBottom: 2,
-      }}
-    />
-  );
-}
-
 function formatDueDate(date: string): string {
   return new Date(date).toLocaleDateString(undefined, {
     month: "short",
@@ -198,4 +175,18 @@ function formatDueDate(date: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+function getDueDateStatusColor(dueDate: string): string {
+  const dueDateDate = DateTime.fromISO(dueDate, { zone: "utc" });
+  const today = DateTime.now();
+  const diff = dueDateDate.diff(today, ["days"]).days;
+
+  if (diff < 0) {
+    return COLORS.RED_500;
+  } else if (diff < 14) {
+    return COLORS.AMBER_500;
+  }
+
+  return COLORS.GRAY_500;
 }

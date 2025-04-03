@@ -101,13 +101,15 @@ export type Task = {
   initiative_name: string;
   initiative_priority: number;
 
-  owner: {
-    avatar: string;
-    email: string;
-    id: number;
-    name: string;
-    slack_ext_id?: string;
-  };
+  owner: User;
+};
+
+export type User = {
+  avatar: string;
+  email: string;
+  id: number;
+  name: string;
+  slack_ext_id?: string;
 };
 
 export interface DXApi {
