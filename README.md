@@ -25,16 +25,20 @@ import { EntityDXDashboardContent } from '@get-dx/backstage-plugin';
 
 const serviceEntityPage = (
   <EntityLayout>
+    {/* ... */}
+
     <EntityLayout.Route path="/dx" title="DX">
       <EntityDXDashboardContent />
     </EntityLayout.Route>
+
+    {/* ... */}
   </EntityLayout>
 )
 ```
 
 > See the Components section below for other components offered.
 
-## Components
+## DX Core Components
 
 We export a few Dashboard pages, as well as the individual components that make up
 the dashboards so you can render them wherever you like.
@@ -50,6 +54,42 @@ They can be rendered on both `Component` and `Group` entity pages.
 | `<EntityOpenToDeployCard />`        | Line chart showing Open to Deploy time for the service.               |
 | `<EntityTimeToRecoveryCard />`      | Line chart showing Time to Recovery for the service.                  |
 | `<EntityTopContributorsTable />`    | Table showing top contributors by pull request count for the service. |
+
+## DX Service Cloud Components
+
+These components visualize Scorecards and Tasks for an entity.
+
+| Component                  | Description                                                               |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `<EntityScorecardsPage />` | Dashboard showing scorecard details for the service.                      |
+| `<EntityTasksPage />`      | Dashboard showing outstanding tasks for the service, grouped by priority. |
+| `<EntityScorecardsCard />` | Info card showing current scorecard levels and checks for the service.    |
+| `<EntityTasksCard />`      | Info card showing outstanding tasks for the service.                      |
+
+These components expect entities to have the same identifer in Backstage and DX. For example, if you have a Backstage entity with the `metadata.name` of `my-app`, then you must also have an entity in the DX Catalog with the identifier of `my-app` so the info cards can fetch the data successfully.
+
+Install the full-page components by defining routes in the service entity page:
+
+```ts
+// packages/app/src/components/catalog/EntityPage.tsx
+import { EntityScorecardsPage, EntityTasksPage } from '@get-dx/backstage-plugin';
+
+const serviceEntityPage = (
+  <EntityLayout>
+    {/* ... */}
+
+    <EntityLayout.Route path="/dx-scorecards" title="Scorecards">
+      <EntityScorecardsPage />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/dx-tasks" title="Tasks">
+      <EntityTasksPage />
+    </EntityLayout.Route>
+
+    {/* ... */}
+  </EntityLayout>
+)
+```
 
 ## Configuration
 
