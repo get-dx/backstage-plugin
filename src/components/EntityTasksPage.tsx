@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ContentHeader,
   Progress,
@@ -8,6 +8,7 @@ import {
 import { useApi } from "@backstage/core-plugin-api";
 import { useEntity } from "@backstage/plugin-catalog-react";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import useAsync from "react-use/lib/useAsync";
@@ -183,6 +184,9 @@ function PriorityIndicator({ priorityLevel }: { priorityLevel: number }) {
 function TaskSummary({ task }: { task: Task }) {
   const formattedDueDate = formatDueDate(task.initiative_complete_by);
 
+  const [checkDescriptionExpanded, setCheckDescriptionExpanded] =
+    useState(false);
+
   return (
     <Box
       sx={{
@@ -196,9 +200,41 @@ function TaskSummary({ task }: { task: Task }) {
       <Box
         sx={{ flex: 1, display: "flex", flexDirection: "column", gridGap: 12 }}
       >
-        <Box sx={{ fontWeight: 500, fontSize: 14, color: "#030712" }}>
-          {task.check_name}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gridGap: 4,
+            fontWeight: 500,
+            fontSize: 14,
+            color: "#030712",
+          }}
+        >
+          <Box>{task.check_name}</Box>
+          <Button
+            onClick={() =>
+              setCheckDescriptionExpanded(!checkDescriptionExpanded)
+            }
+            size="small"
+          >
+            Expand
+          </Button>
         </Box>
+        {checkDescriptionExpanded && (
+          <Box
+            sx={{
+              border: `1px solid ${COLORS.GRAY_200}`,
+              borderRadius: 6,
+              paddingTop: 4,
+              paddingBottom: 4,
+              paddingLeft: 8,
+              paddingRight: 8,
+            }}
+          >
+            {task.check_description}
+          </Box>
+        )}
         <Box>
           <Box sx={{ fontSize: 13, fontWeight: 500, lineHeight: "20px" }}>
             {task.initiative_name}
