@@ -91,6 +91,24 @@ const serviceEntityPage = (
 )
 ```
 
+### Additional setup
+
+These components rely on the DX Web API, not the Data Cloud API. Generate a token on the [Web API Keys](https://app.getdx.com/admin/webapi) page that includes the `catalog:read` scope. Then configure a second proxy configuration in your app config to communicate with the Web API:
+
+```diff
+# app-config.yaml
+proxy:
+  endpoints:
+    "/dx":
+      target: ${DX_API_HOST_URL}
+      headers:
+        Authorization: Bearer ${DX_API_TOKEN}
++    "/dx-web":
++      target: ${DX_WEB_API_HOST}
++      headers:
++        Authorization: Bearer ${DX_WEB_API_TOKEN}
+```
+
 ## Configuration
 
 ### Application Id
