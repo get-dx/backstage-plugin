@@ -284,6 +284,9 @@ function TaskSummary({ task }: { task: Task }) {
           <TimeIcon />
           <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
         </Box>
+        <Box>
+          <ChevronRightIcon style={{ color: COLORS.GRAY_300, fontSize: 24 }} />
+        </Box>
       </Box>
     </Box>
   );
