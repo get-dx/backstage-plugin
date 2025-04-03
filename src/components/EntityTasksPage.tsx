@@ -4,6 +4,7 @@ import {
   Progress,
   ResponseErrorPanel,
   SupportButton,
+  BottomLink,
 } from "@backstage/core-components";
 import { useApi } from "@backstage/core-plugin-api";
 import { useEntity } from "@backstage/plugin-catalog-react";
@@ -11,6 +12,7 @@ import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import useAsync from "react-use/lib/useAsync";
 
@@ -98,6 +100,10 @@ function PriorityTaskList({
   priorityLevel: number;
   tasks: Task[];
 }) {
+  const { entity } = useEntity();
+  const entityIdentifier = entity.metadata.name;
+  const entityTasksUrl = `https://app.getdx.com/catalog/${entityIdentifier}/tasks`;
+
   if (tasks.length === 0) {
     return null;
   }
@@ -128,25 +134,18 @@ function PriorityTaskList({
         </Box>
       </Box>
       <Box>
-        {tasks.map((task) => (
+        {tasks.map((task, idx) => (
           <Box
             key={`${task.check_id}-${task.initiative_id}`}
-            sx={{ borderBottom: `1px solid ${COLORS.GRAY_200}` }}
+            sx={{
+              borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_200}`,
+            }}
           >
             <TaskSummary task={task} />
           </Box>
         ))}
       </Box>
-      <Box
-        sx={{
-          paddingLeft: 24,
-          paddingRight: 24,
-          paddingTop: 12,
-          paddingBottom: 12,
-        }}
-      >
-        TODO: View tasks in DX
-      </Box>
+      <BottomLink link={entityTasksUrl} title="View tasks in DX" />
     </Card>
   );
 }
@@ -183,112 +182,130 @@ function PriorityIndicator({ priorityLevel }: { priorityLevel: number }) {
 }
 
 function TaskSummary({ task }: { task: Task }) {
+  const { entity } = useEntity();
+  const entityIdentifier = entity.metadata.name;
+  const entityTasksUrl = `https://app.getdx.com/catalog/${entityIdentifier}/tasks`;
+
   const formattedDueDate = formatDueDate(task.initiative_complete_by);
 
   const [checkDescriptionExpanded, setCheckDescriptionExpanded] =
     useState(false);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        gridGap: 16,
-        padding: 16,
-      }}
+    <Link
+      href={entityTasksUrl}
+      target="_blank"
+      style={{ textDecoration: "none", color: "#181818" }}
     >
-      <Box
-        sx={{ flex: 1, display: "flex", flexDirection: "column", gridGap: 12 }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gridGap: 4,
-            fontWeight: 500,
-            fontSize: 14,
-            color: "#030712",
-          }}
-        >
-          <Box>{task.check_name}</Box>
-          <IconButton
-            onClick={() =>
-              setCheckDescriptionExpanded(!checkDescriptionExpanded)
-            }
-            size="small"
-          >
-            <ChevronRightIcon
-              style={{
-                opacity: 0.6,
-                fontSize: 18,
-                transform: checkDescriptionExpanded
-                  ? "rotate(-90deg)"
-                  : "rotate(90deg)",
-              }}
-            />
-          </IconButton>
-        </Box>
-        {checkDescriptionExpanded && (
-          <Box
-            sx={{
-              border: `1px solid ${COLORS.GRAY_200}`,
-              borderRadius: 6,
-              paddingTop: 4,
-              paddingBottom: 4,
-              paddingLeft: 8,
-              paddingRight: 8,
-            }}
-          >
-            {task.check_description}
-          </Box>
-        )}
-        <Box>
-          <Box sx={{ fontSize: 13, fontWeight: 500, lineHeight: "20px" }}>
-            {task.initiative_name}
-          </Box>
-          <div
-            style={{
-              marginTop: 2,
-              fontSize: 12,
-              color: "#7f7f7f",
-              lineHeight: "normal",
-              display: "-webkit-box",
-              WebkitLineClamp: 1,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {task.initiative_description}
-          </div>
-        </Box>
-      </Box>
-
       <Box
         sx={{
           display: "flex",
+          flexDirection: "row",
           alignItems: "center",
           gridGap: 16,
-          fontSize: 13,
-          color: COLORS.UI_GRAY_40,
-          whiteSpace: "nowrap",
+          padding: 16,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gridGap: 8 }}>
-          Requested by
-          <UserChip user={task.owner} />
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gridGap: 12,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gridGap: 4,
+              fontWeight: 500,
+              fontSize: 14,
+              color: "#030712",
+            }}
+          >
+            <Box>{task.check_name}</Box>
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                setCheckDescriptionExpanded(!checkDescriptionExpanded);
+              }}
+              size="small"
+            >
+              <ChevronRightIcon
+                style={{
+                  opacity: 0.6,
+                  fontSize: 18,
+                  transform: checkDescriptionExpanded
+                    ? "rotate(-90deg)"
+                    : "rotate(90deg)",
+                }}
+              />
+            </IconButton>
+          </Box>
+          {checkDescriptionExpanded && (
+            <Box
+              sx={{
+                border: `1px solid ${COLORS.GRAY_200}`,
+                borderRadius: 6,
+                paddingTop: 4,
+                paddingBottom: 4,
+                paddingLeft: 8,
+                paddingRight: 8,
+              }}
+            >
+              {task.check_description}
+            </Box>
+          )}
+          <Box>
+            <Box sx={{ fontSize: 13, fontWeight: 500, lineHeight: "20px" }}>
+              {task.initiative_name}
+            </Box>
+            <div
+              style={{
+                marginTop: 2,
+                fontSize: 12,
+                color: "#7f7f7f",
+                lineHeight: "normal",
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {task.initiative_description}
+            </div>
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
-          <TimeIcon />
-          <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
-        </Box>
-        <Box>
-          <ChevronRightIcon style={{ color: COLORS.GRAY_300, fontSize: 24 }} />
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gridGap: 16,
+            fontSize: 13,
+            color: COLORS.UI_GRAY_40,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gridGap: 8 }}>
+            Requested by
+            <UserChip user={task.owner} />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gridGap: 5 }}>
+            <TimeIcon />
+            <span style={{ whiteSpace: "nowrap" }}>Due {formattedDueDate}</span>
+          </Box>
+          <Box>
+            <ChevronRightIcon
+              style={{ color: COLORS.GRAY_300, fontSize: 24 }}
+            />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Link>
   );
 }
 
