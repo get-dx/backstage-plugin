@@ -12,9 +12,9 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
 
 1. Install this plugin in your backstage frontend —
 
-```bash
-yarn --cwd packages/app add @get-dx/backstage-plugin
-```
+   ```bash
+   yarn --cwd packages/app add @get-dx/backstage-plugin
+   ```
 
 1. We provide an "all-in-one" DX dashboard component. Install that by adding a route to your service
    entity page —
