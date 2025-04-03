@@ -17,7 +17,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import useAsync from "react-use/lib/useAsync";
 
 import { dxApiRef, Task, User } from "../api";
-import { COLORS } from "../styles";
+import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
 import { PoweredByDX } from "./Branding";
 
 export function EntityTasksPage() {
@@ -151,23 +151,7 @@ function PriorityTaskList({
 }
 
 function PriorityIndicator({ priorityLevel }: { priorityLevel: number }) {
-  // TODO: Move to styles, use from EntityTasksCard too
-  const PRIORITY_COLORS: Record<number, { bg: string; fg: string }> = {
-    0: {
-      bg: COLORS.RED_50,
-      fg: COLORS.RED_600,
-    },
-    1: {
-      bg: COLORS.ORANGE_50,
-      fg: COLORS.ORANGE_600,
-    },
-    2: {
-      bg: COLORS.AMBER_50,
-      fg: COLORS.AMBER_600,
-    },
-  };
-
-  const indicatorColor = PRIORITY_COLORS[priorityLevel].fg;
+  const indicatorColor = TASK_PRIORITY_COLORS[priorityLevel].fg;
   return (
     <div
       style={{

@@ -8,7 +8,7 @@ import Box from "@material-ui/core/Box";
 
 import { BrandedCardTitle } from "./Branding";
 import { dxApiRef, Task } from "../api";
-import { COLORS } from "../styles";
+import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
 
 type EntityTasksCardProps = {
   contentMaxHeight?: string | number;
@@ -122,34 +122,14 @@ function TaskSummary({ task }: { task: Task }) {
 }
 
 function PriorityBadge({ priority }: { priority: number }) {
-  let badgeStyles = {};
-  let indicatorStyles = {};
-
-  if (priority === 0) {
-    badgeStyles = {
-      backgroundColor: COLORS.RED_50,
-      color: COLORS.RED_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.RED_600,
-    };
-  } else if (priority === 1) {
-    badgeStyles = {
-      backgroundColor: COLORS.ORANGE_50,
-      color: COLORS.ORANGE_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.ORANGE_600,
-    };
-  } else if (priority === 2) {
-    badgeStyles = {
-      backgroundColor: COLORS.AMBER_50,
-      color: COLORS.AMBER_600,
-    };
-    indicatorStyles = {
-      backgroundColor: COLORS.AMBER_600,
-    };
-  }
+  const { bg, fg } = TASK_PRIORITY_COLORS[priority];
+  const badgeStyles = {
+    backgroundColor: bg,
+    color: fg,
+  };
+  const indicatorStyles = {
+    backgroundColor: fg,
+  };
 
   return (
     <div

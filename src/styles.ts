@@ -29,3 +29,19 @@ export const COLORS = {
 };
 
 export const DEFAULT_NO_LEVEL_COLOR = "#CBD5E1";
+
+export const TASK_PRIORITY_COLORS: Record<number, { bg: string; fg: string }> =
+  {
+    0: {
+      bg: COLORS.RED_50,
+      fg: COLORS.RED_600,
+    },
+    1: {
+      bg: COLORS.ORANGE_50,
+      fg: COLORS.ORANGE_600,
+    },
+    2: {
+      bg: COLORS.AMBER_50,
+      fg: COLORS.AMBER_600,
+    },
+  };
