@@ -223,7 +223,7 @@ export class DXApiClient implements DXApi {
     path: string,
     params: Record<string, string | null | undefined>,
   ): Promise<T> {
-    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-web`;
+    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-web-api`;
 
     const url = new URL(`${proxyHost}${path}`);
 

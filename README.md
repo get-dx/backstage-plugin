@@ -103,7 +103,7 @@ proxy:
       target: ${DX_API_HOST_URL}
       headers:
         Authorization: Bearer ${DX_API_TOKEN}
-+    "/dx-web":
++    "/dx-web-api":
 +      target: ${DX_WEB_API_HOST}
 +      headers:
 +        Authorization: Bearer ${DX_WEB_API_TOKEN}
