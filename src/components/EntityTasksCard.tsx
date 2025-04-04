@@ -38,6 +38,10 @@ export function EntityTasksCard({
   }
 
   if (error) {
+    if (error.message.includes("404")) {
+      error.message = `Failed to fetch tasks: entity \`${entityIdentifier}\` not found in DX Catalog`;
+    }
+
     return <ResponseErrorPanel error={error} />;
   }
 
