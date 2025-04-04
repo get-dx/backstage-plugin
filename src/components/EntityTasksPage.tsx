@@ -79,6 +79,13 @@ export function EntityTasksPage() {
           />
         </ContentHeader>
       </Box>
+
+      {tasks.length === 0 && (
+        <Box sx={{ textAlign: "center", padding: 16 }}>
+          No outstanding tasks for this entity!
+        </Box>
+      )}
+
       <Grid container spacing={3} alignItems="stretch">
         {[0, 1, 2].map((priorityLevel) => (
           <Grid item xs={12} key={priorityLevel}>
