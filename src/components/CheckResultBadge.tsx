@@ -44,7 +44,7 @@ export function CheckResultBadge(props: CheckResultBadgeProps) {
         }
       : {
           border: `1px dashed ${COLORS.GREEN_400}`,
-          backgroundColor: "transparent",
+          backgroundColor: "white",
           color: COLORS.GREEN_600,
         };
   } else if (status === CHECK_RESULT_STATUSES.WARN) {
@@ -58,7 +58,7 @@ export function CheckResultBadge(props: CheckResultBadgeProps) {
         }
       : {
           border: `1px dashed ${COLORS.AMBER_400}`,
-          backgroundColor: "transparent",
+          backgroundColor: "white",
           color: COLORS.AMBER_600,
         };
   } else if (status === CHECK_RESULT_STATUSES.FAIL) {
@@ -72,7 +72,7 @@ export function CheckResultBadge(props: CheckResultBadgeProps) {
         }
       : {
           border: `1px dashed ${COLORS.RED_400}`,
-          backgroundColor: "transparent",
+          backgroundColor: "white",
           color: COLORS.RED_600,
         };
   } else {

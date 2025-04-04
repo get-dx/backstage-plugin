@@ -19,7 +19,7 @@ type EntityScorecardsCardProps = {
 };
 
 export function EntityScorecardsCard({
-  contentMaxHeight = "20rem",
+  contentMaxHeight = "30rem",
 }: EntityScorecardsCardProps) {
   const dxApi = useApi(dxApiRef);
 

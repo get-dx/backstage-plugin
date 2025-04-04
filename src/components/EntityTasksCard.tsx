@@ -17,7 +17,7 @@ type EntityTasksCardProps = {
 };
 
 export function EntityTasksCard({
-  contentMaxHeight = "20rem",
+  contentMaxHeight = "30rem",
 }: EntityTasksCardProps) {
   const dxApi = useApi(dxApiRef);
 
@@ -38,6 +38,10 @@ export function EntityTasksCard({
   }
 
   if (error) {
+    if (error.message.includes("404")) {
+      error.message = `Failed to fetch tasks: entity \`${entityIdentifier}\` not found in DX Catalog`;
+    }
+
     return <ResponseErrorPanel error={error} />;
   }
 
@@ -56,6 +60,12 @@ export function EntityTasksCard({
       noPadding
     >
       <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto", padding: 16 }}>
+        {response.tasks.length === 0 && (
+          <Box sx={{ textAlign: "center", padding: 16 }}>
+            No outstanding tasks for this entity!
+          </Box>
+        )}
+
         {response.tasks.map((task, idx) => (
           <Box
             key={`${task.check_id}-${task.initiative_id}`}
