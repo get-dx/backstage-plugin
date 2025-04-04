@@ -38,10 +38,10 @@ const serviceEntityPage = (
 
 > See the Components section below for other components offered.
 
-## DX Core Components
+## DX Reporting Components
 
-We export a few Dashboard pages, as well as the individual components that make up
-the dashboards so you can render them wherever you like.
+We export a few report pages, as well as the individual components that make up
+the reports so you can render them wherever you like.
 
 They can be rendered on both `Component` and `Group` entity pages.
 
