@@ -17,7 +17,7 @@ type EntityTasksCardProps = {
 };
 
 export function EntityTasksCard({
-  contentMaxHeight = "20rem",
+  contentMaxHeight = "30rem",
 }: EntityTasksCardProps) {
   const dxApi = useApi(dxApiRef);
 
