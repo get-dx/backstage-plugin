@@ -68,7 +68,7 @@ export function EntityTasksCard({
 
         {response.tasks.map((task, idx) => (
           <Box
-            key={`${task.check_id}-${task.initiative_id}`}
+            key={`${task.check.id}-${task.initiative.id}`}
             sx={{
               paddingTop: idx === 0 ? 0 : 12,
               paddingBottom: idx === response.tasks.length - 1 ? 0 : 16,
@@ -84,20 +84,20 @@ export function EntityTasksCard({
 }
 
 function TaskSummary({ task }: { task: Task }) {
-  const formattedDueDate = formatDueDate(task.initiative_complete_by);
-  const dueDateStatusColor = getDueDateStatusColor(task.initiative_complete_by);
+  const formattedDueDate = formatDueDate(task.initiative.complete_by);
+  const dueDateStatusColor = getDueDateStatusColor(task.initiative.complete_by);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gridGap: 12 }}>
       <Box sx={{ fontWeight: 500, fontSize: 14, color: "#030712" }}>
-        {task.check_name}
+        {task.check.name}
       </Box>
       <Box>
         <Box sx={{ display: "flex", alignItems: "center", gridGap: 8 }}>
           <Box sx={{ fontSize: 13, fontWeight: 500, lineHeight: "20px" }}>
-            {task.initiative_name}
+            {task.initiative.name}
           </Box>
-          <PriorityBadge priority={task.initiative_priority} />
+          <PriorityBadge priority={task.initiative.priority} />
         </Box>
         <div
           style={{
@@ -112,7 +112,7 @@ function TaskSummary({ task }: { task: Task }) {
             textOverflow: "ellipsis",
           }}
         >
-          {task.initiative_description}
+          {task.initiative.description}
         </div>
       </Box>
       <Box

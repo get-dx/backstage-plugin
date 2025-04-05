@@ -92,7 +92,7 @@ export function EntityTasksPage() {
             <PriorityTaskList
               priorityLevel={priorityLevel}
               tasks={tasks.filter(
-                (task) => task.initiative_priority === priorityLevel
+                (task) => task.initiative.priority === priorityLevel
               )}
             />
           </Grid>
@@ -145,7 +145,7 @@ function PriorityTaskList({
       <Box>
         {tasks.map((task, idx) => (
           <Box
-            key={`${task.check_id}-${task.initiative_id}`}
+            key={`${task.check.id}-${task.initiative.id}`}
             sx={{
               borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_200}`,
             }}
@@ -182,8 +182,8 @@ function TaskSummary({ task }: { task: Task }) {
   const [checkDescriptionExpanded, setCheckDescriptionExpanded] =
     useState(false);
 
-  const formattedDueDate = formatDueDate(task.initiative_complete_by);
-  const dueDateStatusColor = getDueDateStatusColor(task.initiative_complete_by);
+  const formattedDueDate = formatDueDate(task.initiative.complete_by);
+  const dueDateStatusColor = getDueDateStatusColor(task.initiative.complete_by);
 
   return (
     <Link
@@ -219,7 +219,7 @@ function TaskSummary({ task }: { task: Task }) {
               color: "#030712",
             }}
           >
-            <Box>{task.check_name}</Box>
+            <Box>{task.check.name}</Box>
             <IconButton
               onClick={(e) => {
                 e.preventDefault();
@@ -249,12 +249,12 @@ function TaskSummary({ task }: { task: Task }) {
                 paddingRight: 8,
               }}
             >
-              {task.check_description}
+              {task.check.description}
             </Box>
           )}
           <Box>
             <Box sx={{ fontSize: 13, fontWeight: 500, lineHeight: "20px" }}>
-              {task.initiative_name}
+              {task.initiative.name}
             </Box>
             <div
               style={{
@@ -269,7 +269,7 @@ function TaskSummary({ task }: { task: Task }) {
                 textOverflow: "ellipsis",
               }}
             >
-              {task.initiative_description}
+              {task.initiative.description}
             </div>
           </Box>
         </Box>
