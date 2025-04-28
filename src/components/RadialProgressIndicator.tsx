@@ -2,19 +2,19 @@ import React from "react";
 import { PieChart, Pie } from "recharts";
 
 export function RadialProgressIndicator({
-  passedChecks,
-  totalChecks,
+  numerator,
+  denominator,
 }: {
-  passedChecks: number;
-  totalChecks: number;
+  numerator: number;
+  denominator: number;
 }) {
-  const isComplete = passedChecks === totalChecks;
-  const isBlank = totalChecks === 0;
+  const isComplete = numerator === denominator;
+  const isBlank = denominator === 0;
 
   return (
     <div
       role="progressbar"
-      aria-label={`Progress: ${passedChecks} of ${totalChecks} checks passing`}
+      aria-label={`Progress: ${numerator} of ${denominator}`}
     >
       {isBlank && (
         <svg
@@ -77,12 +77,12 @@ export function RadialProgressIndicator({
             data={[
               {
                 name: "Passed",
-                value: Math.round(passedChecks),
+                value: Math.round(numerator),
                 fill: "url(#pieGradient)",
               },
               {
                 name: "Failed",
-                value: Math.round(totalChecks - passedChecks),
+                value: Math.round(denominator - numerator),
                 fill: "#E5E7EB", // gray-200 for the background
               },
             ]}

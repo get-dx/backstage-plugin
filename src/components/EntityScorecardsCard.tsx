@@ -13,6 +13,7 @@ import { BrandedCardTitle } from "./Branding";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { LevelIcon } from "./LevelIcon";
+import { RadialProgressIndicator } from "./RadialProgressIndicator";
 
 type EntityScorecardsCardProps = {
   contentMaxHeight?: string | number;
@@ -55,7 +56,9 @@ export function EntityScorecardsCard({
 
   const scorecards = response.scorecards;
 
-  const flattenedChecks = scorecards.flatMap((scorecard) => scorecard.checks);
+  const flattenedChecks = scorecards.flatMap<ScorecardCheck>(
+    (scorecard) => scorecard.checks
+  );
 
   return (
     <InfoCard
@@ -142,27 +145,46 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
               minWidth: 0,
             }}
           >
-            <Box sx={{ marginRight: 8 }}>
-              <LevelIcon
-                color={
-                  scorecard.current_level?.color ??
-                  scorecard.empty_level.color ??
-                  DEFAULT_NO_LEVEL_COLOR
-                }
-              />
-            </Box>
-            <Box
-              sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                minWidth: 0,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {scorecard.current_level?.name ??
-                scorecard.empty_level.label ??
-                "No level"}
-            </Box>
+            {scorecard.type === "LEVEL" && (
+              <>
+                <Box sx={{ marginRight: 8 }}>
+                  <LevelIcon
+                    color={
+                      scorecard.current_level?.color ??
+                      scorecard.empty_level.color ??
+                      DEFAULT_NO_LEVEL_COLOR
+                    }
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    minWidth: 0,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {scorecard.current_level?.name ??
+                    scorecard.empty_level.label ??
+                    "No level"}
+                </Box>
+              </>
+            )}
+
+            {scorecard.type === "POINTS" && (
+              <>
+                <Box sx={{ marginRight: 8 }}>
+                  <RadialProgressIndicator
+                    numerator={scorecard.points_meta.points_achieved}
+                    denominator={scorecard.points_meta.points_total}
+                  />
+                </Box>
+                <Box>
+                  {scorecard.points_meta.points_achieved} /{" "}
+                  {scorecard.points_meta.points_total} points
+                </Box>
+              </>
+            )}
           </Box>
         </React.Fragment>
       ))}
