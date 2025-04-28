@@ -27,20 +27,24 @@ export interface ScorecardsResponse {
   };
 }
 
-export type Scorecard = {
+export type Scorecard = LevelBasedScorecard | PointsBasedScorecard;
+
+export type LevelBasedScorecard = {
   id: string;
+  type: "LEVEL";
   name: string;
-  empty_level: {
-    label: string | null;
-    color: string | null;
-  };
-  checks: ScorecardCheck[];
+  checks: LevelBasedScorecardCheck[];
+
   levels: {
     id: string;
     name: string;
     color: string;
     rank: number;
   }[];
+  empty_level: {
+    label: string | null;
+    color: string | null;
+  };
   current_level: {
     id: string;
     name: string;
@@ -48,12 +52,26 @@ export type Scorecard = {
   } | null;
 };
 
-export type ScorecardCheck = {
+export type PointsBasedScorecard = {
   id: string;
-  level: {
-    id: string;
-    name: string;
-  };
+  type: "POINTS";
+  name: string;
+  checks: PointsBasedScorecardCheck[];
+
+  check_groups: ScorecardCheckGroup[];
+};
+
+export type ScorecardCheckGroup = {
+  id: string;
+  name: string;
+};
+
+export type ScorecardCheck =
+  | LevelBasedScorecardCheck
+  | PointsBasedScorecardCheck;
+
+export type PointsBasedScorecardCheck = {
+  id: string;
   name: string;
   description: string;
   published: boolean;
@@ -64,6 +82,30 @@ export type ScorecardCheck = {
   passed: boolean;
   status: "PASS" | "FAIL" | "WARN";
   executed_at: string | null;
+
+  group: {
+    id: string;
+    name: string;
+  };
+};
+
+export type LevelBasedScorecardCheck = {
+  id: string;
+  name: string;
+  description: string;
+  published: boolean;
+  output: {
+    type: OutputType;
+    value: string | number | null;
+  } | null;
+  passed: boolean;
+  status: "PASS" | "FAIL" | "WARN";
+  executed_at: string | null;
+
+  level: {
+    id: string;
+    name: string;
+  };
 };
 
 export type OutputType =
