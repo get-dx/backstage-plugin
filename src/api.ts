@@ -58,7 +58,8 @@ export type PointsBasedScorecard = {
   name: string;
   checks: PointsBasedScorecardCheck[];
 
-  check_groups: ScorecardCheckGroup[];
+  // TODO: rename
+  groups: ScorecardCheckGroup[];
 };
 
 export type ScorecardCheckGroup = {

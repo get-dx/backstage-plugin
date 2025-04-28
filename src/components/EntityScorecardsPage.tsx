@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import useAsync from "react-use/lib/useAsync";
 import { DateTime } from "luxon";
 
-import { dxApiRef, Scorecard } from "../api";
+import { dxApiRef, Scorecard, ScorecardCheck } from "../api";
 import { LevelIcon } from "./LevelIcon";
 import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
@@ -170,153 +170,231 @@ function ScorecardSummary({
             gridGap: 8,
           }}
         >
-          <RadialProgressIndicator
-            passedChecks={passedChecks}
-            totalChecks={totalChecks}
-          />
-          <Box sx={{ fontSize: 13, color: COLORS.GRAY_500, marginRight: 8 }}>
-            {passedChecks} / {totalChecks} checks passing
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              fontSize: 13,
-              whiteSpace: "nowrap",
-              minWidth: 0,
-            }}
-          >
-            <Box sx={{ marginRight: 4 }}>
-              <LevelIcon
-                color={
-                  scorecard.current_level?.color ??
-                  scorecard.empty_level.color ??
-                  DEFAULT_NO_LEVEL_COLOR
-                }
+          {scorecard.type === "LEVEL" && (
+            <>
+              <RadialProgressIndicator
+                passedChecks={passedChecks}
+                totalChecks={totalChecks}
               />
-            </Box>
-            <Box sx={{ fontSize: 13 }}>
-              {scorecard.current_level?.name ??
-                scorecard.empty_level.label ??
-                "No level"}
-            </Box>
-          </Box>
+              <Box
+                sx={{ fontSize: 13, color: COLORS.GRAY_500, marginRight: 8 }}
+              >
+                {passedChecks} / {totalChecks} checks passing
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: 13,
+                  whiteSpace: "nowrap",
+                  minWidth: 0,
+                }}
+              >
+                <Box sx={{ marginRight: 4 }}>
+                  <LevelIcon
+                    color={
+                      scorecard.current_level?.color ??
+                      scorecard.empty_level.color ??
+                      DEFAULT_NO_LEVEL_COLOR
+                    }
+                  />
+                </Box>
+                <Box sx={{ fontSize: 13 }}>
+                  {scorecard.current_level?.name ??
+                    scorecard.empty_level.label ??
+                    "No level"}
+                </Box>
+              </Box>
+            </>
+          )}
+
+          {scorecard.type === "POINTS" && <div>TODO: PBS info</div>}
         </Box>
       </div>
 
       {isOpen && (
         <>
           <Box sx={{ borderTop: `1px solid ${COLORS.GRAY_200}` }}>
-            {scorecard.levels.map((level, levelIdx) => {
-              const levelChecks = scorecard.checks.filter(
-                (check) => check.level.id === level.id
-              );
+            {scorecard.type === "LEVEL" &&
+              scorecard.levels.map((level, levelIdx) => {
+                const checksInLevel = scorecard.checks.filter(
+                  (check) => check.level.id === level.id
+                );
 
-              return (
-                <Box key={level.id}>
-                  <Box
-                    sx={{
-                      height: 48,
-                      display: "flex",
-                      alignItems: "center",
-                      gridGap: 8,
-                      paddingLeft: 12,
-                      paddingRight: 12,
-                    }}
-                  >
+                return (
+                  <Box key={level.id}>
                     <Box
                       sx={{
+                        height: 48,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
+                        gridGap: 8,
+                        paddingLeft: 12,
+                        paddingRight: 12,
                       }}
                     >
-                      <LevelIcon color={level.color} />
-                    </Box>
-                    <Box sx={{ fontSize: 14, fontWeight: 700 }}>
-                      {level.name}
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      paddingLeft: 36,
-                      paddingRight: 12,
-                      paddingBottom: 8,
-                      borderBottom:
-                        levelIdx < scorecard.levels.length - 1
-                          ? `1px solid ${COLORS.GRAY_200}`
-                          : "none",
-                    }}
-                  >
-                    {levelChecks.map((check, checkIdx) => (
                       <Box
-                        key={check.id}
                         sx={{
                           display: "flex",
-                          flexDirection: "row",
                           alignItems: "center",
-                          gridGap: 8,
-                          padding: 8,
-                          borderBottom:
-                            checkIdx < levelChecks.length - 1
-                              ? `1px solid ${COLORS.GRAY_200}`
-                              : "none",
+                          justifyContent: "center",
                         }}
                       >
-                        <Box sx={{ flex: 1 }}>
-                          <Box sx={{ fontSize: 13, fontWeight: 500 }}>
-                            {check.name}
-                          </Box>
-                          <Box
-                            sx={{
-                              fontSize: 13,
-                              fontWeight: 400,
-                              color: "#7f7f7f",
-                            }}
-                          >
-                            {check.description}
-                          </Box>
-                        </Box>
-                        <Box>
-                          {check.executed_at && (
-                            <Box
-                              sx={{
-                                fontSize: 13,
-                                color: COLORS.GRAY_400,
-                                display: "flex",
-                                alignItems: "center",
-                                gridGap: 4,
-                              }}
-                            >
-                              <TimeIcon />
-                              <span>
-                                {DateTime.fromISO(check.executed_at, {
-                                  zone: "utc",
-                                }).toRelative()}
-                              </span>
-                            </Box>
-                          )}
-                        </Box>
-                        <Box>
-                          <CheckResultBadge
-                            status={check.status}
-                            isPublished={check.published}
-                            outputEnabled={!!check.output}
-                            outputValue={check.output?.value ?? null}
-                            outputType={check.output?.type ?? null}
-                          />
-                        </Box>
+                        <LevelIcon color={level.color} />
                       </Box>
-                    ))}
+                      <Box sx={{ fontSize: 14, fontWeight: 700 }}>
+                        {level.name}
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        paddingLeft: 36,
+                        paddingRight: 12,
+                        paddingBottom: 8,
+                        borderBottom:
+                          levelIdx < scorecard.levels.length - 1
+                            ? `1px solid ${COLORS.GRAY_200}`
+                            : "none",
+                      }}
+                    >
+                      {checksInLevel.map((check, checkIdx) => (
+                        <CheckSummary
+                          key={check.id}
+                          check={check}
+                          showBottomBorder={checkIdx < checksInLevel.length - 1}
+                        />
+                      ))}
+                    </Box>
                   </Box>
-                </Box>
-              );
-            })}
+                );
+              })}
+
+            {scorecard.type === "POINTS" &&
+              scorecard.groups.map((checkGroup, checkGroupIdx) => {
+                const checksInCheckGroup = scorecard.checks.filter(
+                  (check) => check.group.id === checkGroup.id
+                );
+
+                return (
+                  <Box key={checkGroup.id}>
+                    <Box
+                      sx={{
+                        height: 48,
+                        display: "flex",
+                        alignItems: "center",
+                        gridGap: 8,
+                        paddingLeft: 12,
+                        paddingRight: 12,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        TODO: something
+                      </Box>
+                      <Box sx={{ fontSize: 14, fontWeight: 700 }}>
+                        {checkGroup.name}
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        paddingLeft: 36,
+                        paddingRight: 12,
+                        paddingBottom: 8,
+                        borderBottom:
+                          checkGroupIdx < scorecard.groups.length - 1
+                            ? `1px solid ${COLORS.GRAY_200}`
+                            : "none",
+                      }}
+                    >
+                      {checksInCheckGroup.map((check, checkIdx) => (
+                        <CheckSummary
+                          key={check.id}
+                          check={check}
+                          showBottomBorder={
+                            checkIdx < checksInCheckGroup.length - 1
+                          }
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                );
+              })}
           </Box>
           <BottomLink link={entityScorecardUrl} title="View scorecard in DX" />
         </>
       )}
     </Card>
+  );
+}
+
+function CheckSummary({
+  check,
+  showBottomBorder,
+}: {
+  check: ScorecardCheck;
+  showBottomBorder: boolean;
+}) {
+  return (
+    <Box
+      key={check.id}
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gridGap: 8,
+        padding: 8,
+        borderBottom: showBottomBorder
+          ? `1px solid ${COLORS.GRAY_200}`
+          : "none",
+      }}
+    >
+      <Box sx={{ flex: 1 }}>
+        <Box sx={{ fontSize: 13, fontWeight: 500 }}>{check.name}</Box>
+        <Box
+          sx={{
+            fontSize: 13,
+            fontWeight: 400,
+            color: "#7f7f7f",
+          }}
+        >
+          {check.description}
+        </Box>
+      </Box>
+      <Box>
+        {check.executed_at && (
+          <Box
+            sx={{
+              fontSize: 13,
+              color: COLORS.GRAY_400,
+              display: "flex",
+              alignItems: "center",
+              gridGap: 4,
+            }}
+          >
+            <TimeIcon />
+            <span>
+              {DateTime.fromISO(check.executed_at, {
+                zone: "utc",
+              }).toRelative()}
+            </span>
+          </Box>
+        )}
+      </Box>
+      <Box>
+        <CheckResultBadge
+          status={check.status}
+          isPublished={check.published}
+          outputEnabled={!!check.output}
+          outputValue={check.output?.value ?? null}
+          outputType={check.output?.type ?? null}
+        />
+      </Box>
+    </Box>
   );
 }
 

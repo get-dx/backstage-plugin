@@ -55,7 +55,9 @@ export function EntityScorecardsCard({
 
   const scorecards = response.scorecards;
 
-  const flattenedChecks = scorecards.flatMap((scorecard) => scorecard.checks);
+  const flattenedChecks = scorecards.flatMap<ScorecardCheck>(
+    (scorecard) => scorecard.checks
+  );
 
   return (
     <InfoCard
@@ -142,27 +144,33 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
               minWidth: 0,
             }}
           >
-            <Box sx={{ marginRight: 8 }}>
-              <LevelIcon
-                color={
-                  scorecard.current_level?.color ??
-                  scorecard.empty_level.color ??
-                  DEFAULT_NO_LEVEL_COLOR
-                }
-              />
-            </Box>
-            <Box
-              sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                minWidth: 0,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {scorecard.current_level?.name ??
-                scorecard.empty_level.label ??
-                "No level"}
-            </Box>
+            {scorecard.type === "LEVEL" && (
+              <>
+                <Box sx={{ marginRight: 8 }}>
+                  <LevelIcon
+                    color={
+                      scorecard.current_level?.color ??
+                      scorecard.empty_level.color ??
+                      DEFAULT_NO_LEVEL_COLOR
+                    }
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    minWidth: 0,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {scorecard.current_level?.name ??
+                    scorecard.empty_level.label ??
+                    "No level"}
+                </Box>
+              </>
+            )}
+
+            {scorecard.type === "POINTS" && <Box>TODO: PBS info</Box>}
           </Box>
         </React.Fragment>
       ))}
