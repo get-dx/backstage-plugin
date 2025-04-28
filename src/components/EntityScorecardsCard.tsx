@@ -13,6 +13,7 @@ import { BrandedCardTitle } from "./Branding";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { LevelIcon } from "./LevelIcon";
+import { RadialProgressIndicator } from "./RadialProgressIndicator";
 
 type EntityScorecardsCardProps = {
   contentMaxHeight?: string | number;
@@ -170,7 +171,20 @@ function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
               </>
             )}
 
-            {scorecard.type === "POINTS" && <Box>TODO: PBS info</Box>}
+            {scorecard.type === "POINTS" && (
+              <>
+                <Box sx={{ marginRight: 8 }}>
+                  <RadialProgressIndicator
+                    numerator={scorecard.points_meta.points_achieved}
+                    denominator={scorecard.points_meta.points_total}
+                  />
+                </Box>
+                <Box>
+                  {scorecard.points_meta.points_achieved} /{" "}
+                  {scorecard.points_meta.points_total} points
+                </Box>
+              </>
+            )}
           </Box>
         </React.Fragment>
       ))}

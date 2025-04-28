@@ -112,10 +112,6 @@ function ScorecardSummary({
   const entityIdentifier = entity.metadata.name;
   const entityScorecardUrl = `https://app.getdx.com/catalog/${entityIdentifier}/scorecards?expanded=${scorecard.id}`;
 
-  const totalChecks = scorecard.checks.length;
-  const passedChecks = scorecard.checks.filter(
-    (check) => check.passed === true
-  ).length;
   return (
     <Card key={scorecard.id}>
       <div
@@ -172,15 +168,6 @@ function ScorecardSummary({
         >
           {scorecard.type === "LEVEL" && (
             <>
-              <RadialProgressIndicator
-                passedChecks={passedChecks}
-                totalChecks={totalChecks}
-              />
-              <Box
-                sx={{ fontSize: 13, color: COLORS.GRAY_500, marginRight: 8 }}
-              >
-                {passedChecks} / {totalChecks} checks passing
-              </Box>
               <Box
                 sx={{
                   display: "flex",
@@ -208,7 +195,19 @@ function ScorecardSummary({
             </>
           )}
 
-          {scorecard.type === "POINTS" && <div>TODO: PBS info</div>}
+          {scorecard.type === "POINTS" && (
+            <>
+              <Box sx={{ fontSize: 13, color: COLORS.GRAY_500 }}>
+                {scorecard.points_meta.points_achieved} /{" "}
+                {scorecard.points_meta.points_total} points
+              </Box>
+
+              <RadialProgressIndicator
+                numerator={scorecard.points_meta.points_achieved}
+                denominator={scorecard.points_meta.points_total}
+              />
+            </>
+          )}
         </Box>
       </div>
 
@@ -270,9 +269,9 @@ function ScorecardSummary({
               })}
 
             {scorecard.type === "POINTS" &&
-              scorecard.groups.map((checkGroup, checkGroupIdx) => {
+              scorecard.check_groups.map((checkGroup, checkGroupIdx) => {
                 const checksInCheckGroup = scorecard.checks.filter(
-                  (check) => check.group.id === checkGroup.id
+                  (check) => check.check_group.id === checkGroup.id
                 );
 
                 return (
@@ -283,19 +282,10 @@ function ScorecardSummary({
                         display: "flex",
                         alignItems: "center",
                         gridGap: 8,
-                        paddingLeft: 12,
+                        paddingLeft: 42,
                         paddingRight: 12,
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        TODO: something
-                      </Box>
                       <Box sx={{ fontSize: 14, fontWeight: 700 }}>
                         {checkGroup.name}
                       </Box>
@@ -306,7 +296,7 @@ function ScorecardSummary({
                         paddingRight: 12,
                         paddingBottom: 8,
                         borderBottom:
-                          checkGroupIdx < scorecard.groups.length - 1
+                          checkGroupIdx < scorecard.check_groups.length - 1
                             ? `1px solid ${COLORS.GRAY_200}`
                             : "none",
                       }}

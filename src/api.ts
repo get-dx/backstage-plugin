@@ -58,8 +58,11 @@ export type PointsBasedScorecard = {
   name: string;
   checks: PointsBasedScorecardCheck[];
 
-  // TODO: rename
-  groups: ScorecardCheckGroup[];
+  points_meta: {
+    points_achieved: number;
+    points_total: number;
+  };
+  check_groups: ScorecardCheckGroup[];
 };
 
 export type ScorecardCheckGroup = {
@@ -84,7 +87,8 @@ export type PointsBasedScorecardCheck = {
   status: "PASS" | "FAIL" | "WARN";
   executed_at: string | null;
 
-  group: {
+  points: number;
+  check_group: {
     id: string;
     name: string;
   };
