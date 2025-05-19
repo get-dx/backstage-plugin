@@ -1,6 +1,6 @@
 import React from "react";
 import { COLORS } from "../styles";
-import { OutputType } from "../api";
+import { OutputType, CustomOutputOptions } from "../api";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -22,12 +22,24 @@ export type CheckResultBadgeProps = {
   outputEnabled: boolean;
   outputValue: string | number | null;
   outputType: OutputType | null;
+  outputCustomOptions?: CustomOutputOptions;
 };
 
 export function CheckResultBadge(props: CheckResultBadgeProps) {
-  const { status, isPublished, outputEnabled, outputValue, outputType } = props;
+  const {
+    status,
+    isPublished,
+    outputEnabled,
+    outputValue,
+    outputType,
+    outputCustomOptions,
+  } = props;
 
-  const outputValueFormatted = formatSqlOutputValue(outputValue, outputType);
+  const outputValueFormatted = formatSqlOutputValue(
+    outputValue,
+    outputType,
+    outputCustomOptions ?? null
+  );
 
   let badgeText = "";
   let buttonStatusStyles = {};
@@ -170,7 +182,8 @@ function IconX() {
 
 function formatSqlOutputValue(
   outputValue: string | number | null,
-  outputType: OutputType | null
+  outputType: OutputType | null,
+  outputCustomOptions: CustomOutputOptions | null
 ): string | number | null {
   if (outputValue === null) {
     return null;
@@ -200,11 +213,50 @@ function formatSqlOutputValue(
       return `${outputValue} ${pluralize("day", Number(outputValue))}`;
     case "currency_usd":
       return currencyFormatter.format(Number(outputValue));
+    case "custom": {
+      if (!outputCustomOptions) {
+        throw new Error(
+          "Output custom options are required for custom output type"
+        );
+      }
+      return formatCustomOutputValue(Number(outputValue), outputCustomOptions);
+    }
     default:
       throw new Error(`Unknown output type: ${outputType}`);
   }
 }
 
-function pluralize(word: string, count: number) {
-  return count === 1 ? word : `${word}s`;
+function formatCustomOutputValue(
+  outputValue: number,
+  outputCustomOptions: CustomOutputOptions
+): string {
+  if (outputCustomOptions.decimals === "auto") {
+    return `${outputValue} ${pluralize(outputCustomOptions.unit, outputValue)}`;
+  }
+
+  const valueWithDecimals = outputValue.toFixed(outputCustomOptions.decimals);
+
+  return `${valueWithDecimals} ${pluralize(outputCustomOptions.unit, outputValue)}`;
+}
+
+function pluralize(text: string, count: number | null = null) {
+  if (count !== null && count === 1) return text;
+
+  // Special cases
+  if (text === "person") return "people";
+  if (text === "status") return "statuses";
+  if (text === "match") return "matches";
+  if (text === "alias") return "aliases";
+  if (text === "is") return "are";
+
+  // Words ending in "y"
+  if (text.endsWith("y")) {
+    const vowels = ["a", "e", "i", "o", "u"];
+    if (!vowels.includes(text.charAt(text.length - 2))) {
+      return `${text.substring(0, text.length - 1)}ies`;
+    }
+  }
+
+  // Default case: add "s"
+  return `${text}s`;
 }

@@ -74,19 +74,7 @@ export type ScorecardCheck =
   | LevelBasedScorecardCheck
   | PointsBasedScorecardCheck;
 
-export type PointsBasedScorecardCheck = {
-  id: string;
-  name: string;
-  description: string;
-  published: boolean;
-  output: {
-    type: OutputType;
-    value: string | number | null;
-  } | null;
-  passed: boolean;
-  status: "PASS" | "FAIL" | "WARN";
-  executed_at: string | null;
-
+export type PointsBasedScorecardCheck = CheckCommon & {
   points: number;
   check_group: {
     id: string;
@@ -94,23 +82,28 @@ export type PointsBasedScorecardCheck = {
   };
 };
 
-export type LevelBasedScorecardCheck = {
-  id: string;
-  name: string;
-  description: string;
-  published: boolean;
-  output: {
-    type: OutputType;
-    value: string | number | null;
-  } | null;
-  passed: boolean;
-  status: "PASS" | "FAIL" | "WARN";
-  executed_at: string | null;
-
+export type LevelBasedScorecardCheck = CheckCommon & {
   level: {
     id: string;
     name: string;
   };
+};
+
+type CheckCommon = {
+  id: string;
+  name: string;
+  description: string;
+  published: boolean;
+  output: Output | null;
+  passed: boolean;
+  status: "PASS" | "FAIL" | "WARN";
+  executed_at: string | null;
+};
+
+export type Output = {
+  type: OutputType;
+  value: string | number | null;
+  custom_options?: CustomOutputOptions;
 };
 
 export type OutputType =
@@ -121,7 +114,13 @@ export type OutputType =
   | "duration_seconds"
   | "duration_minutes"
   | "duration_hours"
-  | "duration_days";
+  | "duration_days"
+  | "custom";
+
+export type CustomOutputOptions = {
+  unit: "string";
+  decimals: "auto" | number;
+};
 
 export type TasksResponse = {
   ok: true;

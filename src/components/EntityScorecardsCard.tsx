@@ -28,7 +28,7 @@ export function EntityScorecardsCard({
 
   const entityIdentifier = entity.metadata.name;
 
-  const [tab, setTab] = useState<"levels" | "checks">("levels");
+  const [tab, setTab] = useState<"overview" | "checks">("overview");
 
   const {
     value: response,
@@ -77,7 +77,7 @@ export function EntityScorecardsCard({
             onChange={(_, value) => setTab(value)}
             indicatorColor="primary"
           >
-            <Tab value="levels" label="Levels" />
+            <Tab value="overview" label="Overview" />
             <Tab value="checks" label="Checks" />
           </Tabs>
         </Box>
@@ -90,7 +90,7 @@ export function EntityScorecardsCard({
       noPadding
     >
       <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto", padding: 16 }}>
-        {tab === "levels" && <LevelsTab scorecards={scorecards} />}
+        {tab === "overview" && <OverviewTab scorecards={scorecards} />}
 
         {tab === "checks" && <ChecksTab checks={flattenedChecks} />}
       </Box>
@@ -98,7 +98,7 @@ export function EntityScorecardsCard({
   );
 }
 
-function LevelsTab({ scorecards }: { scorecards: Scorecard[] }) {
+function OverviewTab({ scorecards }: { scorecards: Scorecard[] }) {
   if (scorecards.length === 0) {
     return (
       <Box
@@ -240,6 +240,7 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
               outputEnabled={check.output !== null}
               outputValue={check.output?.value ?? null}
               outputType={check.output?.type ?? null}
+              outputCustomOptions={check.output?.custom_options}
             />
           </Box>
         </React.Fragment>
