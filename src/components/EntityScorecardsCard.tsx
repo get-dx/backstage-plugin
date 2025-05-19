@@ -240,6 +240,7 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
               outputEnabled={check.output !== null}
               outputValue={check.output?.value ?? null}
               outputType={check.output?.type ?? null}
+              outputCustomOptions={check.output?.custom_options}
             />
           </Box>
         </React.Fragment>
