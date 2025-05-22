@@ -7,7 +7,6 @@ import {
   BottomLink,
 } from "@backstage/core-components";
 import { useApi } from "@backstage/core-plugin-api";
-import { useEntity } from "@backstage/plugin-catalog-react";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
@@ -22,12 +21,12 @@ import { dxApiRef, Task, User } from "../api";
 import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
 import { PoweredByDX } from "./Branding";
 
-export function EntityTasksPage() {
+type EntityTasksPageProps = {
+  entityIdentifier: string;
+};
+
+export function EntityTasksPage({ entityIdentifier }: EntityTasksPageProps) {
   const dxApi = useApi(dxApiRef);
-
-  const { entity } = useEntity();
-
-  const entityIdentifier = entity.metadata.name;
 
   const {
     value: response,
@@ -94,6 +93,7 @@ export function EntityTasksPage() {
               tasks={tasks.filter(
                 (task) => task.initiative.priority === priorityLevel
               )}
+              entityIdentifier={entityIdentifier}
             />
           </Grid>
         ))}
@@ -105,12 +105,12 @@ export function EntityTasksPage() {
 function PriorityTaskList({
   priorityLevel,
   tasks,
+  entityIdentifier,
 }: {
   priorityLevel: number;
   tasks: Task[];
+  entityIdentifier: string;
 }) {
-  const { entity } = useEntity();
-  const entityIdentifier = entity.metadata.name;
   const entityTasksUrl = `https://app.getdx.com/catalog/${entityIdentifier}/tasks`;
 
   if (tasks.length === 0) {
@@ -150,7 +150,7 @@ function PriorityTaskList({
               borderTop: idx === 0 ? "none" : `1px solid ${COLORS.GRAY_200}`,
             }}
           >
-            <TaskSummary task={task} />
+            <TaskSummary task={task} entityIdentifier={entityIdentifier} />
           </Box>
         ))}
       </Box>
@@ -174,9 +174,13 @@ function PriorityIndicator({ priorityLevel }: { priorityLevel: number }) {
   );
 }
 
-function TaskSummary({ task }: { task: Task }) {
-  const { entity } = useEntity();
-  const entityIdentifier = entity.metadata.name;
+function TaskSummary({
+  task,
+  entityIdentifier,
+}: {
+  task: Task;
+  entityIdentifier: string;
+}) {
   const entityTasksUrl = `https://app.getdx.com/catalog/${entityIdentifier}/tasks`;
 
   const [checkDescriptionExpanded, setCheckDescriptionExpanded] =

@@ -1,6 +1,5 @@
 import React from "react";
 import { InfoCard } from "@backstage/core-components";
-import { useEntity } from "@backstage/plugin-catalog-react";
 import useAsync from "react-use/lib/useAsync";
 import { useApi } from "@backstage/core-plugin-api";
 import { Progress, ResponseErrorPanel } from "@backstage/core-components";
@@ -13,17 +12,15 @@ import { dxApiRef, Task } from "../api";
 import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
 
 type EntityTasksCardProps = {
+  entityIdentifier: string;
   contentMaxHeight?: string | number;
 };
 
 export function EntityTasksCard({
+  entityIdentifier,
   contentMaxHeight = "30rem",
 }: EntityTasksCardProps) {
   const dxApi = useApi(dxApiRef);
-
-  const { entity } = useEntity();
-
-  const entityIdentifier = entity.metadata.name;
 
   const {
     value: response,

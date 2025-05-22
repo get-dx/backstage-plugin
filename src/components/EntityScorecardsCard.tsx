@@ -15,13 +15,13 @@ import { LevelIcon } from "./LevelIcon";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 
 type EntityScorecardsCardProps = {
-  contentMaxHeight?: string | number;
   entityIdentifier: string;
+  contentMaxHeight?: string | number;
 };
 
 export function EntityScorecardsCard({
-  contentMaxHeight = "30rem",
   entityIdentifier,
+  contentMaxHeight = "30rem",
 }: EntityScorecardsCardProps) {
   const dxApi = useApi(dxApiRef);
 

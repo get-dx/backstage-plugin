@@ -7,7 +7,6 @@ import {
   BottomLink,
 } from "@backstage/core-components";
 import { useApi } from "@backstage/core-plugin-api";
-import { useEntity } from "@backstage/plugin-catalog-react";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
@@ -21,12 +20,14 @@ import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 import { PoweredByDX } from "./Branding";
 
-export function EntityScorecardsPage() {
+type EntityScorecardsPageProps = {
+  entityIdentifier: string;
+};
+
+export function EntityScorecardsPage({
+  entityIdentifier,
+}: EntityScorecardsPageProps) {
   const dxApi = useApi(dxApiRef);
-
-  const { entity } = useEntity();
-
-  const entityIdentifier = entity.metadata.name;
 
   const {
     value: response,
@@ -87,6 +88,7 @@ export function EntityScorecardsPage() {
           <Grid item xs={12} key={scorecard.id}>
             <ScorecardSummary
               scorecard={scorecard}
+              entityIdentifier={entityIdentifier}
               isOpen={expandedScorecardId === scorecard.id}
               onOpenChange={(isOpen) => {
                 setExpandedScorecardId(isOpen ? scorecard.id : null);
@@ -101,15 +103,15 @@ export function EntityScorecardsPage() {
 
 function ScorecardSummary({
   scorecard,
+  entityIdentifier,
   isOpen,
   onOpenChange,
 }: {
   scorecard: Scorecard;
+  entityIdentifier: string;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 }) {
-  const { entity } = useEntity();
-  const entityIdentifier = entity.metadata.name;
   const entityScorecardUrl = `https://app.getdx.com/catalog/${entityIdentifier}/scorecards?expanded=${scorecard.id}`;
 
   return (
