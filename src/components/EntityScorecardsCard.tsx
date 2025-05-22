@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { InfoCard } from "@backstage/core-components";
-import { useEntity } from "@backstage/plugin-catalog-react";
 import useAsync from "react-use/lib/useAsync";
 import { useApi } from "@backstage/core-plugin-api";
 import { Progress, ResponseErrorPanel } from "@backstage/core-components";
@@ -17,16 +16,14 @@ import { RadialProgressIndicator } from "./RadialProgressIndicator";
 
 type EntityScorecardsCardProps = {
   contentMaxHeight?: string | number;
+  entityIdentifier: string;
 };
 
 export function EntityScorecardsCard({
   contentMaxHeight = "30rem",
+  entityIdentifier,
 }: EntityScorecardsCardProps) {
   const dxApi = useApi(dxApiRef);
-
-  const { entity } = useEntity();
-
-  const entityIdentifier = entity.metadata.name;
 
   const [tab, setTab] = useState<"overview" | "checks">("overview");
 
