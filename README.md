@@ -4,7 +4,7 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
 
 <img width="1636" alt="dora" src="https://github.com/user-attachments/assets/11e65a64-765c-47a2-93f3-3e2f6cf8c5c9">
 
-## Setup
+## Setup (For Reporting component only)
 
 1. Ensure your backstage services are annotated with the `github.com/project-slug` [annotation](https://backstage.io/docs/features/software-catalog/well-known-annotations#githubcomproject-slug).
 
@@ -66,7 +66,7 @@ These components visualize Scorecards and Tasks for an entity.
 | `<EntityScorecardsCard />` | Info card showing current scorecard levels and checks for the service.    |
 | `<EntityTasksCard />`      | Info card showing outstanding tasks for the service.                      |
 
-These components expect entities to have the same identifer in Backstage and DX. For example, if you have a Backstage entity with the `metadata.name` of `my-app`, then you must also have an entity in the DX Catalog with the identifier of `my-app` so the info cards can fetch the data successfully.
+Each of these components requires an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
 
 Install the full-page components by defining routes in the service entity page:
 
@@ -79,11 +79,11 @@ const serviceEntityPage = (
     {/* ... */}
 
     <EntityLayout.Route path="/dx-scorecards" title="Scorecards">
-      <EntityScorecardsPage />
+      <EntityScorecardsPage entityIdentifier="my-app" />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/dx-tasks" title="Tasks">
-      <EntityTasksPage />
+      <EntityTasksPage entityIdentifier="my-app" />
     </EntityLayout.Route>
 
     {/* ... */}
