@@ -4,7 +4,7 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
 
 <img width="1636" alt="dora" src="https://github.com/user-attachments/assets/11e65a64-765c-47a2-93f3-3e2f6cf8c5c9">
 
-## Setup (For Reporting component only)
+## Setup (For Reporting components only)
 
 1. Ensure your backstage services are annotated with the `github.com/project-slug` [annotation](https://backstage.io/docs/features/software-catalog/well-known-annotations#githubcomproject-slug).
 
