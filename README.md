@@ -4,7 +4,7 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
 
 <img width="1636" alt="dora" src="https://github.com/user-attachments/assets/11e65a64-765c-47a2-93f3-3e2f6cf8c5c9">
 
-## Setup
+## Setup (For Reporting components only)
 
 1. Ensure your backstage services are annotated with the `github.com/project-slug` [annotation](https://backstage.io/docs/features/software-catalog/well-known-annotations#githubcomproject-slug).
 
@@ -12,9 +12,9 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
 
 1. Install this plugin in your backstage frontend —
 
-```bash
-yarn --cwd packages/app add @get-dx/backstage-plugin
-```
+   ```bash
+   yarn --cwd packages/app add @get-dx/backstage-plugin
+   ```
 
 1. We provide an "all-in-one" DX dashboard component. Install that by adding a route to your service
    entity page —
@@ -25,19 +25,23 @@ import { EntityDXDashboardContent } from '@get-dx/backstage-plugin';
 
 const serviceEntityPage = (
   <EntityLayout>
+    {/* ... */}
+
     <EntityLayout.Route path="/dx" title="DX">
       <EntityDXDashboardContent />
     </EntityLayout.Route>
+
+    {/* ... */}
   </EntityLayout>
 )
 ```
 
 > See the Components section below for other components offered.
 
-## Components
+## DX Reporting Components
 
-We export a few Dashboard pages, as well as the individual components that make up
-the dashboards so you can render them wherever you like.
+We export a few report pages, as well as the individual components that make up
+the reports so you can render them wherever you like.
 
 They can be rendered on both `Component` and `Group` entity pages.
 
@@ -50,6 +54,60 @@ They can be rendered on both `Component` and `Group` entity pages.
 | `<EntityOpenToDeployCard />`        | Line chart showing Open to Deploy time for the service.               |
 | `<EntityTimeToRecoveryCard />`      | Line chart showing Time to Recovery for the service.                  |
 | `<EntityTopContributorsTable />`    | Table showing top contributors by pull request count for the service. |
+
+## DX Service Cloud Components
+
+These components visualize Scorecards and Tasks for an entity.
+
+| Component                  | Description                                                               |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `<EntityScorecardsPage />` | Dashboard showing scorecard details for the service.                      |
+| `<EntityTasksPage />`      | Dashboard showing outstanding tasks for the service, grouped by priority. |
+| `<EntityScorecardsCard />` | Info card showing current scorecard levels and checks for the service.    |
+| `<EntityTasksCard />`      | Info card showing outstanding tasks for the service.                      |
+
+Each of these components requires an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
+
+Install the full-page components by defining routes in the service entity page:
+
+```ts
+// packages/app/src/components/catalog/EntityPage.tsx
+import { EntityScorecardsPage, EntityTasksPage } from '@get-dx/backstage-plugin';
+
+const serviceEntityPage = (
+  <EntityLayout>
+    {/* ... */}
+
+    <EntityLayout.Route path="/dx-scorecards" title="Scorecards">
+      <EntityScorecardsPage entityIdentifier="my-app" />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/dx-tasks" title="Tasks">
+      <EntityTasksPage entityIdentifier="my-app" />
+    </EntityLayout.Route>
+
+    {/* ... */}
+  </EntityLayout>
+)
+```
+
+### Additional setup
+
+These components rely on the DX Web API, not the Data Cloud API. Generate a token on the [Web API Keys](https://app.getdx.com/admin/webapi) page that includes the `catalog:read` scope. Then configure a second proxy configuration in your app config to communicate with the Web API:
+
+```diff
+# app-config.yaml
+proxy:
+  endpoints:
+    "/dx":
+      target: ${DX_API_HOST_URL}
+      headers:
+        Authorization: Bearer ${DX_API_TOKEN}
++    "/dx-web-api":
++      target: ${DX_WEB_API_HOST}
++      headers:
++        Authorization: Bearer ${DX_WEB_API_TOKEN}
+```
 
 ## Configuration
 

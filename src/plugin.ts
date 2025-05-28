@@ -123,3 +123,45 @@ export const EntityTopContributorsTable = dxPlugin.provide(
     },
   }),
 );
+
+export const EntityScorecardsCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityScorecardsCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityScorecardsCard").then(
+          (m) => m.EntityScorecardsCard,
+        ),
+    },
+  }),
+);
+
+export const EntityTasksCard = dxPlugin.provide(
+  createComponentExtension({
+    name: "EntityTasksCard",
+    component: {
+      lazy: () =>
+        import("./components/EntityTasksCard").then((m) => m.EntityTasksCard),
+    },
+  }),
+);
+
+export const EntityScorecardsPage = dxPlugin.provide(
+  createRoutableExtension({
+    name: "EntityScorecardsPage",
+    component: () =>
+      import("./components/EntityScorecardsPage").then(
+        (m) => m.EntityScorecardsPage,
+      ),
+    mountPoint: rootRouteRef,
+  }),
+);
+
+export const EntityTasksPage = dxPlugin.provide(
+  createRoutableExtension({
+    name: "EntityTasksPage",
+    component: () =>
+      import("./components/EntityTasksPage").then((m) => m.EntityTasksPage),
+    mountPoint: rootRouteRef,
+  }),
+);
