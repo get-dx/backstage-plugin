@@ -71,7 +71,7 @@ If you are using the [Backstage Software Catalog](https://backstage.io/docs/feat
 First, in `packages/app/src/components/catalog/EntityPage.tsx`, define wrapper components to fetch Backstage entity information and derive the DX entity identifier.
 
 ```tsx
-import { EntityScorecardsCard } from '@get-dx/backstage-plugin';
+import { EntityScorecardsCard } from "@get-dx/backstage-plugin";
 
 function EntityScorecardsCardWrapped() {
   const { entity } = useEntity();
@@ -81,9 +81,7 @@ function EntityScorecardsCardWrapped() {
 
   // Alternatively, run some logic below to read entity metadata and define the `entityIdentifier` prop.
 
-  return (
-    <EntityScorecardsCard entityIdentifier={entityIdentifier} />
-  );
+  return <EntityScorecardsCard entityIdentifier={entityIdentifier} />;
 }
 
 // ...
@@ -106,7 +104,7 @@ const overviewContent = (
 Then, in `packages/app/src/App.tsx`, add a reference to the DX plugin. This resolves [this Backstage issue](https://backstage.io/docs/plugins/composability/#using-extensions-in-an-app) ([related comment](https://github.com/backstage/backstage/issues/28857#issuecomment-2662643085)) involving React element trees, so we can use the component-wrapping strategy.
 
 ```tsx
-import { dxPlugin } from '@get-dx/backstage-plugin';
+import { dxPlugin } from "@get-dx/backstage-plugin";
 
 const app = createApp({
   // ...
