@@ -194,6 +194,9 @@ export class DXApiClient implements DXApi {
     this.fetchApi = fetchApi;
   }
 
+  /**
+   * @deprecated
+   */
   changeFailureRate(entityRef: string) {
     return this.get<ChartResponse>("/api/backstage.changeFailureRate", {
       entityRef,
@@ -201,6 +204,9 @@ export class DXApiClient implements DXApi {
     });
   }
 
+  /**
+   * @deprecated
+   */
   deploymentFrequency(entityRef: string) {
     return this.get<ChartResponse>("/api/backstage.deploymentFrequency", {
       entityRef,
@@ -208,6 +214,9 @@ export class DXApiClient implements DXApi {
     });
   }
 
+  /**
+   * @deprecated
+   */
   openToDeploy(entityRef: string) {
     return this.get<ChartResponse>("/api/backstage.openToDeploy", {
       entityRef,
@@ -215,6 +224,9 @@ export class DXApiClient implements DXApi {
     });
   }
 
+  /**
+   * @deprecated
+   */
   timeToRecovery(entityRef: string) {
     return this.get<ChartResponse>("/api/backstage.timeToRecovery", {
       entityRef,
@@ -222,6 +234,9 @@ export class DXApiClient implements DXApi {
     });
   }
 
+  /**
+   * @deprecated
+   */
   topContributors(entityRef: string) {
     return this.get<TopContributorsResponse>("/api/backstage.topContributors", {
       entityRef,

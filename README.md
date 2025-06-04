@@ -2,60 +2,33 @@
 
 DX Backstage frontend plugin to display DX data in your Backstage app.
 
-<img width="1636" alt="dora" src="https://github.com/user-attachments/assets/11e65a64-765c-47a2-93f3-3e2f6cf8c5c9">
+## Setup
 
-## Setup (For Reporting components only)
+- Install this plugin in your backstage frontend:
 
-1. Ensure your backstage services are annotated with the `github.com/project-slug` [annotation](https://backstage.io/docs/features/software-catalog/well-known-annotations#githubcomproject-slug).
+  ```bash
+  yarn --cwd packages/app add @get-dx/backstage-plugin
+  ```
 
-1. Ensure DX backend plugin is installed and working [@get-dx/backstage-backend-plugin](https://github.com/get-dx/backstage-backend-plugin).
+- Generate an API token on the [Web API Keys](https://app.getdx.com/admin/webapi) page that includes the `catalog:read` scope. Then configure a proxy in your app config file to communicate with the DX API:
 
-1. Install this plugin in your backstage frontend —
+  ```yaml
+  # app-config.yaml
+  proxy:
+    endpoints:
+      "/dx-web-api":
+        target: https://api.getdx.com
+        headers:
+          Authorization: Bearer ${DX_WEB_API_TOKEN}
+        allowedHeaders:
+          # Forwards the plugin version to DX, to help us provide support and maintain API compatibility
+          - X-Client-Type
+          - X-Client-Version
+  ```
 
-   ```bash
-   yarn --cwd packages/app add @get-dx/backstage-plugin
-   ```
+## Add Components
 
-1. We provide an "all-in-one" DX dashboard component. Install that by adding a route to your service
-   entity page —
-
-```ts
-// packages/app/src/components/catalog/EntityPage.tsx
-import { EntityDXDashboardContent } from '@get-dx/backstage-plugin';
-
-const serviceEntityPage = (
-  <EntityLayout>
-    {/* ... */}
-
-    <EntityLayout.Route path="/dx" title="DX">
-      <EntityDXDashboardContent />
-    </EntityLayout.Route>
-
-    {/* ... */}
-  </EntityLayout>
-)
-```
-
-> See the Components section below for other components offered.
-
-## DX Reporting Components
-
-We export a few report pages, as well as the individual components that make up
-the reports so you can render them wherever you like.
-
-They can be rendered on both `Component` and `Group` entity pages.
-
-| Component                           | Description                                                           |
-| ----------------------------------- | --------------------------------------------------------------------- |
-| `<EntityDXDashboardContent />`      | Dashboard with all available DX Charts.                               |
-| `<EntityDORAMetricsContent />`      | Dashboard with all the DORA metric charts.                            |
-| `<EntityChangeFailureRateCard />`   | Line chart showing Change Failure Rate for the service.               |
-| `<EntityDeploymentFrequencyCard />` | Line chart showing Deployment Frequency for the service.              |
-| `<EntityOpenToDeployCard />`        | Line chart showing Open to Deploy time for the service.               |
-| `<EntityTimeToRecoveryCard />`      | Line chart showing Time to Recovery for the service.                  |
-| `<EntityTopContributorsTable />`    | Table showing top contributors by pull request count for the service. |
-
-## DX Service Cloud Components
+### Service Cloud
 
 These components visualize Scorecards and Tasks for an entity.
 
@@ -89,37 +62,6 @@ const serviceEntityPage = (
     {/* ... */}
   </EntityLayout>
 )
-```
-
-### Additional setup
-
-These components rely on the DX Web API, not the Data Cloud API. Generate a token on the [Web API Keys](https://app.getdx.com/admin/webapi) page that includes the `catalog:read` scope. Then configure a second proxy configuration in your app config to communicate with the Web API:
-
-```diff
-# app-config.yaml
-proxy:
-  endpoints:
-    "/dx":
-      target: ${DX_API_HOST_URL}
-      headers:
-        Authorization: Bearer ${DX_API_TOKEN}
-+    "/dx-web-api":
-+      target: ${DX_WEB_API_HOST}
-+      headers:
-+        Authorization: Bearer ${DX_WEB_API_TOKEN}
-```
-
-## Configuration
-
-### Application Id
-
-This plugin respects the same `appId` configuration as the backend plugin to distinguish multiple instances of backstage within DX.
-Can be any string as long as it's unique within your DX account.
-
-```yaml
-# app-config.yaml
-dx:
-  appId: staging
 ```
 
 ## Development
