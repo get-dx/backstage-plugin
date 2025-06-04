@@ -79,12 +79,28 @@ function EntityScorecardsCardWrapped() {
   // If your *Backstage entity name* matches your *DX entity identifier*:
   const entityIdentifier = entity.metadata.name;
 
-  // Alternatively, run some logic below to get entity logic and create the identifier string
+  // Alternatively, run some logic below to read entity metadata and define the `entityIdentifier` prop.
 
   return (
     <EntityScorecardsCard entityIdentifier={entityIdentifier} />
   );
 }
+
+// ...
+
+const overviewContent = (
+  <Grid container spacing={3} alignItems="stretch">
+    {entityWarningContent}
+    <Grid item md={8} sm={12}>
+      <EntityAboutCard variant="gridItem" />
+    </Grid>
+    <Grid item md={4} sm={12}>
+      {/* Using the wrapped component instead of the import */}
+      <EntityScorecardsCardWrapped />
+    </Grid>
+    {/* ... */}
+  </Grid>
+);
 ```
 
 Then, in `packages/app/src/App.tsx`, add a reference to the DX plugin. This resolves [this Backstage issue](https://backstage.io/docs/plugins/composability/#using-extensions-in-an-app) ([related comment](https://github.com/backstage/backstage/issues/28857#issuecomment-2662643085)) involving React element trees, so we can use the component-wrapping strategy.
