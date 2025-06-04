@@ -30,6 +30,9 @@ export const dxPlugin = createPlugin({
   ],
 });
 
+/**
+ * @deprecated
+ */
 export const EntityDXDashboardContent = dxPlugin.provide(
   createRoutableExtension({
     name: "EntityDXDashboardContent",
@@ -41,6 +44,9 @@ export const EntityDXDashboardContent = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityDORAMetricsContent = dxPlugin.provide(
   createRoutableExtension({
     name: "EntityDORAMetricsContent",
@@ -52,6 +58,9 @@ export const EntityDORAMetricsContent = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityChangeFailureRateCard = dxPlugin.provide(
   createComponentExtension({
     name: "EntityChangeFailureRateCard",
@@ -64,6 +73,9 @@ export const EntityChangeFailureRateCard = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityDeploymentFrequencyCard = dxPlugin.provide(
   createComponentExtension({
     name: "EntityDeploymentFrequencyCard",
@@ -76,6 +88,9 @@ export const EntityDeploymentFrequencyCard = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityOpenToDeployCard = dxPlugin.provide(
   createComponentExtension({
     name: "EntityOpenToDeployCard",
@@ -88,6 +103,9 @@ export const EntityOpenToDeployCard = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityLeadTimeCard = dxPlugin.provide(
   createComponentExtension({
     name: "EntityLeadTimeCard",
@@ -100,6 +118,9 @@ export const EntityLeadTimeCard = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityTimeToRecoveryCard = dxPlugin.provide(
   createComponentExtension({
     name: "EntityTimeToRecoveryCard",
@@ -112,6 +133,9 @@ export const EntityTimeToRecoveryCard = dxPlugin.provide(
   }),
 );
 
+/**
+ * @deprecated
+ */
 export const EntityTopContributorsTable = dxPlugin.provide(
   createComponentExtension({
     name: "EntityTopContributorsTable",
