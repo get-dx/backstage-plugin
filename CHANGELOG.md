@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.7.3 - 2025-06-09
+
 ### Changed
 
 - Converted the following components from `createRoutableExtension` to `createComponentExtension`. This makes them work with the wrapper based strategy described in `README.md`.
