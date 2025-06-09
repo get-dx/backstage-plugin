@@ -19,6 +19,7 @@ import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 import { PoweredByDX } from "./Branding";
+import { CheckResultDrawer } from "./CheckResultDrawer";
 
 type EntityScorecardsPageProps = {
   entityIdentifier: string;
@@ -331,6 +332,8 @@ function CheckSummary({
   check: ScorecardCheck;
   showBottomBorder: boolean;
 }) {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <Box
       key={check.id}
@@ -377,7 +380,7 @@ function CheckSummary({
           </Box>
         )}
       </Box>
-      <Box>
+      <Box onClick={() => setDrawerOpen(!drawerOpen)}>
         <CheckResultBadge
           status={check.status}
           isPublished={check.published}
@@ -386,6 +389,11 @@ function CheckSummary({
           outputType={check.output?.type ?? null}
         />
       </Box>
+      <CheckResultDrawer
+        check={check}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      />
     </Box>
   );
 }
