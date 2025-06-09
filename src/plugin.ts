@@ -171,21 +171,23 @@ export const EntityTasksCard = dxPlugin.provide(
 );
 
 export const EntityScorecardsPage = dxPlugin.provide(
-  createRoutableExtension({
+  createComponentExtension({
     name: "EntityScorecardsPage",
-    component: () =>
-      import("./components/EntityScorecardsPage").then(
-        (m) => m.EntityScorecardsPage,
-      ),
-    mountPoint: rootRouteRef,
+    component: {
+      lazy: () =>
+        import("./components/EntityScorecardsPage").then(
+          (m) => m.EntityScorecardsPage,
+        ),
+    },
   }),
 );
 
 export const EntityTasksPage = dxPlugin.provide(
-  createRoutableExtension({
+  createComponentExtension({
     name: "EntityTasksPage",
-    component: () =>
-      import("./components/EntityTasksPage").then((m) => m.EntityTasksPage),
-    mountPoint: rootRouteRef,
+    component: {
+      lazy: () =>
+        import("./components/EntityTasksPage").then((m) => m.EntityTasksPage),
+    },
   }),
 );
