@@ -10,6 +10,7 @@ import { ScorecardCheck } from "../api";
 import { COLORS } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { MarkdownRenderer } from "./MarkdownRenderer";
+import { TimeIcon } from "./TimeIcon";
 
 type CheckResultDrawerProps = {
   check: ScorecardCheck;
@@ -68,10 +69,21 @@ export function CheckResultDrawer({
               outputType={check.output?.type ?? null}
             />
             {check.executed_at && (
-              <Box>
-                {DateTime.fromISO(check.executed_at, {
-                  zone: "utc",
-                }).toRelative()}
+              <Box
+                sx={{
+                  fontSize: 13,
+                  color: COLORS.GRAY_400,
+                  display: "flex",
+                  alignItems: "center",
+                  gridGap: 4,
+                }}
+              >
+                <TimeIcon />
+                <span>
+                  {DateTime.fromISO(check.executed_at, {
+                    zone: "utc",
+                  }).toRelative()}
+                </span>
               </Box>
             )}
           </Box>
