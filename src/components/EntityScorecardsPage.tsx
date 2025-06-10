@@ -394,7 +394,17 @@ function CheckSummary({
           </Box>
         )}
       </Box>
-      <Box onClick={() => setDrawerOpen(!drawerOpen)}>
+      <div
+        onClick={() => setDrawerOpen(!drawerOpen)}
+        style={{ cursor: "pointer" }}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            setDrawerOpen(!drawerOpen);
+          }
+        }}
+      >
         <CheckResultBadge
           status={check.status}
           isPublished={check.published}
@@ -402,7 +412,7 @@ function CheckSummary({
           outputValue={check.output?.value ?? null}
           outputType={check.output?.type ?? null}
         />
-      </Box>
+      </div>
       <CheckResultDrawer
         check={check}
         open={drawerOpen}
