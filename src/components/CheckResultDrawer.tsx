@@ -26,31 +26,52 @@ export function CheckResultDrawer({
         <Box
           sx={{
             display: "flex",
+            alignItems: "center",
             justifyContent: "space-between",
-            gridGap: 2,
+            gridGap: 16,
+            paddingLeft: 16,
+            paddingRight: 16,
+            height: 48,
+            fontSize: 15,
+            fontWeight: "bold",
           }}
         >
           Check details
-          <IconButton onClick={onClose}>
-            <CloseIcon />
+          <IconButton size="small" onClick={onClose}>
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
 
-        <Box>{check.name}</Box>
-        <CheckResultBadge
-          status={check.status}
-          isPublished={check.published}
-          outputEnabled={!!check.output}
-          outputValue={check.output?.value ?? null}
-          outputType={check.output?.type ?? null}
-        />
-        {check.executed_at && (
-          <Box>
-            {DateTime.fromISO(check.executed_at, {
-              zone: "utc",
-            }).toRelative()}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gridGap: 16,
+            paddingLeft: 16,
+            paddingRight: 16,
+            paddingTop: 24,
+            paddingBottom: 24,
+            borderTop: `1px solid ${COLORS.GRAY_200}`,
+          }}
+        >
+          <Box sx={{ fontSize: 18, fontWeight: "bold" }}>{check.name}</Box>
+          <Box sx={{ display: "flex", alignItems: "center", gridGap: 16 }}>
+            <CheckResultBadge
+              status={check.status}
+              isPublished={check.published}
+              outputEnabled={!!check.output}
+              outputValue={check.output?.value ?? null}
+              outputType={check.output?.type ?? null}
+            />
+            {check.executed_at && (
+              <Box>
+                {DateTime.fromISO(check.executed_at, {
+                  zone: "utc",
+                }).toRelative()}
+              </Box>
+            )}
           </Box>
-        )}
+        </Box>
 
         <Section title="Description">
           {check.description || (
@@ -72,7 +93,15 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gridGap: 1 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gridGap: 16,
+        padding: 16,
+        borderTop: `1px solid ${COLORS.GRAY_200}`,
+      }}
+    >
       <Box fontWeight="bold">{title}</Box>
       <Box>{children}</Box>
     </Box>
