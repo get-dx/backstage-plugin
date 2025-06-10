@@ -96,7 +96,18 @@ export function CheckResultDrawer({
                 gridGap: 16,
               }}
             >
-              <span>Related property: {check.related_property}</span>
+              <span>
+                Related property:{" "}
+                <code
+                  style={{
+                    backgroundColor: COLORS.GRAY_100,
+                    padding: `4px 8px`,
+                    borderRadius: "4px",
+                  }}
+                >
+                  {check.related_property}
+                </code>
+              </span>
               <Button
                 variant="outlined"
                 size="small"
