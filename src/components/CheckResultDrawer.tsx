@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { ScorecardCheck } from "../api";
 import { COLORS } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 type CheckResultDrawerProps = {
   check: ScorecardCheck;
@@ -79,7 +80,28 @@ export function CheckResultDrawer({
               No description
             </span>
           )}
+
+          {check.related_property && (
+            <Box>
+              <span>Related property: {check.related_property}</span>
+              <span>Edit in DX</span>
+            </Box>
+          )}
         </Section>
+
+        {check.message && (
+          <Section title="Message">
+            <Box
+              sx={{
+                padding: 12,
+                border: `1px solid ${COLORS.GRAY_200}`,
+                borderRadius: 6,
+              }}
+            >
+              <MarkdownRenderer markdown={check.message} />
+            </Box>
+          </Section>
+        )}
       </Box>
     </Drawer>
   );
