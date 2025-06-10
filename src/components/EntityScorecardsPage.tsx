@@ -20,6 +20,7 @@ import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 import { PoweredByDX } from "./Branding";
 import { CheckResultDrawer } from "./CheckResultDrawer";
+import { entityScorecardsUrl } from "../links";
 
 type EntityScorecardsPageProps = {
   entityIdentifier: string;
@@ -343,8 +344,10 @@ function CheckSummary({
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleEditRelatedProperty = () => {
-    const baseUrl = "https://app.getdx.com";
-    const url = `${baseUrl}/catalog/${entityIdentifier}/scorecards?expanded=${scorecardId}`;
+    const url = entityScorecardsUrl({
+      entityIdentifier,
+      scorecardId,
+    });
     window.location.href = url;
   };
 

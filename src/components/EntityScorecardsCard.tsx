@@ -13,6 +13,8 @@ import { CheckResultBadge } from "./CheckResultBadge";
 import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { LevelIcon } from "./LevelIcon";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
+import { CheckResultDrawer } from "./CheckResultDrawer";
+import { entityScorecardsUrl } from "../links";
 
 type EntityScorecardsCardProps = {
   entityIdentifier: string;
@@ -89,7 +91,13 @@ export function EntityScorecardsCard({
       <Box sx={{ maxHeight: contentMaxHeight, overflow: "auto", padding: 16 }}>
         {tab === "overview" && <OverviewTab scorecards={scorecards} />}
 
-        {tab === "checks" && <ChecksTab checks={flattenedChecks} />}
+        {tab === "checks" && (
+          <ChecksTab
+            checks={flattenedChecks}
+            scorecards={scorecards}
+            entityIdentifier={entityIdentifier}
+          />
+        )}
       </Box>
     </InfoCard>
   );
@@ -189,7 +197,33 @@ function OverviewTab({ scorecards }: { scorecards: Scorecard[] }) {
   );
 }
 
-function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
+function ChecksTab({
+  checks,
+  scorecards,
+  entityIdentifier,
+}: {
+  checks: ScorecardCheck[];
+  scorecards: Scorecard[];
+  entityIdentifier: string;
+}) {
+  const [expandedCheckId, setExpandedCheckId] = useState<string | null>(null);
+
+  const handleEditRelatedProperty = (check: ScorecardCheck) => {
+    const scorecard = scorecards.find((s) =>
+      s.checks.some((c) => c.id === check.id)
+    );
+
+    if (!scorecard) {
+      return;
+    }
+
+    const url = entityScorecardsUrl({
+      entityIdentifier,
+      scorecardId: scorecard.id,
+    });
+    window.location.href = url;
+  };
+
   if (checks.length === 0) {
     return (
       <Box
@@ -231,13 +265,31 @@ function ChecksTab({ checks }: { checks: ScorecardCheck[] }) {
               whiteSpace: "nowrap",
             }}
           >
-            <CheckResultBadge
-              status={check.status}
-              isPublished={check.published}
-              outputEnabled={check.output !== null}
-              outputValue={check.output?.value ?? null}
-              outputType={check.output?.type ?? null}
-              outputCustomOptions={check.output?.custom_options}
+            <div
+              onClick={() => setExpandedCheckId(check.id)}
+              style={{ cursor: "pointer" }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setExpandedCheckId(check.id);
+                }
+              }}
+            >
+              <CheckResultBadge
+                status={check.status}
+                isPublished={check.published}
+                outputEnabled={check.output !== null}
+                outputValue={check.output?.value ?? null}
+                outputType={check.output?.type ?? null}
+                outputCustomOptions={check.output?.custom_options}
+              />
+            </div>
+            <CheckResultDrawer
+              check={check}
+              open={expandedCheckId === check.id}
+              onClose={() => setExpandedCheckId(null)}
+              onEditRelatedProperty={() => handleEditRelatedProperty(check)}
             />
           </Box>
         </React.Fragment>
