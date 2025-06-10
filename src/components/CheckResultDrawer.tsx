@@ -1,6 +1,7 @@
 import React from "react";
 import { DateTime } from "luxon";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,12 +15,14 @@ type CheckResultDrawerProps = {
   check: ScorecardCheck;
   open: boolean;
   onClose: () => void;
+  onEditRelatedProperty: () => void;
 };
 
 export function CheckResultDrawer({
   check,
   open,
   onClose,
+  onEditRelatedProperty,
 }: CheckResultDrawerProps) {
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -75,16 +78,32 @@ export function CheckResultDrawer({
         </Box>
 
         <Section title="Description">
-          {check.description || (
-            <span style={{ color: COLORS.GRAY_500, fontStyle: "italic" }}>
-              No description
-            </span>
-          )}
+          <Box>
+            {check.description || (
+              <span style={{ color: COLORS.GRAY_500, fontStyle: "italic" }}>
+                No description
+              </span>
+            )}
+          </Box>
 
           {check.related_property && (
-            <Box>
+            <Box
+              sx={{
+                paddingTop: 16,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gridGap: 16,
+              }}
+            >
               <span>Related property: {check.related_property}</span>
-              <span>Edit in DX</span>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={onEditRelatedProperty}
+              >
+                Edit in DX
+              </Button>
             </Box>
           )}
         </Section>

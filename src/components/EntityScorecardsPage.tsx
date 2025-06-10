@@ -262,6 +262,8 @@ function ScorecardSummary({
                       {checksInLevel.map((check, checkIdx) => (
                         <CheckSummary
                           key={check.id}
+                          scorecardId={scorecard.id}
+                          entityIdentifier={entityIdentifier}
                           check={check}
                           showBottomBorder={checkIdx < checksInLevel.length - 1}
                         />
@@ -307,6 +309,8 @@ function ScorecardSummary({
                       {checksInCheckGroup.map((check, checkIdx) => (
                         <CheckSummary
                           key={check.id}
+                          scorecardId={scorecard.id}
+                          entityIdentifier={entityIdentifier}
                           check={check}
                           showBottomBorder={
                             checkIdx < checksInCheckGroup.length - 1
@@ -328,11 +332,21 @@ function ScorecardSummary({
 function CheckSummary({
   check,
   showBottomBorder,
+  scorecardId,
+  entityIdentifier,
 }: {
   check: ScorecardCheck;
   showBottomBorder: boolean;
+  scorecardId: string;
+  entityIdentifier: string;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleEditRelatedProperty = () => {
+    const baseUrl = "https://app.getdx.com";
+    const url = `${baseUrl}/catalog/${entityIdentifier}/scorecards?expanded=${scorecardId}`;
+    window.location.href = url;
+  };
 
   return (
     <Box
@@ -393,6 +407,7 @@ function CheckSummary({
         check={check}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        onEditRelatedProperty={handleEditRelatedProperty}
       />
     </Box>
   );
