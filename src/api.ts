@@ -95,6 +95,8 @@ type CheckCommon = {
   description: string;
   published: boolean;
   output: Output | null;
+  message: string | null;
+  related_property: string | null;
   passed: boolean;
   status: "PASS" | "FAIL" | "WARN";
   executed_at: string | null;

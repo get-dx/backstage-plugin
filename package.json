@@ -48,8 +48,10 @@
     "@material-ui/lab": "4.0.0-alpha.61",
     "@types/luxon": "^3.4.2",
     "luxon": "^3.4.4",
+    "react-markdown": "^10.1.0",
     "react-use": "^17.2.4",
-    "recharts": "^2.12.1"
+    "recharts": "^2.12.1",
+    "remark-gfm": "^4.0.1"
   },
   "peerDependencies": {
     "react": "^16.13.1 || ^17.0.0"

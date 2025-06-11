@@ -19,6 +19,9 @@ import { COLORS, DEFAULT_NO_LEVEL_COLOR } from "../styles";
 import { CheckResultBadge } from "./CheckResultBadge";
 import { RadialProgressIndicator } from "./RadialProgressIndicator";
 import { PoweredByDX } from "./Branding";
+import { CheckResultDrawer } from "./CheckResultDrawer";
+import { entityScorecardsUrl } from "../links";
+import { TimeIcon } from "./TimeIcon";
 
 type EntityScorecardsPageProps = {
   entityIdentifier: string;
@@ -261,6 +264,8 @@ function ScorecardSummary({
                       {checksInLevel.map((check, checkIdx) => (
                         <CheckSummary
                           key={check.id}
+                          scorecardId={scorecard.id}
+                          entityIdentifier={entityIdentifier}
                           check={check}
                           showBottomBorder={checkIdx < checksInLevel.length - 1}
                         />
@@ -306,6 +311,8 @@ function ScorecardSummary({
                       {checksInCheckGroup.map((check, checkIdx) => (
                         <CheckSummary
                           key={check.id}
+                          scorecardId={scorecard.id}
+                          entityIdentifier={entityIdentifier}
                           check={check}
                           showBottomBorder={
                             checkIdx < checksInCheckGroup.length - 1
@@ -327,10 +334,24 @@ function ScorecardSummary({
 function CheckSummary({
   check,
   showBottomBorder,
+  scorecardId,
+  entityIdentifier,
 }: {
   check: ScorecardCheck;
   showBottomBorder: boolean;
+  scorecardId: string;
+  entityIdentifier: string;
 }) {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleEditRelatedProperty = () => {
+    const url = entityScorecardsUrl({
+      entityIdentifier,
+      scorecardId,
+    });
+    window.location.href = url;
+  };
+
   return (
     <Box
       key={check.id}
@@ -377,7 +398,17 @@ function CheckSummary({
           </Box>
         )}
       </Box>
-      <Box>
+      <div
+        onClick={() => setDrawerOpen(!drawerOpen)}
+        style={{ cursor: "pointer" }}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            setDrawerOpen(!drawerOpen);
+          }
+        }}
+      >
         <CheckResultBadge
           status={check.status}
           isPublished={check.published}
@@ -385,7 +416,13 @@ function CheckSummary({
           outputValue={check.output?.value ?? null}
           outputType={check.output?.type ?? null}
         />
-      </Box>
+      </div>
+      <CheckResultDrawer
+        check={check}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onEditRelatedProperty={handleEditRelatedProperty}
+      />
     </Box>
   );
 }
@@ -405,18 +442,5 @@ function ChevronIcon({ style }: { style?: React.CSSProperties }) {
         fill="#9CA3AF"
       />
     </svg>
-  );
-}
-
-function TimeIcon() {
-  // The SVG for this icon was having major aliasing problems, so we're inlining it as a PNG instead
-  return (
-    <img
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAETSURBVHgBnVE7UsNADH1ru6PJFbiBcwNzA3aog+2B0OcEjo9AC3hM8KTecIPcAB/FBXT7QXJ2d0JBAZrRzEqrJ+k9AX80cR48D6qgREPPnHxBfhQOu7tb+RpqkvDo9u8NffYOaFONy/uV5GaP5E03qOYHoHtTlTO2Sg2W65U86gw5TyPQIaEcHCqOI8AlKGm5TV3LyTcqvINzVqD2qyKbvx242xV+sUxjNNnMK3KYeqUWocBpHIhP+bRXeZjiRfAAgVF/njqwPdRytAaSQAXHL4O6ZsVOpUFOgT69wLKWkcdsPNl+4QMWLcsrzm6wJVBJfDasDhfy1IQaWWN36/JmGyfEW7C8yQziVSZe1Tm0LDX+a987mHFCBKBqawAAAABJRU5ErkJggg=="
-      alt="Time icon"
-      style={{
-        marginBottom: 2,
-      }}
-    />
   );
 }
