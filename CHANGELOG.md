@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.7.4 - 2025-06-11
+
+### Added
+
+- The check result badges displayed on `EntityScorecardsPage` and `EntityScorecardsCard` are now clickable buttons that open a "check result" drawer, similar to the in-app experience. This makes it possible to see a check result's related property and markdown-supported message.
+
 ## 0.7.3 - 2025-06-09
 
 ### Changed
