@@ -14,11 +14,13 @@ import { COLORS, TASK_PRIORITY_COLORS } from "../styles";
 type EntityTasksCardProps = {
   entityIdentifier: string;
   contentMaxHeight?: string | number;
+  errorFallback?: (error: Error) => React.ReactNode;
 };
 
 export function EntityTasksCard({
   entityIdentifier,
   contentMaxHeight = "30rem",
+  errorFallback,
 }: EntityTasksCardProps) {
   const dxApi = useApi(dxApiRef);
 
@@ -35,6 +37,10 @@ export function EntityTasksCard({
   }
 
   if (error) {
+    if (errorFallback) {
+      return <>{errorFallback(error)}</>;
+    }
+
     if (error.message.includes("404")) {
       error.message = `Failed to fetch tasks: entity \`${entityIdentifier}\` not found in DX Catalog`;
     }

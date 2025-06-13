@@ -19,11 +19,13 @@ import { entityScorecardsUrl } from "../links";
 type EntityScorecardsCardProps = {
   entityIdentifier: string;
   contentMaxHeight?: string | number;
+  errorFallback?: (error: Error) => React.ReactNode;
 };
 
 export function EntityScorecardsCard({
   entityIdentifier,
   contentMaxHeight = "30rem",
+  errorFallback,
 }: EntityScorecardsCardProps) {
   const dxApi = useApi(dxApiRef);
 
@@ -42,6 +44,10 @@ export function EntityScorecardsCard({
   }
 
   if (error) {
+    if (errorFallback) {
+      return <>{errorFallback(error)}</>;
+    }
+
     if (error.message.includes("404")) {
       error.message = `Failed to fetch Scorecards: entity \`${entityIdentifier}\` not found in DX Catalog`;
     }

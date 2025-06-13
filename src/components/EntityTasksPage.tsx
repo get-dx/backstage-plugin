@@ -23,9 +23,13 @@ import { PoweredByDX } from "./Branding";
 
 type EntityTasksPageProps = {
   entityIdentifier: string;
+  errorFallback?: (error: Error) => React.ReactNode;
 };
 
-export function EntityTasksPage({ entityIdentifier }: EntityTasksPageProps) {
+export function EntityTasksPage({
+  entityIdentifier,
+  errorFallback,
+}: EntityTasksPageProps) {
   const dxApi = useApi(dxApiRef);
 
   const {
@@ -41,6 +45,10 @@ export function EntityTasksPage({ entityIdentifier }: EntityTasksPageProps) {
   }
 
   if (error) {
+    if (errorFallback) {
+      return <>{errorFallback(error)}</>;
+    }
+
     if (error.message.includes("404")) {
       error.message = `Failed to fetch tasks: entity \`${entityIdentifier}\` not found in DX Catalog`;
     }
