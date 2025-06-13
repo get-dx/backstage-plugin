@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- This adds an optional `errorFallback` function prop to each component, in case the caller wants to customize the error-handling experience.
+
+  Example usage:
+
+  ```jsx
+  <EntityScorecardsCard
+    entityIdentifier="uh-oh-not-found"
+    errorFallback={error => {
+      if (error.message.includes('404')) {
+        return <div>Custom component for entity not found</div>;
+      }
+      return <div>Custom component for other errors</div>;
+    }}
+  />
+  ```
+
 ## 0.7.4 - 2025-06-11
 
 ### Added
