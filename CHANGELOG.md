@@ -16,8 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ```jsx
   <EntityScorecardsCard
     entityIdentifier="uh-oh-not-found"
-    errorFallback={error => {
-      if (error.message.includes('404')) {
+    errorFallback={(error) => {
+      if (error.message.includes("404")) {
         return <div>Custom component for entity not found</div>;
       }
       return <div>Custom component for other errors</div>;
