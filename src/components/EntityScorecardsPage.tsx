@@ -25,10 +25,12 @@ import { TimeIcon } from "./TimeIcon";
 
 type EntityScorecardsPageProps = {
   entityIdentifier: string;
+  errorFallback?: (error: Error) => React.ReactNode;
 };
 
 export function EntityScorecardsPage({
   entityIdentifier,
+  errorFallback,
 }: EntityScorecardsPageProps) {
   const dxApi = useApi(dxApiRef);
 
@@ -49,6 +51,10 @@ export function EntityScorecardsPage({
   }
 
   if (error) {
+    if (errorFallback) {
+      return <>{errorFallback(error)}</>;
+    }
+
     if (error.message.includes("404")) {
       error.message = `Failed to fetch Scorecards: entity \`${entityIdentifier}\` not found in DX Catalog`;
     }
