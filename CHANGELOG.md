@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.7.5 - 2025-06-13
+
 ### Added
 
 - This adds an optional `errorFallback` function prop to each component, in case the caller wants to customize the error-handling experience.
