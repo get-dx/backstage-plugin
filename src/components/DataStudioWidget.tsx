@@ -1,25 +1,25 @@
 import React from "react";
 
-type DXWidgetProps = {
+type DataStudioWidgetProps = {
   token: string;
   entityIdentifier: string | string[];
   vars?: Record<string, string | string[]>;
 } & React.IframeHTMLAttributes<HTMLIFrameElement>;
 
-const DXWidget = ({
+const DataStudioWidget = ({
   token,
   entityIdentifier,
   vars = {},
   ...props
-}: DXWidgetProps) => {
+}: DataStudioWidgetProps) => {
   const queryParams = new URLSearchParams();
 
   if (Array.isArray(entityIdentifier)) {
     entityIdentifier.forEach((id) =>
-      queryParams.append("var-entity_ids[]", id)
+      queryParams.append("var-entity_identifiers[]", id)
     );
   } else {
-    queryParams.append("var-entity_ids[]", entityIdentifier);
+    queryParams.append("var-entity_identifiers[]", entityIdentifier);
   }
 
   Object.entries(vars).forEach(([key, value]) => {
@@ -42,4 +42,4 @@ const DXWidget = ({
   );
 };
 
-export { DXWidget };
+export { DataStudioWidget };

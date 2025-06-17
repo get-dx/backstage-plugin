@@ -192,11 +192,12 @@ export const EntityTasksPage = dxPlugin.provide(
   }),
 );
 
-export const DXWidget = dxPlugin.provide(
+export const DataStudioWidget = dxPlugin.provide(
   createComponentExtension({
-    name: "DXWidget",
+    name: "DataStudioWidget",
     component: {
-      lazy: () => import("./components/DXWidget").then((m) => m.DXWidget),
+      lazy: () =>
+        import("./components/DataStudioWidget").then((m) => m.DataStudioWidget),
     },
   }),
 );

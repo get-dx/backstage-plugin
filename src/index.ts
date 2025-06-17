@@ -11,6 +11,6 @@ export {
   EntityTasksCard,
   EntityScorecardsPage,
   EntityTasksPage,
-  DXWidget,
+  DataStudioWidget,
   dxPlugin,
 } from "./plugin";
