@@ -11,5 +11,6 @@ export {
   EntityTasksCard,
   EntityScorecardsPage,
   EntityTasksPage,
+  DXWidget,
   dxPlugin,
 } from "./plugin";

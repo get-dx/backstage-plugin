@@ -191,3 +191,12 @@ export const EntityTasksPage = dxPlugin.provide(
     },
   }),
 );
+
+export const DXWidget = dxPlugin.provide(
+  createComponentExtension({
+    name: "DXWidget",
+    component: {
+      lazy: () => import("./components/DXWidget").then((m) => m.DXWidget),
+    },
+  }),
+);
