@@ -72,6 +72,7 @@ First, in `packages/app/src/components/catalog/EntityPage.tsx`, define wrapper c
 
 ```tsx
 import { EntityScorecardsCard } from "@get-dx/backstage-plugin";
+import { useEntity } from '@backstage/plugin-catalog-react';
 
 function EntityScorecardsCardWrapped() {
   const { entity } = useEntity();
