@@ -10,15 +10,20 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { ChartResponse } from "../api";
 
+interface ChartData {
+  data: { label: string; value: number; date: string }[];
+  unit: string;
+  overall?: number;
+}
 const formatDate = (date: string) =>
   DateTime.fromISO(date).toUTC().toLocaleString(DateTime.DATE_MED);
 
-export function LineChart({ data, unit, total }: ChartResponse) {
+export function LineChart({ data, unit, overall }: ChartData) {
   const chartData = data.map((x) => ({
     value: x.value,
     name: x.label,
+    date: x.date,
   }));
 
   const firstDate = formatDate(data[0].date);
@@ -26,38 +31,45 @@ export function LineChart({ data, unit, total }: ChartResponse) {
 
   return (
     <>
-      <Box fontSize={20}>
-        {total}
-        {unit}
+      <Box
+        fontSize={20}
+        display="flex"
+        alignItems="center"
+        gridGap={4}
+        paddingBottom={4}
+      >
+        <div>{overall}</div>
+        <div>{unit}</div>
       </Box>
       <Box width="full" height="200px">
         <ResponsiveContainer>
-          <RechartsLineChart
-            width={300}
-            height={100}
-            data={chartData}
-            syncId="dx-dora"
-          >
+          <RechartsLineChart width={300} height={100} data={chartData}>
             <Tooltip
               content={({ active, payload }) => {
                 if (!active) return null;
-                const date = payload?.[0].payload.name;
+                const date = payload?.[0].payload.date;
+                const formattedDate = formatDate(date);
                 return (
                   <Card elevation={5}>
                     <CardContent>
-                      <Typography>{date}</Typography>
-                      <Typography>
-                        {payload?.[0].value}
-                        {unit}
-                      </Typography>
+                      <Box fontSize={12}>{formattedDate}</Box>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        gridGap={4}
+                        fontSize={16}
+                      >
+                        <div>{payload?.[0].value}</div>
+                        <div>{unit}</div>
+                      </Box>
                     </CardContent>
                   </Card>
                 );
               }}
             />
             <Line
-              dot
-              type="monotone"
+              dot={false}
+              type="linear"
               dataKey="value"
               stroke="#6366f1"
               strokeWidth={2}

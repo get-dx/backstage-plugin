@@ -39,7 +39,51 @@ These components visualize Scorecards and Tasks for an entity.
 | `<EntityScorecardsCard />` | Info card showing current scorecard levels and checks for the service.    |
 | `<EntityTasksCard />`      | Info card showing outstanding tasks for the service.                      |
 
-Each of these components requires an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
+### Custom Data Charts
+
+| Component             | Description                                                                    |
+| --------------------- | ------------------------------------------------------------------------------ |
+| `<DxDataChartCard />` | Info card displaying custom metrics from DX datafeed endpoints as line charts. |
+
+The Service Cloud components require an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
+
+#### DxDataChartCard
+
+The `DxDataChartCard` component displays custom metrics from DX datafeed endpoints. It fetches data from `https://app.getdx.com/datafeed/:datafeedToken` and renders it as a line chart.
+
+**Props:**
+
+- `title`: Card title
+- `datafeedToken`: Token for the DX datafeed endpoint
+- `unit`: Unit label for the chart data (e.g., "deployments", "issues", "mins")
+- `variables`: Optional variables to pass to the datafeed endpoint (prefixed with `var-`)
+- `chartConfig`: Configuration for the chart axes
+
+**Example:**
+
+```tsx
+import { DxDataChartCard } from "@get-dx/backstage-plugin";
+
+function MyDashboard() {
+  const { entity } = useEntity();
+
+  return (
+    <DxDataChartCard
+      title="Deployment Frequency"
+      datafeedToken="your-datafeed-token"
+      unit="deployments"
+      variables={{
+        teamId: entity.metadata.annotations?.["getdx.com/id"],
+      }}
+      chartConfig={{
+        type: "line",
+        xAxis: "date",
+        yAxis: "count",
+      }}
+    />
+  );
+}
+```
 
 Install the full-page components by defining routes in the service entity page:
 
