@@ -212,14 +212,16 @@ export class DXApiClient implements DXApi {
     datafeedToken: string,
     variables: Record<string, string | number | boolean> = {},
   ) {
-    const params: Record<string, string | number | boolean> = {};
+    const params: Record<string, string | number | boolean> = {
+      feed_token: datafeedToken,
+    };
     for (const [key, value] of Object.entries(variables)) {
       if (value !== undefined) {
         params[`var-${key}`] = value;
       }
     }
     return this.getFromApp<DatafeedResponse>(
-      `/datacloud/datafeed/${datafeedToken}.json`,
+      "/datacloud.queries.datafeed",
       params,
     );
   }
