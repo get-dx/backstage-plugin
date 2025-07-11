@@ -165,7 +165,7 @@ export interface DXApi {
   tasks(entityIdentifier: string): Promise<TasksResponse>;
   datafeed(
     datafeedToken: string,
-    variables?: Record<string, string | number | boolean>
+    variables?: Record<string, string | number | boolean>,
   ): Promise<DatafeedResponse>;
 }
 
@@ -210,7 +210,7 @@ export class DXApiClient implements DXApi {
 
   datafeed(
     datafeedToken: string,
-    variables: Record<string, string | number | boolean> = {}
+    variables: Record<string, string | number | boolean> = {},
   ) {
     const params: Record<string, string | number | boolean> = {};
     for (const [key, value] of Object.entries(variables)) {
@@ -220,13 +220,13 @@ export class DXApiClient implements DXApi {
     }
     return this.getFromApp<DatafeedResponse>(
       `/datacloud/datafeed/${datafeedToken}.json`,
-      params
+      params,
     );
   }
 
   private async getFromApp<T = any>(
     path: string,
-    params: Record<string, string | number | boolean | null | undefined>
+    params: Record<string, string | number | boolean | null | undefined>,
   ): Promise<T> {
     const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-web-api`;
 
