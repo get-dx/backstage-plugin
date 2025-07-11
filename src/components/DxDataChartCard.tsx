@@ -14,7 +14,7 @@ export interface DxDataChartCardProps {
   title: string;
   description?: string;
   datafeedToken: string;
-  variables?: Record<string, string | undefined>;
+  variables?: Record<string, string | number | boolean>;
   unit: string;
   chartConfig: {
     type: "line" | "table";

@@ -165,7 +165,7 @@ export interface DXApi {
   tasks(entityIdentifier: string): Promise<TasksResponse>;
   datafeed(
     datafeedToken: string,
-    variables?: Record<string, string | undefined>,
+    variables?: Record<string, string | number | boolean>,
   ): Promise<DatafeedResponse>;
 }
 
@@ -210,9 +210,9 @@ export class DXApiClient implements DXApi {
 
   datafeed(
     datafeedToken: string,
-    variables: Record<string, string | undefined> = {},
+    variables: Record<string, string | number | boolean> = {},
   ) {
-    const params: Record<string, string | undefined> = {};
+    const params: Record<string, string | number | boolean> = {};
     for (const [key, value] of Object.entries(variables)) {
       if (value !== undefined) {
         params[`var-${key}`] = value;
@@ -226,7 +226,7 @@ export class DXApiClient implements DXApi {
 
   private async getFromApp<T = any>(
     path: string,
-    params: Record<string, string | null | undefined>,
+    params: Record<string, string | number | boolean | null | undefined>,
   ): Promise<T> {
     const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-web-api`;
 
@@ -234,7 +234,7 @@ export class DXApiClient implements DXApi {
 
     for (const [key, value] of Object.entries(params)) {
       if (value !== undefined && value !== null) {
-        url.searchParams.append(key, value);
+        url.searchParams.append(key, value.toString());
       }
     }
 

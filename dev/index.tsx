@@ -37,7 +37,7 @@ function DxDataChartDemo() {
         datafeedToken="demo-token-123"
         unit="deployments"
         variables={{
-          teamId: entity.metadata.annotations?.["getdx.com/id"],
+          teamId: entity.metadata.annotations?.["getdx.com/id"] ?? "",
         }}
         chartConfig={{
           type: "line",
@@ -51,7 +51,7 @@ function DxDataChartDemo() {
         datafeedToken="demo-token-123"
         unit="deployments"
         variables={{
-          teamId: entity.metadata.annotations?.["getdx.com/id"],
+          teamId: entity.metadata.annotations?.["getdx.com/id"] ?? "",
         }}
         chartConfig={{
           type: "table",
