@@ -35,10 +35,10 @@ export const EntityScorecardsCard = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityScorecardsCard").then(
-          (m) => m.EntityScorecardsCard
+          (m) => m.EntityScorecardsCard,
         ),
     },
-  })
+  }),
 );
 
 export const EntityTasksCard = dxPlugin.provide(
@@ -48,7 +48,7 @@ export const EntityTasksCard = dxPlugin.provide(
       lazy: () =>
         import("./components/EntityTasksCard").then((m) => m.EntityTasksCard),
     },
-  })
+  }),
 );
 
 export const EntityScorecardsPage = dxPlugin.provide(
@@ -57,10 +57,10 @@ export const EntityScorecardsPage = dxPlugin.provide(
     component: {
       lazy: () =>
         import("./components/EntityScorecardsPage").then(
-          (m) => m.EntityScorecardsPage
+          (m) => m.EntityScorecardsPage,
         ),
     },
-  })
+  }),
 );
 
 export const EntityTasksPage = dxPlugin.provide(
@@ -70,5 +70,5 @@ export const EntityTasksPage = dxPlugin.provide(
       lazy: () =>
         import("./components/EntityTasksPage").then((m) => m.EntityTasksPage),
     },
-  })
+  }),
 );
