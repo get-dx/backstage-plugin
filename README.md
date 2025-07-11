@@ -39,13 +39,13 @@ These components visualize Scorecards and Tasks for an entity.
 | `<EntityScorecardsCard />` | Info card showing current scorecard levels and checks for the service.    |
 | `<EntityTasksCard />`      | Info card showing outstanding tasks for the service.                      |
 
+> The Service Cloud components require an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
+
 ### Custom Data Charts
 
 | Component             | Description                                                                      |
 | --------------------- | -------------------------------------------------------------------------------- |
 | `<DxDataChartCard />` | Info card displaying custom metrics from DX datafeed endpoints as charts/tables. |
-
-The Service Cloud components require an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
 
 #### DxDataChartCard
 
