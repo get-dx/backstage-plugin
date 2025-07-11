@@ -1,10 +1,11 @@
 import React from "react";
 import { createDevApp, EntityGridItem } from "@backstage/dev-utils";
-import { dxPlugin, EntityDXDashboardContent } from "../src/plugin";
+import { dxPlugin } from "../src/plugin";
+import { DxDataChartCard } from "../src/components/DxDataChartCard";
 import { Entity } from "@backstage/catalog-model";
 import { http, HttpResponse } from "msw";
 import { setupWorker } from "msw/browser";
-import Grid from "@material-ui/core/Grid";
+import { useEntity } from "@backstage/plugin-catalog-react";
 
 import { Content, Header, Page } from "@backstage/core-components";
 
@@ -16,6 +17,7 @@ const mockComponentEntity: Entity = {
     description: "DX Application",
     annotations: {
       "github.com/project-slug": "get-dx/app",
+      "getdx.com/id": "team-123",
     },
   },
   spec: {
@@ -25,77 +27,55 @@ const mockComponentEntity: Entity = {
   },
 };
 
-const mockGroupEntity: Entity = {
-  metadata: {
-    namespace: "default",
-    name: "developers",
-    description: "The DX developers",
-    links: [
-      {
-        url: "https://github.com/get-dx",
-        title: "DX Organization",
-        icon: "github",
-      },
-    ],
-    uid: "f885e5b2-6035-4559-a19e-92948354a8fc",
-    etag: "c0cc274fb413c55ffe20fbed18d11cfab4e6cdbf",
-  },
-  apiVersion: "backstage.io/v1alpha1",
-  kind: "Group",
-  spec: {
-    type: "team",
-    profile: {
-      displayName: "Developers",
-      email: "developers@getdx.com",
-      picture:
-        "https://avatars.slack-edge.com/2023-05-11/5237245309767_9d5341b5ce4f04f60afc_230.png",
-    },
-    children: [],
-    members: [
-      "abi-noda",
-      "chris-dwan",
-      "eliza-hales",
-      "isaac-noda",
-      "jake-hasler",
-      "ryan-jones",
-      "tyler-wray",
-    ],
-  },
-};
+function DxDataChartDemo() {
+  const { entity } = useEntity();
+
+  return (
+    <>
+      <DxDataChartCard
+        title="Deployments Chart"
+        datafeedToken="demo-token-123"
+        unit="deployments"
+        variables={{
+          teamId: entity.metadata.annotations?.["getdx.com/id"] ?? "",
+        }}
+        chartConfig={{
+          type: "line",
+          xAxis: "date",
+          yAxis: "value",
+        }}
+      />
+      <br />
+      <DxDataChartCard
+        title="Deployments Table"
+        datafeedToken="demo-token-123"
+        unit="deployments"
+        variables={{
+          teamId: entity.metadata.annotations?.["getdx.com/id"] ?? "",
+        }}
+        chartConfig={{
+          type: "table",
+        }}
+      />
+    </>
+  );
+}
 
 createDevApp()
   .registerPlugin(dxPlugin)
   .addPage({
     element: (
       <Page themeId="home">
-        <Header title="DX Backstage Plugin" />
+        <Header title="DX Data Chart Demo" />
         <Content>
-          <Grid container>
-            <EntityGridItem entity={mockComponentEntity}>
-              <EntityDXDashboardContent />
-            </EntityGridItem>
-          </Grid>
+          <EntityGridItem entity={mockComponentEntity}>
+            <DxDataChartDemo />
+          </EntityGridItem>
         </Content>
       </Page>
     ),
-    title: "Component Page",
-    path: "/dx-component",
-  })
-  .addPage({
-    element: (
-      <Page themeId="home">
-        <Header title="DX Backstage Plugin" />
-        <Content>
-          <Grid container>
-            <EntityGridItem entity={mockGroupEntity}>
-              <EntityDXDashboardContent />
-            </EntityGridItem>
-          </Grid>
-        </Content>
-      </Page>
-    ),
-    title: "Group Page",
-    path: "/dx-group",
+    title: "Data Chart Demo",
+    path: "/dx-data-chart",
   })
   .render();
 
@@ -133,7 +113,7 @@ const worker = setupWorker(
       ],
       total: 0.5,
       unit: " per day",
-    }),
+    })
   ),
 
   http.get(`${host}/api/proxy/dx/api/backstage.changeFailureRate`, () =>
@@ -167,7 +147,7 @@ const worker = setupWorker(
       ],
       total: 25.04,
       unit: "%",
-    }),
+    })
   ),
 
   http.get(`${host}/api/proxy/dx/api/backstage.timeToRecovery`, () =>
@@ -201,7 +181,7 @@ const worker = setupWorker(
       ],
       total: 26.98,
       unit: " mins",
-    }),
+    })
   ),
 
   http.get(`${host}/api/proxy/dx/api/backstage.openToDeploy`, () =>
@@ -235,7 +215,7 @@ const worker = setupWorker(
       ],
       total: 144.98,
       unit: " mins",
-    }),
+    })
   ),
 
   http.get(`${host}/api/proxy/dx/api/backstage.topContributors`, () =>
@@ -277,8 +257,27 @@ const worker = setupWorker(
           date: "2024-02-16T17:46:05.000Z",
         },
       ],
-    }),
+    })
   ),
+
+  // Mock datafeed endpoint for DxDataChart
+  http.get(
+    `${host}/api/proxy/dx-web-api/datacloud/datafeed/demo-token-123.json`,
+    () =>
+      HttpResponse.json({
+        data: {
+          rows: [
+            ["2025-06-02 00:00:00", "app", "app", "0"],
+            ["2025-06-09 00:00:00", "app", "app", "106"],
+            ["2025-06-16 00:00:00", "app", "app", "108"],
+            ["2025-06-23 00:00:00", "app", "app", "159"],
+            ["2025-06-30 00:00:00", "app", "app", "97"],
+            ["2025-07-07 00:00:00", "app", "app", "46"],
+          ],
+          columns: ["date", "entity_name", "entity_identifier", "value"],
+        },
+      })
+  )
 );
 
 // Start the Mock Service Worker

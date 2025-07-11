@@ -1,6 +1,7 @@
 ---
 # Mock config for dev server.
 app:
+  title: DX Sandbox
   baseUrl: http://localhost:4321
 
 backend:

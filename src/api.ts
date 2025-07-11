@@ -7,16 +7,6 @@ import {
 import { ResponseError } from "@backstage/errors";
 import packageJson from "../package.json";
 
-export interface ChartResponse {
-  data: { label: string; value: number; date: string }[];
-  unit: string;
-  total: number;
-}
-
-export interface TopContributorsResponse {
-  data: { label: string; value: number; date: string }[];
-}
-
 export interface ScorecardsResponse {
   ok: true;
   scorecards: Scorecard[];
@@ -163,14 +153,20 @@ export type User = {
   slack_ext_id?: string;
 };
 
+export interface DatafeedResponse {
+  data: {
+    rows: string[][];
+    columns: string[];
+  };
+}
+
 export interface DXApi {
-  changeFailureRate(entityRef: string): Promise<ChartResponse>;
-  deploymentFrequency(entityRef: string): Promise<ChartResponse>;
-  openToDeploy(entityRef: string): Promise<ChartResponse>;
-  timeToRecovery(entityRef: string): Promise<ChartResponse>;
-  topContributors(entityRef: string): Promise<TopContributorsResponse>;
   scorecards(entityIdentifier: string): Promise<ScorecardsResponse>;
   tasks(entityIdentifier: string): Promise<TasksResponse>;
+  datafeed(
+    datafeedToken: string,
+    variables?: Record<string, string | number | boolean>,
+  ): Promise<DatafeedResponse>;
 }
 
 export const dxApiRef = createApiRef<DXApi>({
@@ -196,56 +192,6 @@ export class DXApiClient implements DXApi {
     this.fetchApi = fetchApi;
   }
 
-  /**
-   * @deprecated
-   */
-  changeFailureRate(entityRef: string) {
-    return this.get<ChartResponse>("/api/backstage.changeFailureRate", {
-      entityRef,
-      appId: this.appId(),
-    });
-  }
-
-  /**
-   * @deprecated
-   */
-  deploymentFrequency(entityRef: string) {
-    return this.get<ChartResponse>("/api/backstage.deploymentFrequency", {
-      entityRef,
-      appId: this.appId(),
-    });
-  }
-
-  /**
-   * @deprecated
-   */
-  openToDeploy(entityRef: string) {
-    return this.get<ChartResponse>("/api/backstage.openToDeploy", {
-      entityRef,
-      appId: this.appId(),
-    });
-  }
-
-  /**
-   * @deprecated
-   */
-  timeToRecovery(entityRef: string) {
-    return this.get<ChartResponse>("/api/backstage.timeToRecovery", {
-      entityRef,
-      appId: this.appId(),
-    });
-  }
-
-  /**
-   * @deprecated
-   */
-  topContributors(entityRef: string) {
-    return this.get<TopContributorsResponse>("/api/backstage.topContributors", {
-      entityRef,
-      appId: this.appId(),
-    });
-  }
-
   scorecards(entityIdentifier: string) {
     return this.getFromApp<ScorecardsResponse>("/entities.scorecards", {
       identifier: entityIdentifier,
@@ -262,32 +208,25 @@ export class DXApiClient implements DXApi {
     });
   }
 
-  private async get<T = any>(
-    path: string,
-    params: Record<string, string | null | undefined>,
-  ): Promise<T> {
-    const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx`;
-
-    const url = new URL(`${proxyHost}${path}`);
-
-    for (const [key, value] of Object.entries(params)) {
-      if (value !== undefined && value !== null) {
-        url.searchParams.append(key, value);
+  datafeed(
+    datafeedToken: string,
+    variables: Record<string, string | number | boolean> = {},
+  ) {
+    const params: Record<string, string | number | boolean> = {};
+    for (const [key, value] of Object.entries(variables)) {
+      if (value !== undefined) {
+        params[`var-${key}`] = value;
       }
     }
-
-    const { fetch } = this.fetchApi;
-
-    const resp = await fetch(url, { method: "GET" });
-
-    if (!resp.ok) throw await ResponseError.fromResponse(resp);
-
-    return await resp.json();
+    return this.getFromApp<DatafeedResponse>(
+      `/datacloud/datafeed/${datafeedToken}.json`,
+      params,
+    );
   }
 
   private async getFromApp<T = any>(
     path: string,
-    params: Record<string, string | null | undefined>,
+    params: Record<string, string | number | boolean | null | undefined>,
   ): Promise<T> {
     const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-web-api`;
 
@@ -295,7 +234,7 @@ export class DXApiClient implements DXApi {
 
     for (const [key, value] of Object.entries(params)) {
       if (value !== undefined && value !== null) {
-        url.searchParams.append(key, value);
+        url.searchParams.append(key, value.toString());
       }
     }
 

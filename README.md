@@ -39,7 +39,78 @@ These components visualize Scorecards and Tasks for an entity.
 | `<EntityScorecardsCard />` | Info card showing current scorecard levels and checks for the service.    |
 | `<EntityTasksCard />`      | Info card showing outstanding tasks for the service.                      |
 
-Each of these components requires an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
+> The Service Cloud components require an `entityIdentifier` prop, in order to fetch the correct DX entity. If you use the Backstage catalog plugin, you can call Backstage's `useEntity` hook to get metadata to help map or construct the DX entity identifier.
+
+### Custom Data Charts
+
+| Component             | Description                                                                      |
+| --------------------- | -------------------------------------------------------------------------------- |
+| `<DxDataChartCard />` | Info card displaying custom metrics from DX datafeed endpoints as charts/tables. |
+
+#### DxDataChartCard
+
+The `DxDataChartCard` component displays custom metrics from DX datafeed endpoints. It fetches data from DX datafeeds and renders it as either a line chart or table.
+
+**Props:**
+
+- `title`: Card title
+- `description`: Optional card description/subtitle
+- `datafeedToken`: Token for the DX datafeed endpoint
+- `unit`: Unit label for the chart data (e.g., "deployments", "issues", "mins")
+- `variables`: Optional variables to pass to the datafeed endpoint
+- `chartConfig`: Configuration object specifying:
+  - `type`: "line" or "table"
+  - `xAxis`: Column name for x-axis (required for line charts)
+  - `yAxis`: Column name for y-axis (required for line charts)
+
+**Features:**
+
+- Supports both line chart and table visualizations
+- Automatic data transformation from datafeed format to chart format
+- Deep link to view the query in DX DataCloud
+- Error handling and loading states
+- Calculates overall average for line charts
+
+**Example - Line Chart:**
+
+```tsx
+import { DxDataChartCard } from "@get-dx/backstage-plugin";
+
+function MyDashboard() {
+  const { entity } = useEntity();
+
+  return (
+    <DxDataChartCard
+      title="Deployment Frequency"
+      description="Weekly deployments over time"
+      datafeedToken="your-datafeed-token"
+      unit="deployments"
+      variables={{
+        teamId: entity.metadata.annotations?.["getdx.com/id"],
+      }}
+      chartConfig={{
+        type: "line",
+        xAxis: "date",
+        yAxis: "count",
+      }}
+    />
+  );
+}
+```
+
+**Example - Table:**
+
+```tsx
+<DxDataChartCard
+  title="Recent Deployments"
+  description="Last 10 deployments"
+  datafeedToken="your-datafeed-token"
+  unit="deployments"
+  chartConfig={{
+    type: "table",
+  }}
+/>
+```
 
 Install the full-page components by defining routes in the service entity page:
 
