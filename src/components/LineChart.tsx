@@ -19,11 +19,28 @@ interface ChartData {
 const formatDate = (date: string) =>
   DateTime.fromISO(date).toUTC().toLocaleString(DateTime.DATE_MED);
 
+const calculateTrendline = (data: { value: number }[]) => {
+  const n = data.length;
+  if (n < 2) return data.map(() => 0);
+
+  const sumX = data.reduce((sum, _, i) => sum + i, 0);
+  const sumY = data.reduce((sum, point) => sum + point.value, 0);
+  const sumXY = data.reduce((sum, point, i) => sum + i * point.value, 0);
+  const sumXX = data.reduce((sum, _, i) => sum + i * i, 0);
+
+  const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+  const intercept = (sumY - slope * sumX) / n;
+
+  return data.map((_, i) => slope * i + intercept);
+};
+
 export function LineChart({ data, unit, overall }: ChartData) {
-  const chartData = data.map((x) => ({
+  const trendlineValues = calculateTrendline(data);
+  const chartData = data.map((x, i) => ({
     value: x.value,
     name: x.label,
     date: x.date,
+    trendline: trendlineValues[i],
   }));
 
   const firstDate = formatDate(data[0].date);
@@ -31,15 +48,11 @@ export function LineChart({ data, unit, overall }: ChartData) {
 
   return (
     <>
-      <Box
-        fontSize={20}
-        display="flex"
-        alignItems="center"
-        gridGap={4}
-        paddingBottom={4}
-      >
-        <div>{overall}</div>
-        <div>{unit}</div>
+      <Box display="flex" alignItems="baseline" gridGap={4} paddingBottom={4}>
+        <Box fontSize={24} fontWeight={500}>
+          {overall}
+        </Box>
+        <Box fontSize={16}>{unit}</Box>
       </Box>
       <Box width="full" height="200px">
         <ResponsiveContainer>
@@ -52,15 +65,19 @@ export function LineChart({ data, unit, overall }: ChartData) {
                 return (
                   <Card elevation={5}>
                     <CardContent>
-                      <Box fontSize={12}>{formattedDate}</Box>
+                      <Box fontSize={12} pb={1}>
+                        {formattedDate}
+                      </Box>
                       <Box
                         display="flex"
-                        alignItems="center"
+                        alignItems="baseline"
                         gridGap={4}
                         fontSize={16}
                       >
-                        <div>{payload?.[0].value}</div>
-                        <div>{unit}</div>
+                        <Box fontSize={20} fontWeight={500}>
+                          {payload?.[0].value}
+                        </Box>
+                        <Box fontSize={12}>{unit}</Box>
                       </Box>
                     </CardContent>
                   </Card>
@@ -73,6 +90,14 @@ export function LineChart({ data, unit, overall }: ChartData) {
               dataKey="value"
               stroke="#6366f1"
               strokeWidth={2}
+            />
+            <Line
+              dot={false}
+              type="linear"
+              dataKey="trendline"
+              stroke="#818cf8"
+              strokeWidth={1}
+              strokeDasharray="5 5"
             />
           </RechartsLineChart>
         </ResponsiveContainer>
