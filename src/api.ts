@@ -10,11 +10,6 @@ import packageJson from "../package.json";
 export interface ScorecardsResponse {
   ok: true;
   scorecards: Scorecard[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-  };
 }
 
 export type Scorecard = LevelBasedScorecard | PointsBasedScorecard;
@@ -117,11 +112,6 @@ export type CustomOutputOptions = {
 export type TasksResponse = {
   ok: true;
   tasks: Task[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-  };
 };
 
 export type Task = {
@@ -165,7 +155,7 @@ export interface DXApi {
   tasks(entityIdentifier: string): Promise<TasksResponse>;
   datafeed(
     datafeedToken: string,
-    variables?: Record<string, string | number | boolean>,
+    variables?: Record<string, string | number | boolean>
   ): Promise<DatafeedResponse>;
 }
 
@@ -195,7 +185,6 @@ export class DXApiClient implements DXApi {
   scorecards(entityIdentifier: string) {
     return this.getFromApp<ScorecardsResponse>("/entities.scorecards", {
       identifier: entityIdentifier,
-      page: "1",
       limit: "10",
     });
   }
@@ -203,14 +192,13 @@ export class DXApiClient implements DXApi {
   tasks(entityIdentifier: string) {
     return this.getFromApp<TasksResponse>("/entities.tasks", {
       identifier: entityIdentifier,
-      page: "1",
       limit: "50",
     });
   }
 
   datafeed(
     datafeedToken: string,
-    variables: Record<string, string | number | boolean> = {},
+    variables: Record<string, string | number | boolean> = {}
   ) {
     const params: Record<string, string | number | boolean> = {
       feed_token: datafeedToken,
@@ -222,13 +210,13 @@ export class DXApiClient implements DXApi {
     }
     return this.getFromApp<DatafeedResponse>(
       "/datacloud.queries.datafeed",
-      params,
+      params
     );
   }
 
   private async getFromApp<T = any>(
     path: string,
-    params: Record<string, string | number | boolean | null | undefined>,
+    params: Record<string, string | number | boolean | null | undefined>
   ): Promise<T> {
     const proxyHost = `${await this.discoveryApi.getBaseUrl("proxy")}/dx-web-api`;
 
