@@ -9,7 +9,7 @@ export interface Config {
      * @visibility frontend
      */
     appId?: string;
-    
+
     /**
      * Optional datafeed tokens that can be referenced by name in DxDataChartCard components.
      * This allows tokens to be stored in secret managers and referenced securely
