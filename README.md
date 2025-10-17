@@ -55,7 +55,7 @@ The `DxDataChartCard` component displays custom metrics from DX datafeed endpoin
 
 - `title`: Card title
 - `description`: Optional card description/subtitle
-- `datafeedToken`: Token for the DX datafeed endpoint
+- `datafeedToken`: Token for the DX datafeed endpoint - see [datafeed docs](https://docs.getdx.com/data-studio/#datafeeds)
 - `unit`: Unit label for the chart data (e.g., "deployments", "issues", "mins")
 - `variables`: Optional variables to pass to the datafeed endpoint
 - `chartConfig`: Configuration object specifying:
