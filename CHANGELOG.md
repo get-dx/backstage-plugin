@@ -7,15 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix an infinite loop on `DxDataChardCard` if `variables` prop is not present.
+
 ## 1.0.0 - 2025-07-10
 
 ### Added
 
-- This adds a new `DxDataChart` component that can be used to display data from DX data studio queries!
+- This adds a new `DxDataChartCard` component that can be used to display data from DX data studio queries!
 
 ### Breaking changes
 
-- This version removes the following components which are made redundant by the `DxDataChart` flexibility.
+- This version removes the following components which are made redundant by the `DxDataChartCard` flexibility.
 
   - `EntityChangeFailureRateCard`
   - `EntityDeploymentFrequencyCard`
