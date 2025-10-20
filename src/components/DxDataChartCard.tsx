@@ -10,6 +10,8 @@ import { LineChart } from "./LineChart";
 import { dxApiRef } from "../api";
 import { Table, TableColumn } from "@backstage/core-components";
 
+const STABLE_EMPTY_OBJECT = Object.freeze({});
+
 export interface DxDataChartCardProps {
   title: string;
   description?: string;
@@ -27,7 +29,7 @@ export function DxDataChartCard({
   datafeedToken,
   title,
   description,
-  variables = {},
+  variables = STABLE_EMPTY_OBJECT,
   chartConfig,
   unit,
 }: DxDataChartCardProps) {
