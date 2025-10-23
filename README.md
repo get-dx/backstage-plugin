@@ -26,6 +26,17 @@ DX Backstage frontend plugin to display DX data in your Backstage app.
           - X-Client-Version
   ```
 
+- (Optional) Configure named datafeed tokens to reference them securely in `DxDataChartCard` components instead of hardcoding tokens:
+
+  ```yaml
+  # app-config.yaml
+  dx:
+    datafeedTokens:
+      deploymentFrequency: ${DATAFEED_TOKEN_DEPLOYMENT_FREQUENCY}
+      codeQuality: ${DATAFEED_TOKEN_CODE_QUALITY}
+      # etc.
+  ```
+
 ## Add Components
 
 ### Service Cloud
@@ -74,16 +85,21 @@ The `DxDataChartCard` component displays custom metrics from DX datafeed endpoin
 **Example - Line Chart:**
 
 ```tsx
+import { useApi, configApiRef } from '@backstage/core-plugin-api';
+
 import { DxDataChartCard } from "@get-dx/backstage-plugin";
 
 function MyDashboard() {
+  const config = useApi(configApiRef);
+  const datafeedToken = config.getString('dx.datafeedTokens.deploymentFrequency');
+
   const { entity } = useEntity();
 
   return (
     <DxDataChartCard
       title="Deployment Frequency"
       description="Weekly deployments over time"
-      datafeedToken="your-datafeed-token"
+      datafeedToken={datafeedToken}
       unit="deployments"
       variables={{
         teamId: entity.metadata.annotations?.["getdx.com/id"],
