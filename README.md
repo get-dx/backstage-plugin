@@ -85,13 +85,15 @@ The `DxDataChartCard` component displays custom metrics from DX datafeed endpoin
 **Example - Line Chart:**
 
 ```tsx
-import { useApi, configApiRef } from '@backstage/core-plugin-api';
+import { useApi, configApiRef } from "@backstage/core-plugin-api";
 
 import { DxDataChartCard } from "@get-dx/backstage-plugin";
 
 function MyDashboard() {
   const config = useApi(configApiRef);
-  const datafeedToken = config.getString('dx.datafeedTokens.deploymentFrequency');
+  const datafeedToken = config.getString(
+    "dx.datafeedTokens.deploymentFrequency",
+  );
 
   const { entity } = useEntity();
 
