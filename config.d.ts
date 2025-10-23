@@ -9,5 +9,21 @@ export interface Config {
      * @visibility frontend
      */
     appId?: string;
+
+    /**
+     * Optional datafeed tokens that can be referenced by name in DxDataChartCard components.
+     * This allows tokens to be stored in secret managers and referenced securely
+     * instead of hardcoding them directly in the code.
+     *
+     * Example:
+     *   datafeedTokens:
+     *     deploymentFrequency: ${DEPLOYMENT_FREQUENCY_TOKEN}
+     *     changeFailRate: ${CHANGE_FAIL_RATE_TOKEN}
+     *
+     * @deepVisibility frontend
+     */
+    datafeedTokens?: {
+      [tokenName: string]: string;
+    };
   };
 }

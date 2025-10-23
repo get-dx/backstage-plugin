@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Fix an infinite loop on `DxDataChardCard` if `variables` prop is not present.
+### Added
+
+- Added optional `datafeedTokens` configuration that allows datafeed tokens to be referenced by name in `DxDataChartCard` components. This enables tokens to be stored in secret managers and referenced securely instead of hardcoding them directly in the code.
+
+### Fixed
+
+- Fix an infinite loop on `DxDataChartCard` if `variables` prop is not present.
 
 ## 1.0.0 - 2025-07-10
 
