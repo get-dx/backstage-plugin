@@ -20,7 +20,7 @@ export interface Config {
      *     deploymentFrequency: ${DEPLOYMENT_FREQUENCY_TOKEN}
      *     changeFailRate: ${CHANGE_FAIL_RATE_TOKEN}
      *
-     * @visibility frontend
+     * @deepVisibility frontend
      */
     datafeedTokens?: {
       [tokenName: string]: string;
