@@ -203,8 +203,6 @@ const app = createApp({
 });
 ```
 
-## Development
+## Developing locally and contributing
 
-`yarn install` and `yarn start` will start a local dev server showing the UI of this component. See `dev/index.tsx` for setup.
-
-To see real data, link to a local backstage instance and use [`yalc`](https://github.com/wclr/yalc).
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
