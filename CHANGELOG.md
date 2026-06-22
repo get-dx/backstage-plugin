@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- `EntityScorecardsPage` no longer throws `"Output custom options are required for custom output type"` when rendering checks whose `output.type === "custom"`. Both `EntityScorecardsPage` and `CheckResultDrawer` now forward `output.custom_options` to `CheckResultBadge`, matching `EntityScorecardsCard`.
+
 ## 1.1.1 - 2026-01-29
 
 ### Docs

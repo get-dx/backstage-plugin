@@ -421,6 +421,7 @@ function CheckSummary({
           outputEnabled={!!check.output}
           outputValue={check.output?.value ?? null}
           outputType={check.output?.type ?? null}
+          outputCustomOptions={check.output?.custom_options}
         />
       </div>
       <CheckResultDrawer
