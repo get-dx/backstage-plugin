@@ -8,6 +8,8 @@ jobs:
     name: publish-npm
     runs-on: ubuntu-latest
     environment: Publish
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -23,5 +25,3 @@ jobs:
       - run: yarn build
 
       - run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
