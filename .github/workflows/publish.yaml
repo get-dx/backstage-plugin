@@ -16,14 +16,14 @@ jobs:
     environment: Publish
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v5
 
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org
-          cache: yarn
+          package-manager-cache: false
 
       - name: Install dependencies
         run: yarn --frozen-lockfile
@@ -35,4 +35,4 @@ jobs:
         run: yarn build
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish
