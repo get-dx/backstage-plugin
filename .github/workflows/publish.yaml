@@ -1,8 +1,14 @@
 name: Publish Package
+
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   npm-publish:
     name: publish-npm
@@ -18,11 +24,17 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-          registry-url: "https://registry.npmjs.org"
-          cache: "yarn"
+          registry-url: https://registry.npmjs.org
+          cache: yarn
 
-      - run: yarn --frozen-lockfile
-      - run: yarn tsc
-      - run: yarn build
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
 
-      - run: yarn publish
+      - name: Typecheck
+        run: yarn tsc
+
+      - name: Build package
+        run: yarn build
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
