@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import { CheckResultDrawer } from "./CheckResultDrawer";
 import { LevelBasedScorecardCheck } from "../api";
+import { COLORS } from "../styles";
 
 const check: LevelBasedScorecardCheck = {
   id: "rcw3pkmrxp8j",
@@ -55,6 +56,16 @@ describe("CheckResultDrawer", () => {
     expect(screen.getByText("Related properties:")).toBeInTheDocument();
     expect(screen.getByText("scaling-thresholds")).toBeInTheDocument();
     expect(screen.getByText("task-count")).toBeInTheDocument();
+  });
+
+  it("sets an explicit text color on the property chip so dark themes stay legible", () => {
+    renderDrawer({
+      related_properties: ["internal-dependency-documentation"],
+    });
+
+    expect(
+      screen.getByText("internal-dependency-documentation")
+    ).toHaveStyle({ color: COLORS.GRAY_700 });
   });
 
   it("offers an edit affordance for the related properties", async () => {

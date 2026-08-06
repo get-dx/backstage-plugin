@@ -127,6 +127,7 @@ export function CheckResultDrawer({
                     key={relatedProperty}
                     style={{
                       backgroundColor: COLORS.GRAY_100,
+                      color: COLORS.GRAY_700,
                       padding: `4px 8px`,
                       borderRadius: "4px",
                     }}
