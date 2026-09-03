@@ -81,7 +81,7 @@ type CheckCommon = {
   published: boolean;
   output: Output | null;
   message: string | null;
-  related_property: string | null;
+  related_properties: string[] | null;
   passed: boolean;
   status: "PASS" | "FAIL" | "WARN";
   executed_at: string | null;
@@ -105,7 +105,7 @@ export type OutputType =
   | "custom";
 
 export type CustomOutputOptions = {
-  unit: "string";
+  unit: string;
   decimals: "auto" | number;
 };
 

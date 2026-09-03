@@ -99,7 +99,7 @@ export function CheckResultDrawer({
             )}
           </Box>
 
-          {check.related_property && (
+          {!!check.related_properties?.length && (
             <Box
               sx={{
                 paddingTop: 16,
@@ -109,18 +109,33 @@ export function CheckResultDrawer({
                 gridGap: 16,
               }}
             >
-              <span>
-                Related property:{" "}
-                <code
-                  style={{
-                    backgroundColor: COLORS.GRAY_100,
-                    padding: `4px 8px`,
-                    borderRadius: "4px",
-                  }}
-                >
-                  {check.related_property}
-                </code>
-              </span>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gridGap: 8,
+                }}
+              >
+                <span>
+                  {check.related_properties.length === 1
+                    ? "Related property:"
+                    : "Related properties:"}
+                </span>
+                {check.related_properties.map((relatedProperty) => (
+                  <code
+                    key={relatedProperty}
+                    style={{
+                      backgroundColor: COLORS.GRAY_100,
+                      color: COLORS.GRAY_700,
+                      padding: `4px 8px`,
+                      borderRadius: "4px",
+                    }}
+                  >
+                    {relatedProperty}
+                  </code>
+                ))}
+              </Box>
               <Button
                 variant="outlined"
                 size="small"

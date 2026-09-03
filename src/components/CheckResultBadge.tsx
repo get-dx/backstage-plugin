@@ -230,13 +230,15 @@ function formatCustomOutputValue(
   outputValue: number,
   outputCustomOptions: CustomOutputOptions
 ): string {
+  // The unit is author-supplied and already in its intended form, so it is
+  // rendered verbatim rather than pluralized.
   if (outputCustomOptions.decimals === "auto") {
-    return `${outputValue} ${pluralize(outputCustomOptions.unit, outputValue)}`;
+    return `${outputValue} ${outputCustomOptions.unit}`;
   }
 
   const valueWithDecimals = outputValue.toFixed(outputCustomOptions.decimals);
 
-  return `${valueWithDecimals} ${pluralize(outputCustomOptions.unit, outputValue)}`;
+  return `${valueWithDecimals} ${outputCustomOptions.unit}`;
 }
 
 function pluralize(text: string, count: number | null = null) {
