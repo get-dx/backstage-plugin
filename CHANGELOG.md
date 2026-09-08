@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Fixed several details about check result rendering (Thank you to @colmcahalane-toast!)
+  - Pluralization
+  - Showing the "related properties" section at the right times
+  - Better dark theme support for related properties
+
 ## 1.1.2 - 2026-06-22
 
 ### Fixed

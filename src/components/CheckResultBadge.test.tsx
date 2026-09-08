@@ -16,11 +16,21 @@ function renderBadge(props: Partial<CheckResultBadgeProps> = {}) {
 }
 
 describe("CheckResultBadge", () => {
-  it("renders a custom unit verbatim rather than pluralizing it", () => {
+  it("renders a custom unit with singular value", () => {
+    renderBadge({
+      outputValue: 1,
+      outputType: "custom",
+      outputCustomOptions: { unit: "trace metric", decimals: 0 },
+    });
+
+    expect(screen.getByText("1 trace metric")).toBeInTheDocument();
+  });
+
+  it("renders a custom unit with plural value", () => {
     renderBadge({
       outputValue: 4,
       outputType: "custom",
-      outputCustomOptions: { unit: "trace metrics", decimals: 0 },
+      outputCustomOptions: { unit: "trace metric", decimals: 0 },
     });
 
     expect(screen.getByText("4 trace metrics")).toBeInTheDocument();
@@ -30,7 +40,7 @@ describe("CheckResultBadge", () => {
     renderBadge({
       outputValue: 89,
       outputType: "custom",
-      outputCustomOptions: { unit: "chars", decimals: "auto" },
+      outputCustomOptions: { unit: "char", decimals: "auto" },
     });
 
     expect(screen.getByText("89 chars")).toBeInTheDocument();
@@ -43,7 +53,7 @@ describe("CheckResultBadge", () => {
       outputCustomOptions: { unit: "% time > 90% util", decimals: 2 },
     });
 
-    expect(screen.getByText("0.00 % time > 90% util")).toBeInTheDocument();
+    expect(screen.getByText("0.00 % time > 90% utils")).toBeInTheDocument();
   });
 
   it("pluralizes built-in duration units", () => {
