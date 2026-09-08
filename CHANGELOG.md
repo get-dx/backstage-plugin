@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.1.3 - 2026-09-08
+
 ### Fixed
 
 - Fixed several details about check result rendering (Thank you to @colmcahalane-toast!)
-  - Pluralization
+  - Pluralization behavior matches the DX app
   - Showing the "related properties" section at the right times
   - Better dark theme support for related properties
 
